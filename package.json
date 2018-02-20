@@ -1,0 +1,35 @@
+{
+  "name": "youthWins",
+  "version": "0.0.1",
+  "description": "Youth Wins Application",
+  "main": "server.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "server:dev": "gulp dev",
+    "server:build": "gulp build"
+  },
+  "dependencies": {
+    "bcrypt-nodejs": "^0.0.3",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "mongoose": "^5.0.4",
+    "mongoose-auto-increment": "^5.0.1",
+    "mysql2": "^1.5.2",
+    "sequelize-json": "^2.1.2",
+    "shortid": "^2.2.8",
+    "uuid": "^3.2.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "dotenv": "^5.0.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^7.0.0",
+    "gulp-nodemon": "^2.2.1"
+  }
+}
