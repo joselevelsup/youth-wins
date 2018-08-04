@@ -1,44 +1,60 @@
-require("dotenv").config();
 import mongoose from "mongoose";
-import autoIncrement from "mongoose-auto-increment";
-
-let connection = mongoose.createConnection(process.env.DB);
-
-autoIncrement.initialize(connection);
 
 const userModel = new mongoose.Schema({
-  userId: Number,
-  firstName: String,
-  lastName: String,
-  email: String,
-  phone: Number,
-  zipCode: Number,
-  streetAddress: String,
-  city: String,
-  state: String,
-  isUsResident: Boolean,
-  isAdmin: {
-    type: mongoose.Schema.Types.Boolean,
-    default: false
-  },
-  income: {
-    type: Number,
-    default: 0
-  },
-  age: Number,
-  gender: String,
-  ethnicity: String,
-  inMilitary: {
-    type: mongoose.Schema.Types.Boolean,
-    default: false
-  },
-  educationLevel: String,
-  categoriesOfInterest: {
-    type: mongoose.Schema.Types.Array,
-    default: []
-  }
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        auto: true
+    },
+    username: String,
+    password: String,
+    firstName: String,
+    lastName: String,
+    email: String,
+    phone: Number,
+    zipCode: Number,
+    streetAddress: String,
+    city: String,
+    state: String,
+    isUsResident: Boolean,
+    isAdmin: {
+        type: mongoose.Schema.Types.Boolean,
+        default: false
+    },
+    income: {
+        type: Number,
+        default: 0
+    },
+    age: Number,
+    gender: String,
+    ethnicity: String,
+    inMilitary: {
+        type: mongoose.Schema.Types.Boolean,
+        default: false
+    },
+    educationLevel: String,
+    categoriesOfInterest: {
+        type: mongoose.Schema.Types.Array,
+        default: []
+    }
 });
 
-userModel.plugin(autoIncrement.plugin, {model: "user", field: "userId"});
+
+const adminModel = new mongoose.Schema({
+    adminId: {
+        type: mongoose.Schema.Types.ObjectId,
+        auto: true
+    },
+    username: String,
+    password: String,
+    firstName: String,
+    lastName: String,
+    email: String,
+    phone: Number,
+    isAdmin: {
+        type: mongoose.Schema.Types.Boolean,
+        deafult: true
+    }
+});
 
 export const User = mongoose.model("user", userModel);
+export const Admin = mongoose.model("admin", adminModel)
