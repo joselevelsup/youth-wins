@@ -7,7 +7,9 @@
   "private": true,
   "scripts": {
     "server:dev": "gulp dev",
-    "server:build": "gulp build"
+      "server:build": "gulp build",
+      "client:dev": "cd client && webpack-dev-server --config webpack.dev.js --hot --inline",
+      "client:build": "cd client && webpack -p --define process.env.NODE_ENV='\"production\"' --config webpack.prod.js"
   },
   "dependencies": {
     "bcrypt": "^3.0.0",
