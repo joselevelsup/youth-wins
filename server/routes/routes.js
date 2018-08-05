@@ -1,11 +1,19 @@
 import userRouter from "./handlers/user.handler";
 import resourceRouter from "./handlers/resource.handler";
 import caseRouter from "./handlers/admin.handler";
+import { login, signup } from "../auth/authenticate";
+
 
 export default (app) => {
-  app.use("/user", userRouter);
 
-  app.use("/resources", resourceRouter);
+    app.post("/signup", signup);
 
-  app.use("/cases", caseRouter);
+    app.post("/login", login);
+
+    app.use("/user", userRouter);
+
+    app.use("/resources", resourceRouter);
+
+    app.use("/cases", caseRouter);
+
 }

@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 import autoIncrement from "mongoose-auto-increment";
 import passport from "passport";
 import routes from "./routes/routes";
+import local from "./auth/local";
 
 const MongoStore = require("connect-mongo")(session);
 
@@ -18,10 +19,12 @@ app.use(bodyParser.urlencoded({
 
 mongoose.Promise = global.Promise;
 
-mongoose.connect(process.env.DB);
+mongoose.connect(process.env.DB, { useNewUrlParser: true });
 
 app.use(session({
     secret: "issa secret",
+    resave: true,
+    saveUninitialized: true,
     store: new MongoStore({mongooseConnection: mongoose.connection})
 }));
 
@@ -29,7 +32,12 @@ app.use(passport.initialize());
 
 app.use(passport.session());
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({
+    extended: true,
+    urlencoded: true
+}));
+
+local(passport);
 
 routes(app, passport);
 

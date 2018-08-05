@@ -5,21 +5,16 @@ const userModel = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         auto: true
     },
-    username: String,
+    email: String,
     password: String,
     firstName: String,
     lastName: String,
-    email: String,
     phone: Number,
     zipCode: Number,
     streetAddress: String,
     city: String,
     state: String,
     isUsResident: Boolean,
-    isAdmin: {
-        type: mongoose.Schema.Types.Boolean,
-        default: false
-    },
     income: {
         type: Number,
         default: 0
