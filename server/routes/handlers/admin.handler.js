@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { checkAdmin } from "../../helpers/access";
 import {
   getAllCases,
   getCaseById
@@ -7,7 +8,7 @@ import {
 const caseRouter = Router();
 
 caseRouter
-  .get("/", getAllCases)
-  .get("/:caseId", getCaseById);
+    .get("/", checkAdmin, getAllCases)
+    .get("/:caseId", checkAdmin, getCaseById);
 
 export default caseRouter;

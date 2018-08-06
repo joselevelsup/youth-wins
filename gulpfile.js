@@ -25,10 +25,4 @@ gulp.task("build", function(){
         .pipe(gulp.dest("./build"));
 });
 
-// gulp.task("build-cli", function(){
-//     return gulp.src("cli/src/**/**.js")
-//         .pipe(babel({
-//             presets: ["env"]
-//         }))
-//         .pipe(gulp.dest("./cli/build"));
-// });
+

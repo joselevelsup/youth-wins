@@ -1,5 +1,5 @@
 import { Router } from "express";
-
+import { checkUser, checkAdmin } from "../../helpers/access";
 import {
   getResources,
   getOneResource,
@@ -11,10 +11,10 @@ import {
 const resourceRouter = Router();
 
 resourceRouter
-  .get("/", getResources)
-  .get("/:resourceId", getOneResource)
-  .post("/", createResource)
-  .put("/:resourceId", updateResource)
-  .delete("/:resourceId", deleteResource);
+    .get("/", checkUser, getResources)
+    .get("/:resourceId", checkUser, getOneResource)
+    .post("/", checkAdmin, createResource)
+    .put("/:resourceId", checkAdmin, updateResource)
+    .delete("/:resourceId", checkAdmin, deleteResource);
 
 export default resourceRouter;
