@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import passport from "passport";
+import encryptSsn from "../helpers/encrypt";
 import { User } from "../models/user";
 
 export function login(req, res){
@@ -28,6 +29,7 @@ export function signup(req, res){
         firstName,
         lastName,
         phone,
+        ssn,
         zipCode,
         streetAddress,
         city,
@@ -44,6 +46,8 @@ export function signup(req, res){
 
     User.findOne({ "email": email}).then((user) => {
         if(!user){
+            const encSsn = encryptSsn(ssn);
+
             return new User({
                 email: email,
                 password: bcrypt.hashSync(password, 10),
@@ -54,6 +58,8 @@ export function signup(req, res){
                 streetAddress: streetAddress,
                 city: city,
                 state: state,
+                ssn: encSsn.encrypted,
+                sec: encSsn.key,
                 isUsResident: isUsResident,
                 income: income,
                 age: age,
@@ -62,9 +68,13 @@ export function signup(req, res){
                 inMilitary: inMilitary,
                 educationLevel: educationLevel,
                 categoriesOfInterest: categoriesOfInterest
+            }).save();
+        } else {
+            res.status(200).json({
+                message: "user already exists"
             });
         }
-    }).then((user) => {
+    }).then((u) => {
         res.status(200).json({
             message: "successful signup"
         });

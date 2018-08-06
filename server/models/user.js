@@ -15,6 +15,8 @@ const userModel = new mongoose.Schema({
     city: String,
     state: String,
     isUsResident: Boolean,
+    ssn: String,
+    sec: String,
     income: {
         type: Number,
         default: 0
