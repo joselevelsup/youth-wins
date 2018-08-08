@@ -12,6 +12,7 @@
     "client:build": "cd client && webpack -p --define process.env.NODE_ENV='\"production\"' --config webpack.prod.js"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "bcrypt": "^3.0.0",
     "body-parser": "^1.18.2",
     "bootstrap": "^4.1.3",

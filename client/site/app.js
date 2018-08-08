@@ -1,6 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { Provider } from 'react-redux'
+import { HashRouter } from 'react-router-dom'
 
-ReactDOM.render(<div>Hello React</div>, 
+import store from '../store'
+import Root from './components/Root'
+
+ReactDOM.render(
+	<Provider store={store}>
+		<HashRouter>
+			<Root />
+		</HashRouter>
+	</Provider>, 
     document.getElementById("app")
 );
+
+
+//mongod --dbpath ../data
