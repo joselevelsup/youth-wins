@@ -33,10 +33,10 @@ export function signUp(user){
 
 export function logIn(user){
 	return function thunk (dispatch){
-		return axios.post('/logIn', user)
+		return axios.post('/login', user)
 		.then(res => res.status)
 		.then(status => {
-			const action = signUp(status)
+			const action = logInAction(status)
 			dispatch(action);
 		})
 	}
