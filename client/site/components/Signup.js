@@ -97,7 +97,6 @@ class Signup extends Component {
 	}
 }
 
-// const mapStateToProps = state => state.user
 const mapDispatchToProps = dispatch => {
 	return {
 		signUp: (form) => {
