@@ -25,7 +25,8 @@ export function signUp(user){
 		return axios.post('/signup', user)
 		.then(res => res.status)
 		.then(status => {
-			const action = signUp(status)
+			const action = signUpAction(status)
+			console.log('status', action)
 			dispatch(action);
 		})
 	}
@@ -43,6 +44,7 @@ export function logIn(user){
 }
 
 export default function userReducer(state = initialState, action){
+	console.log(...arguments)
 	switch(action.type){
 		case LOG_IN:
 			const loggedIn = action.loggedIn === 200 ? true : false

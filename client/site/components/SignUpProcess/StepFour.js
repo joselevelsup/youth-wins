@@ -33,8 +33,8 @@ export default class StepFour extends Component {
 							Category 2
 						</Label>
 					</FormGroup>
-					<Button color="warning">Continue</Button>
 				</Form>
+				<Button color="warning" onClick={this.props.handleSubmit}>Continue</Button>
 			</div>
 		)
 	}

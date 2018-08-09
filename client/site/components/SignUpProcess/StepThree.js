@@ -41,13 +41,13 @@ export default class StepThree extends Component {
 						<Label>Are you in the military?</Label>
 						<FormGroup check>
 							<Label check>
-							<Input type="radio" value={true} name="isMilitary" onChange={this.props.handleChange}/>{' '}
+							<Input type="radio" value={true} name="inMilitary" onChange={this.props.handleChange}/>{' '}
 								Yes
 							</Label>
 						</FormGroup>
 						<FormGroup check>
 							<Label check>
-							<Input type="radio" value={false} name="isMilitary" onChange={this.props.handleChange}/>{' '}
+							<Input type="radio" value={false} name="inMilitary" onChange={this.props.handleChange}/>{' '}
 								No
 							</Label>
 						</FormGroup>

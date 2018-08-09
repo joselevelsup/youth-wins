@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { signUp } from './../../store/reducers/user'
+
 import StepOne from './SignUpProcess/StepOne'
 import StepTwo from './SignUpProcess/StepTwo'
 import StepThree from './SignUpProcess/StepThree'
 import StepFour from './SignUpProcess/StepFour'
 
-export default class Signup extends Component {
+class Signup extends Component {
 	constructor(){
 		super()
 		this.state = {
@@ -21,13 +24,14 @@ export default class Signup extends Component {
 			age: '',
 			ethnicity: '',
 			isLatino: false,
-			isMilitary: false,
+			inMilitary: false,
 			income: '',
 			educationLevel: '',
 			categoriesOfInterest: []
 		}
 		this.nextStep = this.nextStep.bind(this)
 		this.handleChange = this.handleChange.bind(this)
+		this.handleSubmit = this.handleSubmit.bind(this)
 	}
 
 	nextStep(){
@@ -58,6 +62,19 @@ export default class Signup extends Component {
 		}
 	}
 
+	handleSubmit(e){
+		e.preventDefault()
+		const form = Object.assign({}, this.state, {
+			age: Number(this.state.age),
+			zipCode: Number(this.state.zipCode),
+			income: Number(this.state.income)
+		})
+
+		
+		this.props.signUp(form)
+		this.props.history.push('/home')
+	}
+
 	render(){
 		const helperFunctions = {
 			nextStep: this.nextStep,
@@ -68,10 +85,9 @@ export default class Signup extends Component {
 			<StepOne {...helperFunctions} />,
 			<StepTwo {...helperFunctions} />,
 			<StepThree {...helperFunctions} />,
-			<StepFour {...helperFunctions} />
+			<StepFour {...helperFunctions} handleSubmit={this.handleSubmit}/>
 		]
 
-		console.log(this.state)
 		return (
 			<div>
 				{/* <button onClick={this.nextStep}>Next</button> */}
@@ -80,3 +96,15 @@ export default class Signup extends Component {
 		)
 	}
 }
+
+// const mapStateToProps = state => state.user
+const mapDispatchToProps = dispatch => {
+	return {
+		signUp: (form) => {
+			dispatch(signUp(form))
+		}
+	}
+}
+
+const SignUpProcess = connect(null, mapDispatchToProps)(Signup)
+export default SignUpProcess
