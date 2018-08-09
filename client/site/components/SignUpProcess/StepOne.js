@@ -3,8 +3,6 @@ import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap'
 
 export default class StepOne extends Component {
 	render(){
-
-		console.log(this.props)
 		return (
 			<div>
 				<h1>Signup - Step 1</h1>
