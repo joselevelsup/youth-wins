@@ -42,11 +42,11 @@ export function signup(req, res){
         inMilitary,
         educationLevel,
         categoriesOfInterest
-    } = req.body;
-
+	} = req.body;
+	
     User.findOne({ "email": email}).then((user) => {
         if(!user){
-            const encSsn = encryptSsn(ssn);
+            // const encSsn = encryptSsn(ssn);
 
             return new User({
                 email: email,
@@ -58,8 +58,6 @@ export function signup(req, res){
                 streetAddress: streetAddress,
                 city: city,
                 state: state,
-                ssn: encSsn.encrypted,
-                sec: encSsn.key,
                 isUsResident: isUsResident,
                 income: income,
                 age: age,
