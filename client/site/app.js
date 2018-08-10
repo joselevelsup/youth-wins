@@ -15,6 +15,3 @@ ReactDOM.render(
 	</Provider>, 
     document.getElementById("app")
 );
-
-
-//mongod --dbpath ../data
