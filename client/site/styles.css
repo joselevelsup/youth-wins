@@ -1,0 +1,32 @@
+.support-img {
+	width: 100vw;
+}
+
+.support-text {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-flow: column;
+}
+
+.support-text-items {
+	width: 80%;
+}
+
+.support-form {
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	flex-flow: wrap;
+	width: 60%;
+}
+
+.form-wrap {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.support-form-items {
+	width: 45%;
+}
