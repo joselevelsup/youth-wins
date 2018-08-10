@@ -5,6 +5,7 @@ import Landing from './Landing'
 import Login from './Login'
 import Signup from './Signup'
 import Home from './Home'
+import Support from './SupportUs';
 
 class Root extends Component {
 	componentDidMount(){
@@ -18,6 +19,7 @@ class Root extends Component {
 				<Route exact path="/login" component={Login}/>
 				<Route exact path="/signup" component={Signup}/>
 				<Route exact path="/home" component={Home}/>
+				<Route exact path="/support" component={Support}/>
 				<Route component={Landing}/>
 			</Switch>
 		)
