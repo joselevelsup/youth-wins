@@ -70,3 +70,27 @@
 h1 {
 	color: #E89E00;
 }
+
+.tallInput {
+	height: 8em;
+}
+
+.resourceUploadImage {
+	display: flex;
+	border: 1px solid #ced4da;
+	border-radius: .25rem;
+	margin-right: 0;
+
+	align-items: center;
+	justify-content: center;
+}
+
+.uploadButton {
+	width: 4em;
+	height: 4em;
+	border-radius: 50%;
+}
+
+.fileHidden {
+	display: none;
+}
