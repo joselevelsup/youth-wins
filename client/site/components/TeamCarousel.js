@@ -52,12 +52,7 @@ export default class TeamCarousel extends Component {
 				</div>
 					<div className="carousel">
 						<ItemsCarousel
-						// Placeholder configurations
-						// enablePlaceholder
-						// numberOfPlaceholderItems={5}
-						// minimumPlaceholderTime={1000}
-						// placeholderItem={<div style={{ height: 200, background: '#900' }}>Placeholder</div>}
-				
+			
 						// Carousel configurations
 						numberOfCards={3}
 						gutter={64}
