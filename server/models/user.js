@@ -1,10 +1,6 @@
 import mongoose from "mongoose";
 
 const userModel = new mongoose.Schema({
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        auto: true
-    },
     email: String,
     password: String,
     firstName: String,
@@ -37,15 +33,10 @@ const userModel = new mongoose.Schema({
 
 
 const adminModel = new mongoose.Schema({
-    adminId: {
-        type: mongoose.Schema.Types.ObjectId,
-        auto: true
-    },
-    username: String,
+    email: String,
     password: String,
     firstName: String,
     lastName: String,
-    email: String,
     phone: Number,
     isAdmin: {
         type: mongoose.Schema.Types.Boolean,
@@ -54,4 +45,4 @@ const adminModel = new mongoose.Schema({
 });
 
 export const User = mongoose.model("user", userModel);
-export const Admin = mongoose.model("admin", adminModel)
+export const Admin = mongoose.model("admin", adminModel);
