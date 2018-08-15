@@ -1,10 +1,10 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Container, Row, Col, Button } from "reactstrap";
 import YouthModal from "../../components/modal";
-import { applyResource } from "../../actions/api";
+import { applyResource } from "../../actions/resource";
 
-
-export default class References extends React.Component {
+class Resources extends React.Component {
 
     constructor(){
         super();
@@ -17,9 +17,13 @@ export default class References extends React.Component {
         this.toggleModal = this.toggleModal.bind(this);
     }
 
+    componentDidMount(){
+        this.props.dispatch(fetchResources())
+    }
+
 
     apply(resourceId){
-        this.props.dispatch(applyResource(resourceId)).then( data => {
+        this.props.dispatch(applyResource(resourceId)).then(data => {
             
         }).catch(err => {
             
@@ -42,3 +46,12 @@ export default class References extends React.Component {
         );
     }
 }
+
+function mapStateToProps(state){
+    return {
+        resources: state.resources
+    };
+}
+
+export default connect(mapStateToProps)(Resources)
+

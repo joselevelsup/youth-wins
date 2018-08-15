@@ -1,6 +1,5 @@
 import axios from 'axios';
-import { API_URL } from '../constants/api';
-import { API } from '../constants/constants';
+import { API_URL, API } from '../constants/constants';
 import { apiFailed, apiRequested, apiSucceeded } from '../actions/api';
 
 export default store => next => action => {
