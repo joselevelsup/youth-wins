@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import TeamCarousel from './TeamCarousel'
+import TeamCarousel from '../components/TeamCarousel'
 
 export default class AboutUs extends Component {
 	render(){

@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { signUp } from './../../store/reducers/user'
 
-import StepOne from './SignUpProcess/StepOne'
-import StepTwo from './SignUpProcess/StepTwo'
-import StepThree from './SignUpProcess/StepThree'
-import StepFour from './SignUpProcess/StepFour'
+import StepOne from '../components/SignUpProcess/StepOne'
+import StepTwo from '../components/SignUpProcess/StepTwo'
+import StepThree from '../components/SignUpProcess/StepThree'
+import StepFour from '../components/SignUpProcess/StepFour'
 
 class Signup extends Component {
 	constructor(){

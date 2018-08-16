@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import BecomeResource from './BecomeResource'
+import BecomeResource from '../components/BecomeResource'
 
 export default class SupportUs extends Component {
 	render(){

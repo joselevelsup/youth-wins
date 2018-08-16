@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import Landing from './Landing'
-import Login from './Login'
-import Signup from './Signup'
-import Home from './Home'
-import Support from './SupportUs';
-import AboutUs from './AboutUs';
+import Landing from '../pages/Landing'
+import Login from '../pages/Login'
+import Signup from '../pages/Signup'
+import Home from '../pages/Home'
+import Support from '../pages/SupportUs';
+import AboutUs from '../pages/AboutUs';
 
 class Root extends Component {
 	componentDidMount(){
