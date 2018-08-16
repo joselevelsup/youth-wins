@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { logIn } from '../../store/reducers/user'
+import { logIn } from '../store/reducers/user'
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap'
 
 class Login extends Component {

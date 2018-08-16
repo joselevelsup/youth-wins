@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { signUp } from './../../store/reducers/user'
+import { signUp } from '../store/reducers/user'
 
 import StepOne from '../components/SignUpProcess/StepOne'
 import StepTwo from '../components/SignUpProcess/StepTwo'
