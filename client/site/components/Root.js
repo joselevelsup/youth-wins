@@ -20,8 +20,8 @@ class Root extends Component {
 				<Route exact path="/login" component={Login}/>
 				<Route exact path="/signup" component={Signup}/>
 				<Route exact path="/home" component={Home}/>
-				<Route exact path="/support" component={Support}/>
-				<Route exact path="/about" component={AboutUs}/>
+				<Route exact path="/supportus" component={Support}/>
+				<Route exact path="/aboutus" component={AboutUs}/>
 				<Route component={Landing}/>
 			</Switch>
 		)
