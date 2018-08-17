@@ -1,11 +1,13 @@
-import { createStore, applyMiddleware } from 'redux'
-import thunkMiddleware from 'redux-thunk'
+import { createStore, applyMiddleware, compose } from 'redux'
+import thunk from 'redux-thunk'
+import apiMiddleware from "../site/middleware/api";
 import rootReducer from './reducers'
 
 export default createStore(
-	rootReducer,
-	window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-	applyMiddleware(
-	  thunkMiddleware
-	)
-  )
+	  rootReducer,
+	  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+	  applyMiddleware(
+	      thunk,
+        apiMiddleware
+	  )
+)

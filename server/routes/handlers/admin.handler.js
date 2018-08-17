@@ -1,14 +1,18 @@
 import { Router } from "express";
 import { checkAdmin } from "../../helpers/access";
 import {
-  getAllCases,
-  getCaseById
+    getAllCases,
+    getCaseById,
+    getResources,
+    getUsers
 } from "../controllers/admin.controller";
 
-const caseRouter = Router();
+const adminRouter = Router();
 
-caseRouter
+adminRouter
     .get("/", checkAdmin, getAllCases)
-    .get("/:caseId", checkAdmin, getCaseById);
+    .get("/:caseId", checkAdmin, getCaseById)
+    .get("/resources", getResources)
+    .get("/users", getUsers);
 
-export default caseRouter;
+export default adminRouter;

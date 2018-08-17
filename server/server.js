@@ -4,14 +4,16 @@ import express from "express";
 import bodyParser from "body-parser";
 import session from "express-session";
 import mongoose from "mongoose";
-import autoIncrement from "mongoose-auto-increment";
 import passport from "passport";
+import cors from "cors";
 import routes from "./routes/routes";
 import local from "./auth/local";
 
 const MongoStore = require("connect-mongo")(session);
 
 let app = express();
+
+app.use(cors());
 
 app.use(bodyParser.urlencoded({
     extended: true
