@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, createRef } from 'react'
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap'
 
 export default class BecomeResource extends Component {
@@ -12,7 +12,10 @@ export default class BecomeResource extends Component {
 			description: '',
 			logo: '',
 		}
+		this.uploader = createRef()
 		this.handleChange = this.handleChange.bind(this)
+		this.fileUpload = this.fileUpload.bind(this)
+
 	}
 
 	handleChange(e){
@@ -24,6 +27,10 @@ export default class BecomeResource extends Component {
 		})
 	}
 
+	fileUpload(e){
+		e.preventDefault()
+		this.uploader.click()
+	}
 
 	render(){
 		console.log(this.state)
@@ -48,11 +55,14 @@ export default class BecomeResource extends Component {
 					</FormGroup>
 					<FormGroup className="support-form-items">
 						<Label>Description</Label>
-						<Input name="description" onChange={this.handleChange}/>
+						<Input className="tallInput" name="description" onChange={this.handleChange}/>
 					</FormGroup>
 					<FormGroup className="support-form-items">
-						<Label>Logo</Label>
-						<Input name="logo" onChange={this.handleChange}/>
+						<Label>Logo</Label><br/>
+						<div className="tallInput resourceUploadImage">
+							<Button className="uploadButton" color="warning" onClick={this.fileUpload}>+</Button>
+						</div>						
+						<input ref={e => this.uploader = e} className="fileHidden" name="logo" type="file"/>
 					</FormGroup>
 					<Button color="warning" onClick={this.props.nextStep}>Proceed to Intake</Button>
 				</Form>
