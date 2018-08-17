@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
+import { Field, reduxForm } from 'redux-form'
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap'
 
-export default class StepTwo extends Component {
+class StepTwo extends Component {
 	render(){
 		return (
 			<div>
@@ -29,3 +30,6 @@ export default class StepTwo extends Component {
 		)
 	}
 }
+
+const StepTwoForm = reduxForm({form: 'signup'})(StepTwo)
+export default StepTwoForm
