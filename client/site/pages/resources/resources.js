@@ -31,7 +31,7 @@ class Resources extends React.Component {
     applyResource(resourceId){
         const self = this;
         this.props.dispatch(applyResource(resourceId)).then(data => {
-           self.toggleModal();
+            self.toggleModal();
         }).catch(err => {
             console.log(err);
         });
@@ -91,7 +91,7 @@ class Resources extends React.Component {
                         ))
                     }
                 </Row>
-                <ResourceModal open={this.state.infoModal} toggle={this.toggleInfoModal} resource={this.state.resource} />
+                <ResourceModal open={this.state.infoModal} toggle={this.toggleInfoModal} apply={this.applyResource} resource={this.state.resource} />
                 <YouthModal open={this.state.modal} toggle={this.toggleModal} />
             </Container>
         );

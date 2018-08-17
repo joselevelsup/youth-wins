@@ -20,7 +20,10 @@ export const applyFail = err => ({
 export const applyResource = (id) => ({
     type: API,
     payload: {
-        url: API_RESOURCE+`/${id}`,
+        url: API_RESOURCE,
+        data: {
+            resourceId: id
+        },
         method: "POST",
         success: applySuccess,
         error: applyFail

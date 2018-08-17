@@ -17,7 +17,7 @@ export const YouthModal = ({ open, toggle }) => (
         </Modal>
 );
 
-export const ResourceModal = ({ open, toggle, resource }) => (
+export const ResourceModal = ({ open, toggle, resource, apply }) => (
     <Modal isOpen={open} toggle={toggle}>
         <div className="modal-header">
             <Container fluid={true}>
@@ -37,14 +37,19 @@ export const ResourceModal = ({ open, toggle, resource }) => (
                     </Col>
                     <Col>
                         <Row>
-                            {resource.organizationName}
+                           <h3> {resource.organizationName}</h3>
                         </Row>
                         <Row>
-                            {resource.description}
+                            <p>{resource.description}</p>
                         </Row>
                     </Col>
                 </Row>
             }
         </ModalBody>
+        <ModalFooter>
+                <Col md={{size: 3, offset: 9}}>
+                    <Button className="primary" onClick={() => apply(resource._id)}>Apply</Button>
+                </Col>
+        </ModalFooter>
     </Modal>
 );
