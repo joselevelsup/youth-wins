@@ -7,6 +7,8 @@ import Landing from './Landing'
 import Login from './Login'
 import Signup from './Signup'
 import Home from './Home'
+import Support from "./SupportUs";
+import AboutUs from "./AboutUs";
 import Resources from "./resources/resources";
 
 class Root extends Component {
@@ -22,6 +24,9 @@ class Root extends Component {
 				            <Route exact path="/" component={Landing}/>
 				            <Route exact path="/login" component={Login}/>
 				            <Route exact path="/signup" component={Signup}/>
+                    <Route exact path="/home" component={Home}/>
+                    <Route exact path="/support" component={Support}/>
+				            <Route exact path="/about" component={AboutUs}/>
 				            <Route exact path="/resources" component={Resources}/>
 				            <Route component={Landing}/>
 			          </Switch>
