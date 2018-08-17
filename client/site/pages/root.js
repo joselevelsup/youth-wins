@@ -7,7 +7,7 @@ import Landing from './Landing'
 import Login from './Login'
 import Signup from './Signup'
 import Home from './Home'
-import References from "./references/references";
+import Resources from "./resources/resources";
 
 class Root extends Component {
 	  componentDidMount(){
@@ -22,7 +22,7 @@ class Root extends Component {
 				            <Route exact path="/" component={Landing}/>
 				            <Route exact path="/login" component={Login}/>
 				            <Route exact path="/signup" component={Signup}/>
-				            <Route exact path="/dashboard" component={References}/>
+				            <Route exact path="/resources" component={Resources}/>
 				            <Route component={Landing}/>
 			          </Switch>
             </Container>

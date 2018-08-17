@@ -12,6 +12,10 @@ const resourceModel = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    applicants: {
+        type: [mongoose.Schema.Types.ObjectId],
+        default: []
+    },
     stateServed: {
         type: [String],
         default: []
