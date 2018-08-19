@@ -62,11 +62,14 @@ class Resources extends React.Component {
         return (
             <Container>
                 <Row>
+                    <Col md={12}><br/></Col>
+                </Row>
+                <Row>
                     {
                        resources && resources.map(r => (
-                            <Col md={4}>
+                            <Col md={6}>
                                 <div className="media">
-                                    <img className="align-self-center mr-3" src={r.logo} />
+                                    <img className="align-self-center mr-3 rounded-circle" width="128" height="128" src={r.logo} />
                                     <div className="media-body">
                                         <h5 className="mt-0">{r.organizationName}</h5>
                                         <div className="row">

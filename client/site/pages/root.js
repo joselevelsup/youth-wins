@@ -18,19 +18,21 @@ class Root extends Component {
 
 	  render(){
 		    return (
-            <Container fluid={true}>
+            <React.Fragment>
                 <Nav />
-			          <Switch>
-				            <Route exact path="/" component={Landing}/>
-				            <Route exact path="/login" component={Login}/>
-				            <Route exact path="/signup" component={Signup}/>
-                    <Route exact path="/home" component={Home}/>
-                    <Route exact path="/support" component={Support}/>
-				            <Route exact path="/about" component={AboutUs}/>
-				            <Route exact path="/resources" component={Resources}/>
-				            <Route component={Landing}/>
-			          </Switch>
-            </Container>
+                <Container fluid={true}>
+			              <Switch>
+				                <Route exact path="/" component={Landing}/>
+				                <Route exact path="/login" component={Login}/>
+				                <Route exact path="/signup" component={Signup}/>
+                        <Route exact path="/home" component={Home}/>
+                        <Route exact path="/support" component={Support}/>
+				                <Route exact path="/about" component={AboutUs}/>
+				                <Route exact path="/resources" component={Resources}/>
+				                <Route component={Landing}/>
+			              </Switch>
+                </Container>
+            </React.Fragment>
 		    )
 	  }
 }

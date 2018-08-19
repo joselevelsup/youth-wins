@@ -1,21 +1,23 @@
 import React from "react";
 import { Row, Col } from "reactstrap";
-import { Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import "./nav.scss";
 
 export default () => (
-    <Row className="header">
-        <Col md={{size: 4}}>
-            <h2>Youth Wins</h2>
-        </Col>
-        <Col md={{size: 3}}>
-            <h3>Dashboard</h3>
-        </Col>
-        <Col md={{size: 3}}>
-            <h3>Resources</h3>
-        </Col>
-        <Col md={{size: 3}}>
-            <h3>Logout</h3>
-        </Col>
-    </Row>
+    <div className="container-fluid header">
+        <div className="row nav-content">
+            <div className="offset-md-5 col-2 text-center align-self-center">
+                <h3><Link to="/" className="link">Youth Wins</Link></h3>
+            </div>
+            <div className="offset-md-2 col-1 align-self-center">
+                <NavLink to="/dashboard" className="link" activeClassName="active">Dashboard</NavLink>
+            </div>
+            <div className="col-1 align-self-center">
+                <NavLink to="/resources" className="link" activeClassName="active">Resources</NavLink>
+            </div>
+            <div className="col-1 align-self-center">
+                <NavLink to="/login" className="link" activeClassName="active">Login</NavLink>
+            </div>
+        </div>
+    </div>
 )
