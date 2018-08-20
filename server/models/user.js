@@ -2,7 +2,10 @@ import mongoose from "mongoose";
 
 const userModel = new mongoose.Schema({
     email: String,
-    password: String,
+    password: {
+        type: String,
+        select: false
+    },
     firstName: String,
     lastName: String,
     phone: Number,
@@ -34,13 +37,20 @@ const userModel = new mongoose.Schema({
 
 const adminModel = new mongoose.Schema({
     email: String,
-    password: String,
+    password: {
+        type: String,
+        select: false
+    },
     firstName: String,
     lastName: String,
     phone: Number,
     isAdmin: {
         type: mongoose.Schema.Types.Boolean,
-        deafult: true
+        deafult: false
+    },
+    isStaff: {
+        type: mongoose.Schema.Types.Boolean,
+        default: true
     }
 });
 

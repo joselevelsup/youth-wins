@@ -10,8 +10,8 @@ import {
 const adminRouter = Router();
 
 adminRouter
-    .get("/", checkAdmin, getAllCases)
-    .get("/:caseId", checkAdmin, getCaseById)
+    // .get("/", checkAdmin, getAllCases)
+    // .get("/:caseId", checkAdmin, getCaseById)
     .get("/resources", getResources)
     .get("/users", getUsers);
 

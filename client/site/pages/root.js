@@ -10,6 +10,7 @@ import Home from './Home'
 import Support from "./SupportUs";
 import AboutUs from "./AboutUs";
 import Resources from "./resources/resources";
+import AdminPanel from "./admin/panel";
 
 class Root extends Component {
 	  componentDidMount(){
@@ -29,6 +30,7 @@ class Root extends Component {
                         <Route exact path="/support" component={Support}/>
 				                <Route exact path="/about" component={AboutUs}/>
 				                <Route exact path="/resources" component={Resources}/>
+                        <Route exact path="/admin" component={AdminPanel} />
 				                <Route component={Landing}/>
 			              </Switch>
                 </Container>

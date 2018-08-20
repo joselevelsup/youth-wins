@@ -1,6 +1,9 @@
-const LocalStrategy = require("passport-local").Strategy;
-const bcrypt = require("bcrypt");
-const { User } = require("../models/user");
+// const LocalStrategy = require("passport-local").Strategy;
+// const bcrypt = require("bcrypt");
+// const { User } = require("../models/user");
+import { Strategy as LocalStrategy } from "passport-local";
+import bcrypt from "bcrypt";
+import { User } from "../models";
 
 
 module.exports = (passport) => {
@@ -14,11 +17,9 @@ module.exports = (passport) => {
 
     passport.use('local-login', new LocalStrategy({ usernameField: "username", passwordField: "password", passReqToCallback: true },
                                                   function (request, username, password, done) {
-                                                      console.log(username);
-                                                      console.log(password);
-                                                      User.findOne({$or: [{ "username": username }, {"email": username }] }, function (err, user) {
+                                                      User.findOne({$or: [{ "username": username }, {"email": username }] }).select("+password").exec(function (err, user) {
                                                           if (err) {
-                                                              console.log("err");
+                                                              console.log(err);
                                                               return done(err);
                                                           }
                                                           if (!user) {
@@ -26,7 +27,7 @@ module.exports = (passport) => {
                                                               return done(null, false);
                                                           }
                                                           if (user && bcrypt.compareSync(password, user.password)) {
-                                                              console.log("user and passwords match");
+                                                              console.log("user");
                                                               return done(null, user);
                                                           }
                                                       });

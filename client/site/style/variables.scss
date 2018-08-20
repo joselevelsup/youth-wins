@@ -1,3 +1,15 @@
+@import "../../../node_modules/bootstrap/scss/_functions.scss";
+@import "../../../node_modules/bootstrap/scss/_variables.scss";
+
 $primary-color: #D28F18;
 $secondary-color: #173B92;
 $no-color: #fff;
+
+
+$theme-colors: (
+    primary: #D28F18,
+    secondary: #173B92
+);
+
+
+@import "../../../node_modules/bootstrap/scss/bootstrap.scss";

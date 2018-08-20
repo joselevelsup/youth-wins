@@ -1,53 +1,60 @@
-import axios from 'axios'
-
+// import axios from 'axios'
+import {
+    LOG_IN,
+    SIGN_UP
+} from "../../site/constants/constants";
 const initialState = {
 	loggedIn: false
 }
 
 //Action types
-const LOG_IN = 'LOG_IN'
-const SIGN_UP = 'SIGN_UP'
+// const LOG_IN = 'LOG_IN'
+// const SIGN_UP = 'SIGN_UP'
 
-//Action creators
-const signUpAction = status => ({
-	type: SIGN_UP,
-	status
-})
+// //Action creators
+// const signUpAction = status => ({
+// 	type: SIGN_UP,
+// 	status
+// })
 
-const logInAction = status => ({
-	type: LOG_IN,
-	status
-})
+// const logInAction = status => ({
+// 	type: LOG_IN,
+// 	status
+// })
 
-//Thunk creators
-export function signUp(user){
-	return function thunk (dispatch){
-		return axios.post('/signup', user)
-		.then(res => res.status)
-		.then(status => {
-			const action = signUpAction(status)
-			dispatch(action);
-		})
-	}
-}
+// //Thunk creators
+// export function signUp(user){
+// 	return function thunk (dispatch){
+// 		return axios.post('/signup', user)
+// 		.then(res => res.status)
+// 		.then(status => {
+// 			const action = signUpAction(status)
+// 			dispatch(action);
+// 		})
+// 	}
+// }
 
-export function logIn(user){
-	return function thunk (dispatch){
-		return axios.post('/login', user)
-		.then(res => res.status)
-		.then(status => {
-			const action = logInAction(status)
-			dispatch(action);
-		})
-	}
-}
+// export function logIn(user){
+// 	return function thunk (dispatch){
+// 		return axios.post('/login', user)
+// 		.then(res => res.status)
+// 		.then(status => {
+// 			const action = logInAction(status)
+// 			dispatch(action);
+// 		})
+// 	}
+// }
 
 export default function userReducer(state = initialState, action){
 	switch(action.type){
-		case LOG_IN:
+	case LOG_IN:
+      console.log(action.payload);
 			const loggedIn = action.loggedIn === 200 ? true : false
 			return Object.assign({}, ...state, {loggedIn})
-		case SIGN_UP:
+  case "LOG_IN_F":
+      console.log(action.payload);
+      return action.payload;
+  case SIGN_UP:
 			const signedUp = action.loggedIn === 200 ? true : false
 			return Object.assign({}, ...state, {loggedIn: signedUp})
 		default:

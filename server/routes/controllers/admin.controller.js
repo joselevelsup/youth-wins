@@ -1,4 +1,4 @@
-import { Case, Users, Resource } from "../../models";
+import { Case, User, Resource, Admin } from "../../models";
 
 export function getAllCases(req, res){
   Case.find().then((cases) => {
@@ -56,10 +56,18 @@ export function approveResource(req, res){
 }
 
 export function getUsers(req, res){
-    Users.find().then((users) => {
-        res.status(200).json({
-            "success": true,
-            "users": users
+    User.find().then((users) => {
+        Admin.find().then((admins) => {
+            res.status(200).json({
+                "success": true,
+                "users": users,
+                "admins": admins
+            });
+        }).catch((err) => {
+            res.status(500).json({
+                "success": false,
+                "message": "failed to get users"
+            });
         });
     }).catch((err) => {
         res.status(500).json({
