@@ -11,6 +11,8 @@ import Support from "./SupportUs";
 import AboutUs from "./AboutUs";
 import Resources from "./resources/resources";
 import AdminPanel from "./admin/panel";
+import "../style/app.scss";
+
 
 class Root extends Component {
 	  componentDidMount(){
