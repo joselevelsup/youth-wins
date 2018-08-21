@@ -33,7 +33,7 @@ export const ResourceModal = ({ open, toggle, resource, apply }) => (
                 resource &&
                 <Row>
                     <Col md={4}>
-                        <img src={resource.logo} />
+                        <img className="rounded-circle" src={resource.logo} />
                     </Col>
                     <Col>
                         <Row>
@@ -46,10 +46,15 @@ export const ResourceModal = ({ open, toggle, resource, apply }) => (
                 </Row>
             }
         </ModalBody>
-        <ModalFooter>
-                <Col md={{size: 3, offset: 9}}>
-                    <Button className="primary" onClick={() => apply(resource._id)}>Apply</Button>
-                </Col>
-        </ModalFooter>
+        <React.Fragment>
+            {
+                apply &&
+                <ModalFooter>
+                    <Col md={{size: 3, offset: 9}}>
+                        <Button className="primary" onClick={() => apply(resource._id)}>Apply</Button>
+                    </Col>
+                </ModalFooter>
+            }
+        </React.Fragment>
     </Modal>
 );

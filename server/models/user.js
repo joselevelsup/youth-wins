@@ -44,6 +44,7 @@ const adminModel = new mongoose.Schema({
     firstName: String,
     lastName: String,
     phone: Number,
+    position: String,
     isAdmin: {
         type: mongoose.Schema.Types.Boolean,
         deafult: false

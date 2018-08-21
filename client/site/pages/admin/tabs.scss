@@ -6,4 +6,11 @@
         background-color: transparent!important;
         border-left: none!important;
     }
+
+    .resourceItem{
+        padding: 20px;
+        img{
+            cursor: pointer; 
+        }
+    }
 }

@@ -1,5 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
 import {
     Container,
     TabContent,
@@ -14,19 +13,17 @@ import {
     Row,
     Col
 } from 'reactstrap';
-import { getAllResources, getAllUsers } from "../../actions/admin";
 import { UsersTab, ResourcesTab } from "./tabs";
 
 
-class AdminPanel extends React.Component {
+export default class AdminPanel extends React.Component {
 
     constructor(props) {
         super(props);
 
         this.toggleTab = this.toggleTab.bind(this);
         this.state = {
-            activeTab: '1',
-            resModal: false
+            activeTab: '1'
         };
     }
 
@@ -38,13 +35,9 @@ class AdminPanel extends React.Component {
         }
     }
 
-    componentDidMount(){
-        this.props.dispatch(getAllResources());
-        this.props.dispatch(getAllUsers());
-    }
+   
 
     render(){
-        const { resources } = this.props;
         return (
             <Container>
                 <br />
@@ -68,7 +61,7 @@ class AdminPanel extends React.Component {
                 </Nav>
                 <TabContent activeTab={this.state.activeTab}>
                     <TabPane tabId="1">
-                        <ResourcesTab pending={resources.pending} approved={resources.approved} />
+                        <ResourcesTab  />
                     </TabPane>
                     <TabPane tabId="2">
                         <UsersTab />
@@ -78,12 +71,3 @@ class AdminPanel extends React.Component {
         );
     }
 }
-
-function mapStateToProps(state){
-    return {
-        resources: state.adminResources,
-        users: state.adminUsers
-    };
-}
-
-export default connect(mapStateToProps)(AdminPanel);

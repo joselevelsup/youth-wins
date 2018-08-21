@@ -7,7 +7,12 @@ import {
     ADMIN_USERS_S,
     ADMIN_APPS_S,
     ADMIN_CREATE_USER,
-    ADMIN_FAILED_USER
+    ADMIN_FAILED_USER,
+    CREATED_RES_S,
+    CREATED_RES_F,
+    UPDATED_RES_S,
+    UPDATED_RES_F,
+    DELETED_RES_S
 } from "../constants/constants";
 
 export const adminSuccess = data => ({
@@ -39,6 +44,69 @@ export const getAllResources = () => ({
     payload: {
         url: API_ADMIN+`/resources`,
         success: allResources
+    }
+});
+
+export const createdResource = data => ({
+    type: CREATED_RES_S,
+    payload: data
+});
+
+export const failedResource = err => ({
+    type: CREATED_RES_F,
+    payload: err
+});
+
+export const createResource = data => ({
+    type: API,
+    payload: {
+        url: API_ADMIN+`/resources`,
+        method: "POST",
+        data: data,
+        success: createdResource,
+        error: failedResource
+    }
+});
+
+export const updatedResource = data => ({
+    type: UPDATED_RES_S,
+    payload: data
+});
+
+export const failedUpdateResource = err => ({
+    type: UPDATED_RES_F,
+    payload: err
+});
+
+export const updateResource = ({ id, ...data }) => ({
+    type: API,
+    payload: {
+        url: API_ADMIN+`/resources`,
+        method: "PUT",
+        data: {
+            resourceId: id,
+            updates: data
+        },
+        success: updatedResource,
+        error: failedUpdateResource
+    }
+});
+
+
+export const deletedResource = data => ({
+    type: DELETED_RES_S,
+    payload: data
+});
+
+export const deleteResource = id => ({
+    type: API,
+    payload: {
+        url: API_ADMIN+`/resources`,
+        method: "DELETE",
+        data: {
+            resourceId: id
+        },
+        success: deletedResource
     }
 });
 
