@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
+import { Field, reduxForm } from 'redux-form'
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap'
 
-export default class StepTwo extends Component {
+class StepTwo extends Component {
 	render(){
 		return (
 			<div>
@@ -9,19 +10,19 @@ export default class StepTwo extends Component {
 				<Form>
 					<FormGroup>
 						<Label>Adress</Label>
-						<Input name="streetAddress" onChange={this.props.handleChange} placeholder="230 East Nostrand Street" />
+						<Field className="form-control" component="input" name="streetAddress" placeholder="230 East Nostrand Street" />
 					</FormGroup>
 					<FormGroup>
 						<Label>City</Label>
-						<Input name="city" onChange={this.props.handleChange} placeholder="Brooklyn" />
+						<Field className="form-control" component="input" name="city" placeholder="Brooklyn" />
 					</FormGroup>
 					<FormGroup>
 						<Label>State</Label>
-						<Input name="state" onChange={this.props.handleChange} placeholder="NY" />
+						<Field className="form-control" component="input" name="state" placeholder="NY" />
 					</FormGroup>
 					<FormGroup>
 						<Label>Zip Code</Label>
-						<Input name="zipCode" onChange={this.props.handleChange}  placeholder="11223" />
+						<Field className="form-control" component="input" name="zipCode"  placeholder="11223" />
 					</FormGroup>
 					<Button color="warning" onClick={this.props.nextStep}>Proceed</Button>
 				</Form>
@@ -29,3 +30,6 @@ export default class StepTwo extends Component {
 		)
 	}
 }
+
+const StepTwoForm = reduxForm({form: 'signup', destroyOnUnmount: false, forceUnregisteredOnUnmount: true})(StepTwo)
+export default StepTwoForm
