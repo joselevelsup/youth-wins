@@ -6,6 +6,7 @@ const userModel = new mongoose.Schema({
         type: String,
         select: false
     },
+    profile: String,
     firstName: String,
     lastName: String,
     phone: Number,
@@ -45,6 +46,7 @@ const adminModel = new mongoose.Schema({
     lastName: String,
     phone: Number,
     position: String,
+    profile: String,
     isAdmin: {
         type: mongoose.Schema.Types.Boolean,
         deafult: false

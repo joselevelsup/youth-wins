@@ -1,3 +1,6 @@
+@import "../../style/variables.scss";
+
+
 .resourcesTab{
     .form-control{
         border-right: none!important;
@@ -6,11 +9,23 @@
         background-color: transparent!important;
         border-left: none!important;
     }
+}
 
-    .resourceItem{
-        padding: 20px;
-        img{
-            cursor: pointer; 
+.usersTab{
+    .userItem{
+        .profile{
+            border: 5px solid $b-color;
+            margin: -10px;
+            cursor: pointer;
+            width: 70px;
+            height: 70px;
+        }
+        .media-body {
+            .row {
+                border: solid 2px $b-color;
+                border-left: none;
+                border-radius: 0 50px 50px 0;
+            }
         }
     }
 }

@@ -21,7 +21,9 @@ import {
     createResource,
     getAllUsers
 } from "../../actions/admin"
-import { ResourceModal } from "../../components/modal";
+import { ResourceModal, StaffModal, UserModal } from "../../components/modal";
+import { StaffItem, UserItem, ResourceItem } from "../../components/items";
+import { shorten } from "../../util/helpers";
 import "./tabs.scss";
 
 import deleteIcon from "../../assets/delete.png";
@@ -38,8 +40,9 @@ class ResourcesT extends React.Component{
 
         this.createToggle = this.createToggle.bind(this);
         this.showResource = this.showResource.bind(this);
-        this.createResource = this.createResource.bind(this);
+        this.createRes = this.createRes.bind(this);
         this.deleteRes = this.deleteRes.bind(this);
+        this.updateRes = this.updateRes.bind(this);
     }
 
     componentDidMount(){
@@ -54,10 +57,19 @@ class ResourcesT extends React.Component{
     }
 
 
-    createResource(values, dispatch){
+    createRes(values, dispatch){
         const self = this;
         dispatch(createResource(values)).then(data => {
             self.createToggle();
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
+    updateRes(values, dispatch){
+        const self = this;
+        dispatch(updateResource(this.state.resource._id, values)).then(data => {
+            console.log(data);
         }).catch(err => {
             console.log(err);
         });
@@ -120,50 +132,20 @@ class ResourcesT extends React.Component{
                     {
                         (pending && this.state.view) &&
                         pending.map(r => (
-                            <Col md={6} className="resourceItem" >
-                                <div className="media">
-                                    <img className="align-self-center mr-3 rounded-circle" onClick={() => this.showResource(r)} width="128" height="128" src={r.logo} />
-                                    <div className="media-body">
-                                        <h5 className="mt-0">{r.organizationName}</h5>
-                                        <div className="row">
-                                            <div className="col-10">
-                                                <p>{r.description}</p>
-                                            </div>
-                                            <div className="col-2">
-                                                <Button color="clear" onClick={() => this.deleteRes(r._id)}><img src={deleteIcon} width="60" height="60" /></Button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Col>
+                            <ResourceItem resource={r} deleteResource={this.deleteRes} openResource={this.showResource} admin={true}  />
                         ))
                     }
                     {
                         (approved && !this.state.view) &&
                         approved.map(r => (
-                            <Col md={6} className="resourceItem">
-                                <div className="media">
-                                    <img className="align-self-center mr-3 rounded-circle" onClick={() => this.showResource(r)} width="128" height="128" src={r.logo} />
-                                    <div className="media-body">
-                                        <h5 className="mt-0">{r.organizationName}</h5>
-                                        <div className="row">
-                                            <div className="col-10">
-                                                <p>{r.description}</p>
-                                            </div>
-                                            <div className="col-2">
-                                                <Button color="clear" onClick={() => this.deleteResource(r._id)}><img src={deleteIcon} width="60" height="60" /></Button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Col>
+                            <ResourceItem resource={r} deleteResource={this.deleteRes} openResource={this.showResource} admin={true}  />
                         ))
                     }
                 </Row>
                 <Modal isOpen={this.state.createModal} toggle={this.createToggle}>
                     <ModalBody>
                         <main className="form-wrap">
-                            <form onSubmit={handleSubmit(this.createResource)} className="support-form">
+                            <form onSubmit={handleSubmit(this.createRes)} className="support-form">
 					                      <div className="form-group support-form-items">
 						                        <label>Name</label>
 						                        <Field name="name" className="form-control" component="input" type="text" />
@@ -192,7 +174,7 @@ class ResourcesT extends React.Component{
                         </main>
                     </ModalBody>
                 </Modal>
-                <ResourceModal open={this.state.modal} toggle={() => this.setState({ modal: !this.state.modal})} resource={this.state.resource} />
+                <ResourceModal open={this.state.modal} toggle={() => this.setState({ modal: !this.state.modal})} resource={this.state.resource} admin={true} />
             </Container>
         )
     }
@@ -214,17 +196,71 @@ class UsersT extends React.Component{
         super();
         this.state = {
             view: true,
-            createModal: false
+            createModal: false,
+            staffModal: false,
+            userModal: false,
+            staff: null,
+            user: null
         }
+
+        this.createStaffMember = this.createStaffMember.bind(this);
+        this.openStaffMember = this.openStaffMember.bind(this);
+        this.deleteStaffMember = this.deleteStaffMember.bind(this);
+
+        this.openApplicant = this.openApplicant.bind(this);
+        this.deleteApplicant = this.deleteApplicant.bind(this);
+
+        this.toggleUserModal = this.toggleUserModal.bind(this);
+        this.toggleStaffModal = this.toggleStaffModal.bind(this);
     }
+
+
 
     componentDidMount(){
         this.props.dispatch(getAllUsers());
     }
 
+    openStaffMember(staff){
+        this.setState({
+            staff: staff,
+            staffModal: true
+        });
+    }
+
+    openApplicant(user){
+        this.setState({
+            user: user,
+            userModal: true
+        });
+    }
+
+    toggleUserModal(){
+        this.setState({
+            userModal: !this.state.userModal
+        });
+    }
+
+    toggleStaffModal(){
+        this.setState({
+            staffModal: !this.state.staffModal
+        });
+    }
+
+    createStaffMember(values, dispatch){
+        console.log(values);
+    }
+
+    deleteStaffMember(staffId){
+        console.log(staffId);
+    }
+
+    deleteApplicant(userId){
+        console.log(userId);
+    }
 
     render(){
-        console.log(this.props);
+        const { users: { applicants, staff }, handleSubmit } = this.props;
+
         return (
             <Container fluid={true} className="usersTab">
                 <br />
@@ -265,8 +301,19 @@ class UsersT extends React.Component{
                 </Row>
                 <Row>
                     {
-                        
+                        (this.state.view && applicants) &&
+                        applicants.map(a => (
+                            <UserItem user={a} deleteUser={this.deleteApplicant} openUser={this.openApplicant} />
+                        ))
                     }
+                    {
+                        (!this.state.view && staff) &&
+                        staff.map(s => (
+                            <StaffItem staff={s} openStaff={this.openStaffMember} deleteStaff={this.deleteStaffMember} />
+                        ))
+                    }
+                    <StaffModal open={this.state.staffModal} toggle={this.toggleStaffModal} staff={this.state.staff} deleteStaff={this.deleteStaffMember} />
+                    <UserModal open={this.state.userModal} toggle={this.toggleUserModal} user={this.state.user} deleteUser={this.deleteApplicant}  />
                 </Row>
             </Container>
         )

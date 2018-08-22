@@ -34,7 +34,7 @@ export const adminUsers = (state = initialState, action) => {
 
     case ADMIN_USERS_S:
         return {
-            users: action.payload.users,
+            applicants: action.payload.users,
             staff: action.payload.admins,
         };
     default:

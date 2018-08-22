@@ -11,6 +11,7 @@ import Support from "./SupportUs";
 import AboutUs from "./AboutUs";
 import Resources from "./resources/resources";
 import AdminPanel from "./admin/panel";
+import { CheckUser, CheckAdmin } from "../wrappers";
 import "../style/app.scss";
 
 

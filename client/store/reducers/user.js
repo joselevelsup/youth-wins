@@ -1,11 +1,14 @@
 // import axios from 'axios'
 import {
     LOG_IN,
-    SIGN_UP
+    SIGN_UP,
+    USER_S
 } from "../../site/constants/constants";
 const initialState = {
 	loggedIn: false
 }
+
+const initialUser = [];
 
 //Action types
 // const LOG_IN = 'LOG_IN'
@@ -45,7 +48,7 @@ const initialState = {
 // 	}
 // }
 
-export default function userReducer(state = initialState, action){
+export const userReducer = (state = initialState, action) => {
 	switch(action.type){
 	case LOG_IN:
       console.log(action.payload);
@@ -60,4 +63,14 @@ export default function userReducer(state = initialState, action){
 		default:
 			return state
 	}
+}
+
+export const currentReducer = (state = initialUser, action) => {
+    switch(action.type){
+    case USER_S:
+        return action.payload;
+
+    default:
+        return state || initialUser;
+    }
 }

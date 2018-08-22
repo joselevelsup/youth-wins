@@ -29,4 +29,21 @@
         color: $no-color!important;
     }
 }
+.resourceItem{
+    padding-top: 20px;
+    .logo{
+        border: 5px solid $b-color;
+        cursor: pointer;
+        z-index: 100;
+        margin-right: -30px;
+    }
 
+    .media-body{
+        border: solid 2px $b-color;
+        border-left: none;
+        border-radius: 0 50px 50px 0;
+        p{
+            font-size: 13px;
+        }
+    }
+}
