@@ -1,7 +1,16 @@
-.header{
-    background-color: blue;
+@import "../style/variables.scss";
 
-    .col-md-6 {
-        text-align: center;
+.header{
+    background-color: $secondary;
+
+    .nav-content{
+        height: 70px;
+    }
+    a.link{
+        color: $no-color;
+    }
+
+    .active{
+        color: $primary !important;
     }
 }

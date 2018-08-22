@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_URL, API } from '../constants/constants';
+import { API } from '../constants/constants';
 import { apiFailed, apiRequested, apiSucceeded } from '../actions/api';
 
 export default store => next => action => {
@@ -20,7 +20,7 @@ export default store => next => action => {
         store.dispatch(request({payload}));
 
         return axios({
-            baseURL: API_URL,
+            //baseURL: API_URL,
             method, url, data,
         })
       .then(res => {

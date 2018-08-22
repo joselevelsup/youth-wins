@@ -4,6 +4,8 @@ const resourceModel = new mongoose.Schema({
     organizationName: String,
     contactEmail: String,
     logo: String,
+    description: String,
+    website: String,
     pending: {
         type: Boolean,
         default: true
