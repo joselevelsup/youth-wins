@@ -51,6 +51,7 @@ class StepFour extends Component {
 							Category 2
 						</Label>
 					</FormGroup>
+					<br/>
 					<Button color="warning" type="submit">Continue</Button>
 				</Form>
 			</div>

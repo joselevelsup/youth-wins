@@ -99,9 +99,22 @@ h1 {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	flex-direction: column;
 	height: 80%;
 }
 
 .signup-radio {
 	display: block;
+}
+
+.progress-container {
+	display: flex;
+	width: 100%;
+	align-items: flex-start;
+	flex-direction: column;
+	margin-left: 6em;
+}
+
+.signup-progress {
+	width: 20%;
 }
