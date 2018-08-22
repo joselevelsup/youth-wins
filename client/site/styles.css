@@ -94,3 +94,14 @@ h1 {
 .fileHidden {
 	display: none;
 }
+
+.signup-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 80%;
+}
+
+.signup-radio {
+	display: block;
+}

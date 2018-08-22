@@ -45,6 +45,7 @@ class StepFour extends Component {
 							<Field component="input" type="checkbox" name="Category 1" />{' '}
 							Category 1
 						</Label>
+						<br/>
 						<Label check>
 							<Field component="input" type="checkbox" name="Category 2" />{' '}
 							Category 2

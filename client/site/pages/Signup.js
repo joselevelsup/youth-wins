@@ -35,7 +35,7 @@ class Signup extends Component {
 		]
 
 		return (
-			<div>
+			<div className="signup-container">
 				{/* <button onClick={this.nextStep}>Next</button> */}
 				{steps[this.state.currentStep]}
 			</div>
