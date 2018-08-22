@@ -1,6 +1,16 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Container, Row, Col, Button, Media } from "reactstrap";
+import {
+    Container,
+    Row,
+    Col,
+    Button,
+    InputGroup,
+    InputGroupText,
+    InputGroupAddon,
+    Input
+} from "reactstrap";
+import Ionicon from "react-ionicons";
 import { YouthModal, ResourceModal } from "../../components/modal";
 import { fetchResources, applyResource } from "../../actions/resource";
 import { chunk } from "../../components/helpers";
@@ -62,12 +72,27 @@ class Resources extends React.Component {
         return (
             <Container>
                 <Row>
-                    <Col md={12}><br/></Col>
+                    <br />
+                </Row>
+                <Row>
+                    <Col md={12} className="text-center">
+                        <h3> Explore Your Resources</h3>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={{size: 4, offset: 4}}>
+                        <InputGroup>
+                            <Input placeholder="Search" />
+                            <InputGroupAddon addonType="append">
+                                <InputGroupText><Ionicon icon="ios-search" /></InputGroupText>
+                            </InputGroupAddon>
+                        </InputGroup>
+                    </Col>
                 </Row>
                 <Row>
                     {
                        resources && resources.map(r => (
-                            <ResourceItem resource={r} openResource={this.openInfoModal} />
+                            <ResourceItem full={true} resource={r} openResource={this.openInfoModal} apply={this.applyResource} />
                         ))
                     }
                 </Row>

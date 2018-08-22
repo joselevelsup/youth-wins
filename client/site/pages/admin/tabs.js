@@ -132,13 +132,13 @@ class ResourcesT extends React.Component{
                     {
                         (pending && this.state.view) &&
                         pending.map(r => (
-                            <ResourceItem resource={r} deleteResource={this.deleteRes} openResource={this.showResource} admin={true}  />
+                            <ResourceItem resource={r} deleteResource={this.deleteRes} openResource={this.showResource} admin={true} full={false}  />
                         ))
                     }
                     {
                         (approved && !this.state.view) &&
                         approved.map(r => (
-                            <ResourceItem resource={r} deleteResource={this.deleteRes} openResource={this.showResource} admin={true}  />
+                            <ResourceItem resource={r} deleteResource={this.deleteRes} openResource={this.showResource} admin={true} full={false} />
                         ))
                     }
                 </Row>

@@ -15,7 +15,7 @@ module.exports = (passport) => {
         done(null, id);
     });
 
-    passport.use('local-login', new LocalStrategy({ usernameField: "username", passwordField: "password", passReqToCallback: true },
+    passport.use('local-login', new LocalStrategy({ usernameField: "email", passwordField: "password", passReqToCallback: true },
                                                   function (request, username, password, done) {
                                                       User.findOne({$or: [{ "username": username }, {"email": username }] }).select("+password").exec(function (err, user) {
                                                           if (err) {

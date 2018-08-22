@@ -4,7 +4,6 @@ import encryptSsn from "../helpers/encrypt";
 import { User } from "../models/user";
 
 export function login(req, res){
-    console.log(req.body);
     passport.authenticate("local-login", function(err, user, info) {
         if(err){
             res.status(500).json({
