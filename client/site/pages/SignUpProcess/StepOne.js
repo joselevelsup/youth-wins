@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
+import { Field, reduxForm } from 'redux-form'
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap'
 
-export default class StepOne extends Component {
+class StepOne extends Component {
 	render(){
 		return (
 			<div>
@@ -9,19 +10,19 @@ export default class StepOne extends Component {
 				<Form>
 					<FormGroup>
 						<Label>First Name</Label>
-						<Input onChange={this.props.handleChange} name="firstName" placeholder="Jody" />
+						<Field className="form-control" component="input" name="firstName" placeholder="Jody" />
 					</FormGroup>
 					<FormGroup>
 						<Label>Last Name</Label>
-						<Input onChange={this.props.handleChange} name="lastName" placeholder="Doe" />
+						<Field className="form-control" component="input" name="lastName" placeholder="Doe" />
 					</FormGroup>
 					<FormGroup>
 						<Label>Email</Label>
-						<Input onChange={this.props.handleChange} type="email" name="email" placeholder="jodydoe@mail.com" />
+						<Field className="form-control" component="input" type="email" name="email" placeholder="jodydoe@mail.com" />
 					</FormGroup>
 					<FormGroup>
 						<Label>Password</Label>
-						<Input onChange={this.props.handleChange} type="password" name="password"  placeholder="********" />
+						<Field className="form-control" component="input" type="password" name="password"  placeholder="********" />
 					</FormGroup>
 					<Button color="warning" onClick={this.props.nextStep}>Proceed</Button>
 				</Form>
@@ -29,3 +30,6 @@ export default class StepOne extends Component {
 		)
 	}
 }
+
+const StepOneForm = reduxForm({form: 'signup', destroyOnUnmount: false, forceUnregisteredOnUnmount: true})(StepOne)
+export default StepOneForm
