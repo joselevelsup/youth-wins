@@ -118,3 +118,14 @@ h1 {
 .signup-progress {
 	width: 20%;
 }
+
+.login-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 80%;
+}
+
+.login {
+	width: 20%;
+}

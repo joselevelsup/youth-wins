@@ -33,17 +33,19 @@ class Login extends Component {
 	render(){
 		console.log(this.state)
 		return (
-			<div>
-				<h1>Login</h1>
-				<FormGroup>
-					<Label>Email</Label>
-					<Input onChange={this.handleChange} type="email" name="email" placeholder="jodydoe@mail.com" />
-				</FormGroup>
-				<FormGroup>
-					<Label>Password</Label>
-					<Input onChange={this.handleChange} type="password" name="password"  placeholder="********" />
-				</FormGroup>
-				<Button color="warning" onClick={this.handleSubmit}>Proceed</Button>
+			<div className="login-container">
+				<section className="login">
+					<h1>Login</h1>
+					<FormGroup>
+						<Label>Email</Label>
+						<Input onChange={this.handleChange} type="email" name="email" placeholder="jodydoe@mail.com" />
+					</FormGroup>
+					<FormGroup>
+						<Label>Password</Label>
+						<Input onChange={this.handleChange} type="password" name="password"  placeholder="********" />
+					</FormGroup>
+					<Button color="warning" onClick={this.handleSubmit}>Proceed</Button>
+				</section>
 			</div>
 		)
 	}
