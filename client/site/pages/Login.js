@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { logIn } from './../../store/reducers/user'
+import { logIn } from '../actions/auth'
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap'
 
 class Login extends Component {
 	constructor(){
 		super()
 		this.state = {
-			username: '',
+			email: '',
 			password: ''
 		}
 		this.handleChange = this.handleChange.bind(this)
@@ -37,7 +37,7 @@ class Login extends Component {
 				<h1>Login</h1>
 				<FormGroup>
 					<Label>Email</Label>
-					<Input onChange={this.handleChange} type="email" name="username" placeholder="jodydoe@mail.com" />
+					<Input onChange={this.handleChange} type="email" name="email" placeholder="jodydoe@mail.com" />
 				</FormGroup>
 				<FormGroup>
 					<Label>Password</Label>

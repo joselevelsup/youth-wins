@@ -1,0 +1,54 @@
+@import "./variables.scss";
+
+.btn.btn-primary{
+    background-color: $primary!important;
+    border-color: $primary!important;
+}
+
+.btn.btn-secondary{
+    background-color: $secondary!important;
+    border-color: $secondary!important;
+}
+
+.btn.btn-outline-primary{
+    color: $primary!important;
+    border-color: $primary!important;
+
+    &:hover{
+        background-color: $primary!important;
+        color: $no-color!important;
+    }
+}
+
+.btn.btn-outline-secondary{
+    color: $secondary!important;
+    border-color: $secondary!important;
+
+    &:hover{
+        background-color: $secondary!important;
+        color: $no-color!important;
+    }
+}
+.resourceItem{
+    padding-top: 20px;
+    .logo{
+        border: 5px solid $b-color;
+        cursor: pointer;
+        z-index: 100;
+        margin-right: -30px;
+    }
+
+    .media-body{
+        border: solid 2px $b-color;
+        border-left: none;
+        border-radius: 0 50px 50px 0;
+        p{
+            font-size: 13px;
+        }
+    }
+}
+
+
+.left-right-rounded{
+    border-radius: 50px 50px 50px 50px!important;
+}

@@ -10,12 +10,15 @@ export function login(req, res){
                 message: "error has occurred"
             });
         }
-
         if(user){
-            res.status(200).json(req.user);
-        } else {
-            res.status(500).json({
-                message: "wrong username or password"
+            req.logIn(user, function(err){
+                if(err){
+                    res.status(500).json({
+                        message: "error has occurred"
+                    });
+                } else {
+                    res.status(200).json(req.user);
+                }
             });
         }
     })(req, res);

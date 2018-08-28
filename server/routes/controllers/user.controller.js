@@ -1,5 +1,16 @@
 import { User } from "../../models/user";
 
+export function currentUser(req, res){
+    if(req.user){
+        res.status(200).json(req.user);
+    } else {
+        res.status(400).json({
+            "success": false,
+            "message": "not logged in"
+        });
+    }
+}
+
 export function getOneUser(req, res){
   User.findById(req.params.userId).then((user) => {
     res.json({

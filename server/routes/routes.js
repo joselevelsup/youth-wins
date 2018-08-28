@@ -1,7 +1,7 @@
 import path from "path";
 import userRouter from "./handlers/user.handler";
 import resourceRouter from "./handlers/resource.handler";
-import caseRouter from "./handlers/admin.handler";
+import adminRouter from "./handlers/admin.handler";
 import { login, signup } from "../auth/authenticate";
 
 
@@ -15,7 +15,7 @@ export default (app) => {
 
     app.use("/resources", resourceRouter);
 
-    app.use("/cases", caseRouter);
+    app.use("/admin", adminRouter);
 
     app.get("*", (req, res) => {
         res.sendFile(path.join(__dirname, "../../client/index.html"));

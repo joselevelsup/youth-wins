@@ -29,6 +29,8 @@ export function getOneResource(req, res){
 }
 
 export function applyResource(req, res){
+    console.log(req.body);
+    console.log(req.user);
     Resource.findOneAndUpdate({ "_id": req.body.resourceId }, {
         $push: {
             applicants: req.user._id

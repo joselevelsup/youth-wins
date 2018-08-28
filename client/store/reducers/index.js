@@ -1,6 +1,8 @@
 import {combineReducers} from 'redux'
-import user from './user'
+import { userReducer as user, currentReducer as current } from './user'
 import  resources from "./resources";
-import { reducer as formReducer } from 'redux-form'
+import { adminResources, adminUsers } from "./admin";
 
-export default combineReducers({user, resources, form: formReducer});
+import { reducer as formReducer } from "redux-form";
+
+export default combineReducers({user, current, resources, adminResources, adminUsers, form: formReducer});

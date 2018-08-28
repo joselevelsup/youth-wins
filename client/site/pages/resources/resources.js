@@ -1,10 +1,20 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Container, Row, Col, Button, Media } from "reactstrap";
+import {
+    Container,
+    Row,
+    Col,
+    Button,
+    InputGroup,
+    InputGroupText,
+    InputGroupAddon,
+    Input
+} from "reactstrap";
+import Ionicon from "react-ionicons";
 import { YouthModal, ResourceModal } from "../../components/modal";
 import { fetchResources, applyResource } from "../../actions/resource";
 import { chunk } from "../../components/helpers";
-
+import { ResourceItem } from "../../components/items";
 
 class Resources extends React.Component {
 
@@ -62,32 +72,27 @@ class Resources extends React.Component {
         return (
             <Container>
                 <Row>
+                    <br />
+                </Row>
+                <Row>
+                    <Col md={12} className="text-center">
+                        <h3> Explore Your Resources</h3>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={{size: 4, offset: 4}}>
+                        <InputGroup>
+                            <Input placeholder="Search" />
+                            <InputGroupAddon addonType="append">
+                                <InputGroupText><Ionicon icon="ios-search" /></InputGroupText>
+                            </InputGroupAddon>
+                        </InputGroup>
+                    </Col>
+                </Row>
+                <Row>
                     {
                        resources && resources.map(r => (
-                            <Col md={4}>
-                                <div className="media">
-                                    <img className="align-self-center mr-3" src={r.logo} />
-                                    <div className="media-body">
-                                        <h5 className="mt-0">{r.organizationName}</h5>
-                                        <div className="row">
-                                            <div className="col-10">
-                                                <p>{r.description}</p>
-                                            </div>
-                                            <div className="col-2">
-                                                <div className="row">
-                                                    <div className="col-12">
-                                                        <Button color="primary" onClick={() => this.applyResource(r._id)}>Apply</Button>
-                                                    </div>
-                                                    <div className="w-100"></div>
-                                                    <div className="col-12">
-                                                        <Button color="clear" onClick={() => this.openInfoModal(r)}>More</Button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Col>
+                            <ResourceItem full={true} resource={r} openResource={this.openInfoModal} apply={this.applyResource} />
                         ))
                     }
                 </Row>
@@ -106,3 +111,27 @@ function mapStateToProps(state){
 
 export default connect(mapStateToProps)(Resources)
 
+/* <Col md={6}>
+ *                                 <div className="media">
+ *                                     <img className="align-self-center mr-3 rounded-circle" width="128" height="128" src={r.logo} />
+ *                                     <div className="media-body">
+ *                                         <h5 className="mt-0">{r.organizationName}</h5>
+ *                                         <div className="row">
+ *                                             <div className="col-10">
+ *                                                 <p>{r.description}</p>
+ *                                             </div>
+ *                                             <div className="col-2">
+ *                                                 <div className="row">
+ *                                                     <div className="col-12">
+ *                                                         <Button color="primary" onClick={() => this.applyResource(r._id)}>Apply</Button>
+ *                                                     </div>
+ *                                                     <div className="w-100"></div>
+ *                                                     <div className="col-12">
+ *                                                         <Button color="clear" onClick={() => this.openInfoModal(r)}>More</Button>
+ *                                                     </div>
+ *                                                 </div>
+ *                                             </div>
+ *                                         </div>
+ *                                     </div>
+ *                                 </div>
+ * </Col> */
