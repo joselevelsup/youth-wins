@@ -27,13 +27,13 @@ class Root extends Component {
                 <Container fluid={true}>
 			              <Switch>
 				                <Route exact path="/" component={Landing}/>
-				                <Route exact path="/login" component={Login}/>
+				                <Route exact path="/login" render={() => <Login title={true}/>}/>
 				                <Route exact path="/signup" component={Signup}/>
-                        <Route exact path="/home" component={Home}/>
-                        <Route exact path="/support" component={Support}/>
+                       			<Route exact path="/home" component={Home}/>
+                        		<Route exact path="/support" component={Support}/>
 				                <Route exact path="/about" component={AboutUs}/>
 				                <Route exact path="/resources" component={Resources}/>
-                        <Route exact path="/admin" component={AdminPanel} />
+                        		<Route exact path="/admin" component={AdminPanel} />
 				                <Route component={Landing}/>
 			              </Switch>
                 </Container>

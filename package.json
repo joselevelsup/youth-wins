@@ -12,6 +12,10 @@
     "client:build": "cd client && webpack -p --define process.env.NODE_ENV='\"production\"' --config webpack.prod.js"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.4",
+    "@fortawesome/free-brands-svg-icons": "^5.3.1",
+    "@fortawesome/free-solid-svg-icons": "^5.3.1",
+    "@fortawesome/react-fontawesome": "^0.1.2",
     "aws-sdk": "^2.293.0",
     "axios": "^0.18.0",
     "bcrypt": "^3.0.0",
