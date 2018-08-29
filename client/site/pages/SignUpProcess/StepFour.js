@@ -13,7 +13,6 @@ class StepFour extends Component {
 
 	signup(values){
 		const submission = Object.assign({}, values)
-		console.log(values)
 		this.props.signUp(submission)
 		this.props.history.push('/home')
 	}

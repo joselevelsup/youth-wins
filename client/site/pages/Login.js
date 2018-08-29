@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { logIn } from '../actions/auth'
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap'
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap'
+import { Field, reduxForm } from 'redux-form'
 
 class Login extends Component {
 	constructor(){
@@ -10,39 +11,32 @@ class Login extends Component {
 			email: '',
 			password: ''
 		}
-		this.handleChange = this.handleChange.bind(this)
-		this.handleSubmit = this.handleSubmit.bind(this)
+		this.handleSubmit = this.login.bind(this)
 	}
 
-	handleChange(e){
-		const name = e.target.name
-		const value = e.target.value
-
-		this.setState({
-			[name]: value
-		})
-	}
-
-	handleSubmit(e){
-		e.preventDefault()
-		this.props.logIn(this.state)
+	login(values){
+		const submission = Object.assign({}, values)
+		this.props.signUp(submission)
 		this.props.history.push('/home')
 	}
 
 
 	render(){
+		const { handleSubmit } = this.props
 		return (
 			<div className="login-container">
 				<section className="login">
 					{this.props.title ? <h1>Login</h1> : null}
-					<FormGroup>
-						<Label>Email</Label>
-						<Input onChange={this.handleChange} type="email" name="email" placeholder="jodydoe@mail.com" />
-					</FormGroup>
-					<FormGroup>
-						<Label>Password</Label>
-						<Input onChange={this.handleChange} type="password" name="password"  placeholder="********" />
-					</FormGroup>
+					<Form onSubmit={handleSubmit(this.login)}>
+						<FormGroup>
+							<Label>Email</Label>
+							<Field className="form-control" component="input" name="email" type="email" placeholder="jodydoe@mail.com" />
+						</FormGroup>
+						<FormGroup>
+							<Label>Password</Label>
+							<Field className="form-control" component="input" name="password" placeholder="********"/>
+						</FormGroup>
+					</Form>
 					<Button color="warning" onClick={this.handleSubmit}>Login</Button>
 				</section>
 			</div>
@@ -58,5 +52,5 @@ const mapDispatchToProps = dispatch => {
 	}
 }
 
-const LogInComponent = connect(null, mapDispatchToProps)(Login)
+const LogInComponent = reduxForm({form: 'login', destroyOnUnmount: false, forceUnregisteredOnUnmount: true})(connect(null, mapDispatchToProps)(Login))
 export default LogInComponent
