@@ -31,11 +31,10 @@ class Login extends Component {
 
 
 	render(){
-		console.log(this.state)
 		return (
 			<div className="login-container">
 				<section className="login">
-					<h1>Login</h1>
+					{this.props.title ? <h1>Login</h1> : null}
 					<FormGroup>
 						<Label>Email</Label>
 						<Input onChange={this.handleChange} type="email" name="email" placeholder="jodydoe@mail.com" />
@@ -44,7 +43,7 @@ class Login extends Component {
 						<Label>Password</Label>
 						<Input onChange={this.handleChange} type="password" name="password"  placeholder="********" />
 					</FormGroup>
-					<Button color="warning" onClick={this.handleSubmit}>Proceed</Button>
+					<Button color="warning" onClick={this.handleSubmit}>Login</Button>
 				</section>
 			</div>
 		)
