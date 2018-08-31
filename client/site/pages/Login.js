@@ -11,12 +11,12 @@ class Login extends Component {
 			email: '',
 			password: ''
 		}
-		this.handleSubmit = this.login.bind(this)
+		this.login = this.login.bind(this)
 	}
 
 	login(values){
 		const submission = Object.assign({}, values)
-		this.props.signUp(submission)
+		this.props.login(submission)
 		this.props.history.push('/home')
 	}
 
