@@ -187,16 +187,29 @@ export const failedCreateStaff = err => ({
     payload: err
 });
 
-export const createStaff = (userData) => ({
-    type: API,
-    payload: {
-        url: API_ADMIN+`/users/s`,
-        method: "POST",
-        data: userData,
-        success: createdStaff,
-        error: failedCreateStaff
-    }
-});
+export const createStaff = ({firstName, lastName, password, cpassword, position, email, profile}) => {
+    console.log(profile);
+    const file = new FormData();
+    file.append('file', profile[0]);
+    file.append("data", JSON.stringify({
+        firstName,
+        lastName,
+        password,
+        cpassword,
+        position,
+        email
+    }));
+    return {
+        type: API,
+        payload: {
+            url: API_ADMIN+`/users/s`,
+            method: "POST",
+            data: file,
+            success: createdStaff,
+            error: failedCreateStaff
+        }
+    };
+};
 
 export const updatedStaff = data => ({
     type: ADMIN_UPDATE_STAFF_S,

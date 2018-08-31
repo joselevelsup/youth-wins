@@ -5,6 +5,8 @@ import {
     Admin
 } from "../../models";
 
+import { getImage, uploadImage } from "../../helpers/aws";
+
 import bcrypt from "bcrypt";
 
 export function getAllCases(req, res){
@@ -136,12 +138,40 @@ export function approveResource(req, res){
             });
         });
     }
+}
+
+export function denyResource(req, res){
+    if(!req.body.resourceId){
+        res.status(500).json({
+            "success": false,
+            "message": "No resource id provided"
+        });
+    } else {
+        Resource.findOneAndUpdate({ "_id": req.body.resourceId }, {
+            $set: {
+                pending: false,
+                approved: false
+            }
+        }).then((data) => {
+            res.status(200).json({
+                "success": true,
+                "message": "denied"
+            });
+        }).catch((err) => {
+            res.status(500).json({
+                "success": true,
+                "message": "something went wrong"
+            });
+        });
+    }
     
 }
 
 export function getUsers(req, res){
-    User.find().then((users) => {
-        Admin.find().then((admins) => {
+    User.find().then((u) => {
+        Admin.find().then((a) => {
+            let users = getImage(u);
+            let admins = getImage(a);
             res.status(200).json({
                 "success": true,
                 "users": users,
@@ -162,18 +192,27 @@ export function getUsers(req, res){
 }
 
 export function createStaff(req, res){
+    console.log(req.files);
+
+    const user = JSON.parse(req.body.data);
     new Admin({
-        email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 10),
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        phone: req.body.phone,
-        isAdmin: req.body.isAdmin,
-        isStaff: req.body.isStaff
+        email: user.email,
+        password: bcrypt.hashSync(user.password, 10),
+        firstName: user.firstName,
+        lastName: user.lastName,
+        bio: user.bio,
+        isAdmin: user.isAdmin ? user.isAdmin : false,
     }).save().then((data) => {
-        res.status(200).json({
-            "success": true,
-            "message": "Successfully created user"
+        console.log(data);
+        uploadImage(req.files.file, data._id, "admin").then(key => {
+            data.profile = key;
+
+            return data.save();
+        }).then(data => {
+            res.status(200).json({
+                "success": true,
+                "message": "Successfully created user"
+            });
         });
     }).catch((err) => {
         res.status(500).json({
@@ -196,9 +235,8 @@ export function updateStaff(req, res){
                 password: bcrypt.hashSync(req.body.password, 10),
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
-                phone: req.body.phone,
+                bio: req.body.bio,
                 isAdmin: req.body.isAdmin,
-                isStaff: req.body.isStaff
             }
         }).then((data) => {
             res.status(200).json({

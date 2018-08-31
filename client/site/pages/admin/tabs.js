@@ -270,6 +270,7 @@ class UsersT extends React.Component{
     }
 
     createStaffMember(values, dispatch){
+        // console.log(values);
         dispatch(createStaff(values)).then(data => {
             console.log(data);
         }).catch(err => {

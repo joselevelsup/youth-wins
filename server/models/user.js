@@ -32,6 +32,10 @@ const userModel = new mongoose.Schema({
     categoriesOfInterest: {
         type: mongoose.Schema.Types.Array,
         default: []
+    },
+    appliedTo: {
+        type: [mongoose.Schema.Types.Array],
+        default: []
     }
 });
 
@@ -44,9 +48,9 @@ const adminModel = new mongoose.Schema({
     },
     firstName: String,
     lastName: String,
-    phone: Number,
     position: String,
     profile: String,
+    bio: String,
     isAdmin: {
         type: mongoose.Schema.Types.Boolean,
         deafult: false

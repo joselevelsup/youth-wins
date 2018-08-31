@@ -1,5 +1,6 @@
 import React from "react";
 import { Field } from "redux-form";
+import DropzoneInput from "../components/dropzone";
 import {
     Button,
     Modal,
@@ -238,7 +239,7 @@ export const CreateStaff = ({ open, toggle, create }) => (
           <form onSubmit={create}>
             <div className="row">
               <div className="col-4">
-                <br />
+                <Field name="profile" component={DropzoneInput} />
               </div>
               <div className="col-8">
                 <div className="row">
@@ -281,6 +282,12 @@ export const CreateStaff = ({ open, toggle, create }) => (
 						          <label>Confirm Password</label>
 						          <Field name="cpassword" className="form-control" component="input" type="password" />
 					          </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-12">
+                    <label>Bio</label>
+                    <Field name="bio" className="form-control" component="textarea" />
                   </div>
                 </div>
               </div>

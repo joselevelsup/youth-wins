@@ -7,6 +7,8 @@ import {
     createResource,
     updateResource,
     deleteResource,
+    approveResource,
+    denyResource,
     createStaff,
     updateStaff,
     deleteStaff,
@@ -24,12 +26,16 @@ adminRouter.post("/resources", createResource);
 adminRouter.put("/resources", updateResource);
 adminRouter.delete("/resources", deleteResource);
 
+adminRouter.post("/resource/approve", approveResource);
+adminRouter.post("/resource/deny", denyResource);
+
 adminRouter.get("/users", getUsers);
+adminRouter.delete("/users/a", deleteUser);
+
 adminRouter.post("/users/s", createStaff);
 adminRouter.put("/users/s", updateStaff);
-adminRouter.delete("/user/s", deleteStaff);
+adminRouter.delete("/users/s", deleteStaff);
 // adminRouter.put("/users", updateUser);
-adminRouter.delete("/users", deleteUser);
 
 
 

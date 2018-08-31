@@ -1,17 +1,18 @@
+require("dotenv").config();
 var aws = require("aws-sdk");
 var fs = require("fs");
 aws.config.region = "us-east-2";
-var bucket = process.env.AWS_BUCKET;
+var bucket = process.env.BUCKET;
 
 var s3 = new aws.S3();
 
-export function uploadImage(imageData){
+export function uploadImage(file, user, type){
+    let ext = file.mimetype == "image/jpeg" ? ".jpg" : ".png";
     var params = {
         Bucket: bucket,
-        Key: imageData.user + "/" + imageData.user+".jpg",
-        Body: fs.createReadStream(imageData.file.path),
-        ContentEncoding: 'base64',
-        ContentType: imageData.file.type,
+        Key: type + "/" + user + "/" + user + ext,
+        Body: file.data,
+        ContentType: file.mimetype,
         ACL: "public-read"
     };
 
@@ -26,12 +27,38 @@ export function uploadImage(imageData){
     });
 }
 
-export function getImage(key, callback){
-    var params = {
+export function replaceImage(file, user, type){
+    let params = {
         Bucket: bucket,
-        Key: key
+        Key: user.profile
     };
 
-    var url = s3.getSignedUrl("getObject", params);
-    callback(url);
+    return new Promise((resolve, reject) => {
+        s3.deleteObject(params, (err, data) => {
+            if(err){
+                reject(err);
+            }
+
+            uploadImage(file, user, type).then(data => {
+                resolve(data);
+            }).catch(err => {
+                reject(err);
+            });
+        });
+    });
+}
+
+export function getImage(arr){
+    arr.map(a => {
+        if(a.profile){
+            a.profile = `https://${bucket}.s3.amazonaws.com/${a.profile}`;
+        }
+        if(a.logo){
+            a.logo = `https://${bucket}.s3.amazonaws.com/${a.logo}`;
+        }
+
+        return a;
+    });
+
+    return arr;
 }
