@@ -1,4 +1,4 @@
-// import axios from 'axios'
+import axios from 'axios'
 import {
     LOG_IN,
     SIGN_UP,
@@ -14,39 +14,39 @@ const initialUser = [];
 // const LOG_IN = 'LOG_IN'
 // const SIGN_UP = 'SIGN_UP'
 
-// //Action creators
-// const signUpAction = status => ({
-// 	type: SIGN_UP,
-// 	status
-// })
+//Action creators
+const signUpAction = status => ({
+	type: SIGN_UP,
+	status
+})
 
-// const logInAction = status => ({
-// 	type: LOG_IN,
-// 	status
-// })
+const logInAction = status => ({
+	type: LOG_IN,
+	status
+})
 
-// //Thunk creators
-// export function signUp(user){
-// 	return function thunk (dispatch){
-// 		return axios.post('/signup', user)
-// 		.then(res => res.status)
-// 		.then(status => {
-// 			const action = signUpAction(status)
-// 			dispatch(action);
-// 		})
-// 	}
-// }
+//Thunk creators
+export function signUp(user){
+	return function thunk (dispatch){
+		return axios.post('/signup', user)
+		.then(res => res.status)
+		.then(status => {
+			const action = signUpAction(status)
+			dispatch(action);
+		})
+	}
+}
 
-// export function logIn(user){
-// 	return function thunk (dispatch){
-// 		return axios.post('/login', user)
-// 		.then(res => res.status)
-// 		.then(status => {
-// 			const action = logInAction(status)
-// 			dispatch(action);
-// 		})
-// 	}
-// }
+export function logIn(user){
+	return function thunk (dispatch){
+		return axios.post('/login', user)
+		.then(res => res.status)
+		.then(status => {
+			const action = logInAction(status)
+			dispatch(action);
+		})
+	}
+}
 
 export const userReducer = (state = initialState, action) => {
 	switch(action.type){

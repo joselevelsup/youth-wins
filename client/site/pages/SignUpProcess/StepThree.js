@@ -30,8 +30,9 @@ class StepThree extends Component {
 							<Field component="input" type="radio" value="true" name="isLatino" />{' '}
 								Yes
 							</Label>
+							<br/>
 							<Label check>
-							<Input component="input" type="radio" value="false" name="isLatino"  />{' '}
+							<Field component="input" type="radio" value="false" name="isLatino"  />{' '}
 								No
 							</Label>
 						</FormGroup>
@@ -43,6 +44,7 @@ class StepThree extends Component {
 							<Field component="input" type="radio" value="true" name="inMilitary" />{' '}
 								Yes
 							</Label>
+							<br/>
 							<Label check>
 							<Field component="input" type="radio" value="false" name="inMilitary" />{' '}
 								No

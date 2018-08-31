@@ -41,7 +41,7 @@
 	color: #FFF;
 }
 
-.carousel {
+.foot-container {
 	display: flex;
 	width: 100vw;
 	background-color: #235dbe;
@@ -93,4 +93,92 @@ h1 {
 
 .fileHidden {
 	display: none;
+}
+
+.signup-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	height: 80%;
+}
+
+.signup-radio {
+	display: block;
+}
+
+.progress-container {
+	display: flex;
+	width: 100%;
+	align-items: flex-start;
+	flex-direction: column;
+	margin-left: 6em;
+}
+
+.signup-progress {
+	width: 20%;
+}
+
+.login-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 80%;
+}
+
+.login {
+	width: 20%;
+}
+
+.home-spacer {
+	height: 25%;
+}
+
+.home-image {
+	z-index: -2;
+}
+
+.login-card {
+	background-color: #FFF;
+	border-radius: 2em;
+}
+
+.home-footer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+
+.home-text {
+	color: #FFF;
+	width: 60%;
+}
+
+.social-icons {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+	width: 30%;
+}
+
+.social-icons > button {
+	background-color: transparent;
+	border: 2px solid #E89E00;
+	width: 3.5em;
+	height: 3.5em;
+	border-radius: 1.75em;
+}
+
+.button-container {
+	position: absolute;
+	width: 100%;
+	display: flex;
+	justify-content: space-evenly;
+	top: 96.5%;
+}
+
+figure {
+	margin: 0;
+	position: relative;
 }

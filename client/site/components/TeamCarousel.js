@@ -50,7 +50,7 @@ export default class TeamCarousel extends Component {
 				<div className="backgroundBlock">
 					<h2>Our Team</h2>
 				</div>
-					<div className="carousel">
+					<div className="foot-container">
 						<ItemsCarousel
 			
 						// Carousel configurations

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+import { Progress } from 'reactstrap'
 import StepOne from './SignUpProcess/StepOne'
 import StepTwo from './SignUpProcess/StepTwo'
 import StepThree from './SignUpProcess/StepThree'
@@ -35,8 +36,8 @@ class Signup extends Component {
 		]
 
 		return (
-			<div>
-				{/* <button onClick={this.nextStep}>Next</button> */}
+			<div className="signup-container">
+				<div className="progress-container"><p>Signup</p><Progress className="signup-progress" color="warning" value={this.state.currentStep * 25}/></div>
 				{steps[this.state.currentStep]}
 			</div>
 		)

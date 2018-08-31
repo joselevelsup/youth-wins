@@ -13,7 +13,6 @@ class StepFour extends Component {
 
 	signup(values){
 		const submission = Object.assign({}, values)
-		console.log(values)
 		this.props.signUp(submission)
 		this.props.history.push('/home')
 	}
@@ -45,11 +44,13 @@ class StepFour extends Component {
 							<Field component="input" type="checkbox" name="Category 1" />{' '}
 							Category 1
 						</Label>
+						<br/>
 						<Label check>
 							<Field component="input" type="checkbox" name="Category 2" />{' '}
 							Category 2
 						</Label>
 					</FormGroup>
+					<br/>
 					<Button color="warning" type="submit">Continue</Button>
 				</Form>
 			</div>
