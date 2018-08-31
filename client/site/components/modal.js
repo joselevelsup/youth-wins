@@ -239,7 +239,7 @@ export const CreateStaff = ({ open, toggle, create }) => (
           <form onSubmit={create}>
             <div className="row">
               <div className="col-4">
-                <Field name="profile" component={DropzoneInput} />
+                <Field name="profile" component={DropzoneInput} className="picture-upload" />
               </div>
               <div className="col-8">
                 <div className="row">
