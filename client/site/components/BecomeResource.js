@@ -8,9 +8,11 @@ export default class BecomeResource extends Component {
 			name: '',
 			email: '',
 			website: '',
-			contactEmail: '', 
+			ethnicityServed: '', 
 			description: '',
 			logo: '',
+			categories: '',
+			stateServed: ''
 		}
 		this.uploader = createRef()
 		this.handleChange = this.handleChange.bind(this)
@@ -50,8 +52,16 @@ export default class BecomeResource extends Component {
 						<Input name="website" onChange={this.handleChange}/>
 					</FormGroup>
 					<FormGroup className="support-form-items">
-						<Label>Contact Email</Label>
-						<Input name="contactEmail" onChange={this.handleChange}/>
+						<Label>Ethnicities Served</Label>
+						<Input name="ethnicityServed" onChange={this.handleChange}/>
+					</FormGroup>
+					<FormGroup className="support-form-items">
+						<Label>State served</Label>
+						<Input name="stateServed" onChange={this.handleChange}/>
+					</FormGroup>
+					<FormGroup className="support-form-items">
+						<Label>Categories</Label>
+						<Input name="categories" onChange={this.handleChange}/>
 					</FormGroup>
 					<FormGroup className="support-form-items">
 						<Label>Description</Label>
