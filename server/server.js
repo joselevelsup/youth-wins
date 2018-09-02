@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 import passport from "passport";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import fileUpload from "express-fileupload";
 import routes from "./routes/routes";
 import local from "./auth/local";
 
@@ -15,6 +16,8 @@ const MongoStore = require("connect-mongo")(session);
 let app = express();
 
 app.use(cors());
+
+app.use(fileUpload());
 
 app.use(bodyParser.urlencoded({
     extended: true

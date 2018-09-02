@@ -19,9 +19,14 @@ import {
     deleteResource,
     updateResource,
     createResource,
-    getAllUsers
+    approve,
+    deny,
+    getAllUsers,
+    deleteStaff,
+    updateStaff,
+    createStaff
 } from "../../actions/admin"
-import { ResourceModal, StaffModal, UserModal } from "../../components/modal";
+import { ResourceModal, StaffModal, CreateResource,  UserModal, EditResource, CreateStaff } from "../../components/modal";
 import { StaffItem, UserItem, ResourceItem } from "../../components/items";
 import { shorten } from "../../util/helpers";
 import "./tabs.scss";
@@ -35,18 +40,27 @@ class ResourcesT extends React.Component{
             resource: null,
             createModal: false,
             modal: false,
+            editModal: false,
             view: true
         };
 
+
+        this.loadResources = this.loadResources.bind(this);
         this.createToggle = this.createToggle.bind(this);
         this.showResource = this.showResource.bind(this);
         this.createRes = this.createRes.bind(this);
         this.deleteRes = this.deleteRes.bind(this);
         this.updateRes = this.updateRes.bind(this);
+        this.approveRes = this.approveRes.bind(this);
+        this.denyRes = this.denyRes.bind(this);
+    }
+
+    loadResources(){
+        this.props.dispatch(getAllResources());
     }
 
     componentDidMount(){
-        this.props.dispatch(getAllResources());
+        this.loadResources();
     }
 
     showResource(r){
@@ -56,11 +70,35 @@ class ResourcesT extends React.Component{
         });
     }
 
+    approveRes(id){
+        const self = this;
+        this.props.dispatch(approve(id)).then(data => {
+            self.setState({
+                modal: false
+            });
+            self.loadResources();
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
+    denyRes(id){
+        const self = this;
+        this.props.dispatch(deny(id)).then(data => {
+            self.setState({
+                modal: false
+            });
+            self.loadResources();
+        }).catch(err => {
+            console.log(err);
+        });
+    }
 
     createRes(values, dispatch){
         const self = this;
         dispatch(createResource(values)).then(data => {
             self.createToggle();
+            self.loadResources();
         }).catch(err => {
             console.log(err);
         });
@@ -69,7 +107,7 @@ class ResourcesT extends React.Component{
     updateRes(values, dispatch){
         const self = this;
         dispatch(updateResource(this.state.resource._id, values)).then(data => {
-            console.log(data);
+            self.loadResources();
         }).catch(err => {
             console.log(err);
         });
@@ -77,16 +115,24 @@ class ResourcesT extends React.Component{
 
 
     deleteRes(id){
+        const self = this;
         this.props.dispatch(deleteResource(id)).then(data => {
-            console.log(data);
+            self.loadResources();
         }).catch(err => {
             console.log(err);
-        })
+        });
     }
 
     createToggle(){
         this.setState({
             createModal: !this.state.createModal
+        });
+    }
+
+    editToggle(){
+        this.setState({
+            editModal: !this.state.editModal,
+            modal: !this.state.modal
         });
     }
 
@@ -142,39 +188,9 @@ class ResourcesT extends React.Component{
                         ))
                     }
                 </Row>
-                <Modal isOpen={this.state.createModal} toggle={this.createToggle}>
-                    <ModalBody>
-                        <main className="form-wrap">
-                            <form onSubmit={handleSubmit(this.createRes)} className="support-form">
-					                      <div className="form-group support-form-items">
-						                        <label>Name</label>
-						                        <Field name="name" className="form-control" component="input" type="text" />
-					                      </div>
-                                <div className="form-group support-form-items">
-						                        <label>Website</label>
-						                        <Field name="website" className="form-control" component="input" type="text" />
-					                      </div>
-                                <div className="form-group support-form-items">
-						                        <label>Contact Email</label>
-						                        <Field name="contactEmail" className="form-control" component="input" type="text" />
-					                      </div>
-                                <div className="form-group support-form-items">
-						                        <label>Description</label>
-						                        <Field name="description" className="form-control" component="input" type="text" />
-					                      </div>
-					                      {/* <FormGroup className="support-form-items">
-						                        <Label>Logo</Label><br/>
-						                        <div className="tallInput resourceUploadImage">
-							                      <Button className="uploadButton" color="warning" onClick={this.fileUpload}>+</Button>
-						                        </div>						
-						                        <input ref={e => this.uploader = e} className="fileHidden" name="logo" type="file"/>
-					                          </FormGroup> */}
-					                      <Button color="warning" type="submit">submit</Button>
-                            </form>
-                        </main>
-                    </ModalBody>
-                </Modal>
-                <ResourceModal open={this.state.modal} toggle={() => this.setState({ modal: !this.state.modal})} resource={this.state.resource} admin={true} />
+              <CreateResource open={this.state.createModal} toggle={() => this.setState({ creareModal: !this.state.createModal})} create={handleSubmit(this.createRes)}/>
+              <ResourceModal open={this.state.modal} edit={() => this.editToggle()} toggle={() => this.setState({resource: null, modal: !this.state.modal})} remove={() => this.deleteRes(this.state.resource._id)} resource={this.state.resource} admin={true} approve={() => this.approveRes(this.state.resource._id)} deny={() => this.denyRes(this.state.resource._id)} />
+              <EditResource open={this.state.editModal} toggle={() => this.setState({ resource:null, editModal: !this.state.editModal})} resource={this.state.resource} />
             </Container>
         )
     }
@@ -212,6 +228,7 @@ class UsersT extends React.Component{
 
         this.toggleUserModal = this.toggleUserModal.bind(this);
         this.toggleStaffModal = this.toggleStaffModal.bind(this);
+        this.toggleCreateModal = this.toggleCreateModal.bind(this);
     }
 
 
@@ -246,12 +263,27 @@ class UsersT extends React.Component{
         });
     }
 
+    toggleCreateModal(){
+        this.setState({
+            createModal: !this.state.createModal
+        });
+    }
+
     createStaffMember(values, dispatch){
-        console.log(values);
+        // console.log(values);
+        dispatch(createStaff(values)).then(data => {
+            console.log(data);
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
     deleteStaffMember(staffId){
-        console.log(staffId);
+        this.props.dispatch(deleteStaff(staffId)).then(data => {
+            console.log(data);
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
     deleteApplicant(userId){
@@ -281,7 +313,7 @@ class UsersT extends React.Component{
                     {
                         !this.state.view &&
                         <Col md={{size: 2, offset: 2}}>
-                            <Button color="primary" onClick={this.createToggle}> New Staff Member</Button>
+                            <Button color="primary" onClick={this.toggleCreateModal}> New Staff Member</Button>
                         </Col>
                     }
                 </Row>
@@ -312,9 +344,10 @@ class UsersT extends React.Component{
                             <StaffItem staff={s} openStaff={this.openStaffMember} deleteStaff={this.deleteStaffMember} />
                         ))
                     }
-                    <StaffModal open={this.state.staffModal} toggle={this.toggleStaffModal} staff={this.state.staff} deleteStaff={this.deleteStaffMember} />
-                    <UserModal open={this.state.userModal} toggle={this.toggleUserModal} user={this.state.user} deleteUser={this.deleteApplicant}  />
                 </Row>
+              <StaffModal open={this.state.staffModal} toggle={this.toggleStaffModal} staff={this.state.staff} deleteStaff={this.deleteStaffMember} />
+              <UserModal open={this.state.userModal} toggle={this.toggleUserModal} user={this.state.user} deleteUser={this.deleteApplicant}  />
+              <CreateStaff open={this.state.createModal} toggle={this.toggleCreateModal} create={handleSubmit(this.createStaffMember)} />
             </Container>
         )
     }

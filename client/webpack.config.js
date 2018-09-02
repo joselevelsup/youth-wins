@@ -20,7 +20,8 @@ module.exports = {
             inject: 'body'
         }),
         new ExtractTextPlugin('css/app.css', {
-            allChunks: true
+            allChunks: true,
+            disable: process.env.NODE_ENV !== "production"
         })
     ],
     module: {
