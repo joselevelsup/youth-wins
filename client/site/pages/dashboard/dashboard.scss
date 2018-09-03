@@ -1,0 +1,19 @@
+@import "../../style/variables.scss";
+
+.dashboard{
+    .appItem{
+        .profile{
+            border: 5px solid $b-color;
+            width: 70px;
+            height: 70px;
+            margin: -10px;
+        }
+        .media-body {
+            .row {
+                border: solid 2px $b-color;
+                border-left: none;
+                border-radius: 0 50px 50px 0;
+            }
+        }
+    }
+}

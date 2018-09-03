@@ -35,7 +35,7 @@ export const ResourceModal = ({ open, toggle, resource, apply, admin, edit, remo
                 resource &&
                 <Row>
                     <Col md={4}>
-                        <img className="rounded-circle" src={resource.logo} />
+                        <img className="img-fluid rounded-circle" src={resource.logo} />
                     </Col>
                     <Col>
                         <Row>
@@ -100,7 +100,7 @@ export const StaffModal = ({ open, toggle, staff, deleteStaff }) => (
                 staff &&
                 <Row>
                     <Col md={4}>
-                        <img className="rounded-circle" src={staff.profile} />
+                        <img className="img-fluid rounded-circle" src={staff.profile} />
                     </Col>
                     <Col>
                         <Row>

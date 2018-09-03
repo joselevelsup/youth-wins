@@ -38,8 +38,9 @@ export function signUp(user){
 }
 
 export function logIn(user){
+    console.log(user);
 	return function thunk (dispatch){
-		return axios.post('/login', user)
+		  return axios.post('/login', user)
 		.then(res => res.status)
 		.then(status => {
 			const action = logInAction(status)

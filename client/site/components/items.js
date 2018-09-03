@@ -84,3 +84,21 @@ export const UserItem = ({ user, deleteUser, openUser }) => {
         </Col>
     );
 }
+
+
+export const AppItem = ({ status, resource}) => {
+    return (
+        <Col md={4} className="appItem">
+          <div className="media">
+            <div className={status == "responded" ? "col-1 filled ": "col-1"}> <div className="rounded-circle profile"></div></div>
+            <div className="media-body">
+              <div className="row">
+                <div className="col-8 align-self-center">
+                  <h5><span className="ml-4 align-center">{resource.organizationName}</span></h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Col>
+    );
+}

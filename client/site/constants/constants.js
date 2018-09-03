@@ -45,3 +45,7 @@ export const APPROVED_RES_S = "APPROVED_RESOURCE_S";
 export const DENIED_RES_S = "DENIED_RESOURCE_S";
 export const APPROVED_RES_F = "APPROVED_RESOURCE_F";
 export const DENIED_RES_F = "DENIED_RESOURCE_F";
+
+
+export const USER_INFO_S = "USER_INFO_S";
+export const USER_INFO_F = "USER_INFO_F";
