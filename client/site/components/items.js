@@ -26,7 +26,7 @@ export const ResourceItem = ({ resource, deleteResource, openResource, apply, ad
                             {
                                 (resource && admin) &&
                                 <div className="col-2 align-self-center">
-                                    <Button color="clear" className="rounded-circle" onClick={() => deleteResource(reasource._id)}><img src={deleteIcon} width="60" height="60" /></Button>
+                                    <Button color="clear" className="rounded-circle" onClick={() => deleteResource(resource._id)}><img src={deleteIcon} width="60" height="60" /></Button>
                                 </div>
                             }
                         </div>
@@ -52,10 +52,10 @@ export const StaffItem = ({ staff, deleteStaff, openStaff}) => {
                 <img className="align-self-center img-fluid rounded-circle profile" onClick={() => openStaff(staff)} src={staff.profile} />
                 <div className="media-body">
                     <div className="row">
-                        <div className="col-6 align-self-center">
+                        <div className="col-8 align-self-center">
                             <h5><span className="ml-4 align-center">{staff.firstName} {staff.lastName}</span></h5>
                         </div>
-                        <div className="offset-2 col-2 align-self-center">
+                        <div className="col-2 align-self-center">
                             <Button color="clear" className="rounded-circle" onClick={() => deleteStaff(staff._id)}><img src={deleteIcon} width="50" height="50" /></Button>
                         </div>
                     </div>
@@ -72,10 +72,10 @@ export const UserItem = ({ user, deleteUser, openUser }) => {
                 <img className="align-self-center img-fluid rounded-circle profile" onClick={() => openUser(user)} src={user.profile} />
                 <div className="media-body">
                     <div className="row">
-                        <div className="col-6 align-self-center">
+                        <div className="col-8 align-self-center">
                             <h5><span className="ml-4 align-center">{user.firstName} {user.lastName}</span></h5>
                         </div>
-                        <div className="offset-2 col-2 align-self-center">
+                        <div className="col-2 align-self-center">
                             <Button color="clear" className="rounded-circle" onClick={() => deleteUser(user._id)}><img src={deleteIcon} width="50" height="50" /></Button>
                         </div>
                     </div>

@@ -14,14 +14,17 @@ export default store => next => action => {
             request = apiRequested,
             success = apiSucceeded,
             error = apiFailed,
-            method = 'get'
+            method = 'get',
+            headers = {"Content-Type": "application/json"}
         } = payload;
 
         store.dispatch(request({payload}));
 
         return axios({
             //baseURL: API_URL,
-            method, url, data,
+            method,
+            url,
+            data
         })
       .then(res => {
           store.dispatch(success(res.data));
