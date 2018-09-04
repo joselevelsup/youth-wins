@@ -29,9 +29,30 @@
         color: $no-color!important;
     }
 }
+
+.nav-tabs{
+    border-color: black!important;
+    .nav-link, .nav-link:hover{
+        border-color: black!important;
+        border-radius: 0!important;
+        cursor: pointer
+    }
+    .nav-link.active{
+        border-bottom-color: $no-color!important;
+    }
+}
 .resourceItem{
     padding-top: 20px;
-    .logo{
+    div.logo{
+        border: 5px solid $b-color;
+        cursor: pointer;
+        z-index: 100;
+        margin-right: -30px;
+        background-color: $no-color;
+        width: 120px;
+        height: 120px;
+    }
+    img.logo{
         border: 5px solid $b-color;
         cursor: pointer;
         z-index: 100;
@@ -45,10 +66,100 @@
         p{
             font-size: 13px;
         }
+
+        &.pending{
+            border-color: $warning!important;
+        }
     }
 }
 
 
 .left-right-rounded{
     border-radius: 50px 50px 50px 50px!important;
+}
+
+
+
+.custom-check {
+    position: relative;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width:60px;
+    height: 60px;
+    margin-bottom: 0!important;
+}
+
+/* Hide the browser's default checkbox */
+.custom-check input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 60px;
+    width: 60px;
+    border: 5px solid $b-color;
+}
+
+/* On mouse-over, add a grey background color */
+.custom-check:hover input ~ .checkmark {
+    background-color: $no-color;
+}
+
+/* When the checkbox is checked, add a blue background */
+.custom-check input:checked ~ .checkmark {
+    background-color: $primary;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "\2713";
+    position: absolute;
+    display: none;
+    top: 0;
+    left: 10;
+    font-size: 35px;
+}
+
+/* Show the checkmark when checked */
+.custom-check input:checked ~ .checkmark:after {
+    display: block;
+}
+
+//Style the checkmark/indicator
+.custom-check .checkmark:after {
+    color: white!important;
+}
+
+.appItem{
+    .profile{
+        border: 5px solid $b-color;
+        width: 70px;
+        height: 70px;
+        margin: -10px;
+        cursor: pointer;
+
+        &.filled{
+            background-color: $primary;
+        }
+    }
+    .media-body {
+        .row {
+            border: solid 2px $b-color;
+            border-left: none;
+            border-radius: 0 50px 50px 0;
+            .col-10{
+                height: 60px;
+            }
+        }
+    }
 }

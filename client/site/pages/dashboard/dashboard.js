@@ -1,12 +1,22 @@
 import React from "react";
 import { connect } from "react-redux";
 import { getUserInfo, getUserSuggested } from "../../actions/dashboard";
+import { ResourceModal } from "../../components/modal";
 import { AppItem } from "../../components/items";
 import "./dashboard.scss";
 
 class Dashboard extends React.Component{
     constructor(){
         super();
+
+        this.state = {
+            resourceModal: false,
+            resource: null,
+            status: null
+        };
+
+        this.openResource = this.openResource.bind(this);
+        this.toggleResource = this.toggleResource.bind(this);
     }
 
     componentDidMount(){
@@ -14,9 +24,22 @@ class Dashboard extends React.Component{
         // this.props.dispatch(getUserSuggested());
     }
 
+    openResource(r, stat){
+        this.setState({
+            resource: r,
+            status: stat,
+            resourceModal: true
+        });
+    }
+
+    toggleResource(){
+        this.setState({
+            resourceModal: !this.state.resourceModal
+        });
+    }
+
     render(){
         const { dashboard } = this.props;
-        console.log(dashboard);
         return(
             <div className="container dashboard">
               <div className="row">
@@ -28,12 +51,13 @@ class Dashboard extends React.Component{
                   {
                       dashboard ?
                           dashboard.applications && dashboard.applications.map(d => (
-                              <AppItem resource={d.resource} status={d.status} />
+                              <AppItem openResource={this.openResource} resource={d.resource} status={d.status} />
                           ))
                           :
                           <React.Fragment/>
                   }
               </div>
+              <ResourceModal open={this.state.resourceModal} toggle={this.toggleResource} resource={this.state.resource} status={this.state.status} />
             </div>
         );
     }

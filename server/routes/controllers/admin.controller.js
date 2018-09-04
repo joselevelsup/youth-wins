@@ -1,5 +1,5 @@
 import {
-    Case,
+    AppliedCase,
     User,
     Resource,
     Admin
@@ -19,18 +19,6 @@ export function getAllCases(req, res){
     console.log(err);
     res.status(500);
   })
-}
-
-export function getCaseById(req, res){
-  Case.findById(req.params.caseId).then((caseDoc) => {
-    res.json({
-      "success": true,
-      "case": caseDoc
-    });
-  }).catch((err) => {
-    console.log(err);
-    res.status(500);
-  });
 }
 
 export function getResources(req, res){
@@ -292,6 +280,42 @@ export function deleteUser(req, res){
             res.status(500).json({
                 "success": false,
                 "message": "unable to delete user"
+            });
+        });
+    }
+}
+
+
+export function getAllApplications(req, res){
+    AppliedCase.find().populate("resource").then(apps => {
+        res.status(200).json({
+            "success": true,
+            "applications": apps
+        });
+    }).catch(err => {
+        res.status(500).json({
+            "success": false,
+            "message": "failed to get apps"
+        });
+    });
+}
+
+export function deleteApplication(req, res){
+    if(!req.body.appId){
+        res.status(500).json({
+            "success": false,
+            "message": "no application id provided"
+        });
+    } else {
+        AppliedCase.deleteOne({"_id": req.body.appId}).then(data => {
+            res.status(200).json({
+                "success": true,
+                "message": "application deleted"
+            });
+        }).catch(err => {
+            res.status(500).json({
+                "success": false,
+                "message": "failed to delete application"
             });
         });
     }

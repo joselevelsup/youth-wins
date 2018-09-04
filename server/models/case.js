@@ -18,8 +18,8 @@ const caseModel = new mongoose.Schema({
         default: Date.now()
     },
     status: {
-        type: mongoose.Schema.Types.String,
-        default: "applied"
+        type: mongoose.Schema.Types.Boolean,
+        default: false
     }
 });
 

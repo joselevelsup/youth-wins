@@ -23,6 +23,9 @@ export const USER_S = "USER_S";
 export const ADMIN_RES_S = "ADMIN_RESOURCES_S";
 export const ADMIN_USERS_S = "ADMIN_USERS_S";
 export const ADMIN_APPS_S = "ADMIN_APPLICATIONS_S";
+export const ADMIN_APPS_F = "ADMIN_APPLICATIONS_F";
+export const ADMIN_APPS_D_S = "ADMIN_DELETED_APP_S";
+export const ADMIN_APPS_D_F = "ADMIN_DELETED_APP_F";
 export const ADMIN_CREATE_USER = "ADMIN_CREATE_USER";
 export const ADMIN_FAILED_USER = "ADMIN_FAILED_USER";
 

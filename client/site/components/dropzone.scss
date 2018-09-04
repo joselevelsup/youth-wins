@@ -1,0 +1,9 @@
+@import "../style/variables.scss";
+
+.picture-upload{
+    text-align: center;
+
+    .dropzone{
+        border: none!important;
+    }
+}

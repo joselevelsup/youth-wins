@@ -6,6 +6,9 @@ import {
     ADMIN_RES_S,
     ADMIN_USERS_S,
     ADMIN_APPS_S,
+    ADMIN_APPS_F,
+    ADMIN_APPS_D_S,
+    ADMIN_APPS_D_F,
     ADMIN_CREATE_STAFF_S,
     ADMIN_CREATE_STAFF_F,
     ADMIN_UPDATE_STAFF_S,
@@ -263,11 +266,39 @@ export const allApps = data => ({
     payload: data
 });
 
+export const failedApps = err => ({
+    type: ADMIN_APPS_F,
+    payload: err
+});
+
 export const getAllApplications = () => ({
     type: API,
     payload: {
-        url: API_ADMIN+`/case`,
+        url: API_ADMIN+`/apps`,
         success: allApps
+    }
+});
+
+export const deletedApp = data => ({
+    type: ADMIN_APPS_D_S,
+    payload: data
+});
+
+export const failedToDeleteApp = err => ({
+    type: ADMIN_APPS_D_F,
+    payload: err
+});
+
+export const deleteApp = (appId) => ({
+    type: API,
+    payload: {
+        url: API_ADMIN+"/apps",
+        method: "DELETE",
+        data: {
+            appId
+        },
+        success: deletedApp,
+        error: failedToDeleteApp
     }
 });
 

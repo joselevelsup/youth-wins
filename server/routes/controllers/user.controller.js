@@ -28,7 +28,7 @@ export function userSuggestedResources(req, res){
 }
 
 export function userAppliedResources(req, res){
-    AppliedCase.find({ "user": req.user._id}).populate("resource", "organizationName").then(apps => {
+    AppliedCase.find({ "user": req.user._id}).populate("resource").then(apps => {
         res.status(200).json({
             "success": true,
             "applications": apps
