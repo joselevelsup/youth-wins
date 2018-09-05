@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Container } from "reactstrap";
-import Nav from "../components/nav";
+import { MainNavBar } from "../components/nav";
 import Landing from './Landing'
 import Login from './Login'
 import Signup from './Signup'
@@ -24,16 +24,15 @@ class Root extends Component {
 	  render(){
 		    return (
             <React.Fragment>
-              <Nav />
+              <MainNavBar />
               <Container fluid={true}>
 			          <Switch>
-				          <Route exact path="/" component={Landing}/>
+				          <Route exact path="/" component={Home}/>
 				          <Route exact path="/login" component={Login}/>
 				          <Route exact path="/signup" component={Signup}/>
-                  <Route exact path="/home" component={Home}/>
                   <Route exact path="/support" component={Support}/>
 				          <Route exact path="/about" component={AboutUs}/>
-                  <Route exact path="/dashboard" component={Dashboard}/>
+                  <Route exact path="/dashboard" component={CheckUser(Dashboard)}/>
 				          <Route exact path="/resources" component={Resources}/>
                   <Route exact path="/admin" component={AdminPanel} />
 				          <Route component={Landing}/>
