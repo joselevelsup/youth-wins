@@ -48,3 +48,39 @@ export const fetchResources = () => ({
         error: failedResources
     }
 })
+
+export const createdResource = data => ({
+	type: CREATED_RES_S,
+	payload: data
+})
+
+export const failedCreateResource = err => ({
+	type: CREATED_RES_F,
+	payload: err
+})
+
+export const createResource = ({ organizationName, contactEmail, website, ethnicityServed,  description, logo, categories, stateServed }) => {
+	const file = new FormData()
+	file.append('file', logo[0])
+	file.append('data', JSON.stringify({
+		organizationName, 
+		contactEmail, 
+		website, 
+		ethnicityServed,  
+		description, 
+		logo, 
+		categories, 
+		stateServed
+	}))
+
+	return {
+		type: API,
+		payload: {
+			url: API_RESOURCE,
+			method: 'POST',
+			success: createdResource,
+			error: failedCreateResource,
+			data: file
+		}
+	}
+} 

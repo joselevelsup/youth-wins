@@ -1,12 +1,13 @@
 import React, { Component, createRef } from 'react'
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap'
+import { createResource } from '../actions/resource'
 
 export default class BecomeResource extends Component {
 	constructor(){
 		super()
 		this.state = {
-			name: '',
-			email: '',
+			organizationName: '',
+			contactEmail: '',
 			website: '',
 			ethnicityServed: '', 
 			description: '',
@@ -35,17 +36,16 @@ export default class BecomeResource extends Component {
 	}
 
 	render(){
-		console.log(this.state)
 		return (
 			<main className="form-wrap">
 				<Form className="support-form">
 					<FormGroup className="support-form-items">
 						<Label>Name</Label>
-						<Input name="name" onChange={this.handleChange}/>
+						<Input name="organizationName" onChange={this.handleChange}/>
 					</FormGroup>
 					<FormGroup className="support-form-items">
 						<Label>Email</Label>
-						<Input name="email" onChange={this.handleChange}/>
+						<Input name="contactEmail" onChange={this.handleChange}/>
 					</FormGroup>
 					<FormGroup className="support-form-items">
 						<Label>Website</Label>
@@ -74,7 +74,7 @@ export default class BecomeResource extends Component {
 						</div>						
 						<input ref={e => this.uploader = e} className="fileHidden" name="logo" type="file"/>
 					</FormGroup>
-					<Button color="warning" onClick={this.props.nextStep}>Proceed to Intake</Button>
+					<Button color="warning" onClick={() => {}}>Proceed to Intake</Button>
 				</Form>
 			</main>
 		)
