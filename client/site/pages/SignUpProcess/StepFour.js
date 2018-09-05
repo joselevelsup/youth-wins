@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
 import { withRouter } from 'react-router-dom'
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap'
-import { signUp } from './../../../store/reducers/user'
+// import { signUp } from './../../../store/reducers/user'
+import { signUp } from '../../actions/auth'
 
 class StepFour extends Component {
 	constructor(){
@@ -13,7 +14,7 @@ class StepFour extends Component {
 
 	signup(values){
 		const submission = Object.assign({}, values)
-		this.props.signUp(submission)
+		this.props.dispatch(signUp(submission))
 		this.props.history.push('/home')
 	}
 
