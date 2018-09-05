@@ -68,7 +68,7 @@ class Resources extends React.Component {
 
 
     render(){
-        const { res: { resources } } = this.props;
+        const { resources } = this.props;
         return (
             <Container>
                 <Row>
@@ -105,33 +105,8 @@ class Resources extends React.Component {
 
 function mapStateToProps(state){
     return {
-        res: state.resources
+        resources: state.resources
     };
 }
 
 export default connect(mapStateToProps)(Resources)
-
-/* <Col md={6}>
- *                                 <div className="media">
- *                                     <img className="align-self-center mr-3 rounded-circle" width="128" height="128" src={r.logo} />
- *                                     <div className="media-body">
- *                                         <h5 className="mt-0">{r.organizationName}</h5>
- *                                         <div className="row">
- *                                             <div className="col-10">
- *                                                 <p>{r.description}</p>
- *                                             </div>
- *                                             <div className="col-2">
- *                                                 <div className="row">
- *                                                     <div className="col-12">
- *                                                         <Button color="primary" onClick={() => this.applyResource(r._id)}>Apply</Button>
- *                                                     </div>
- *                                                     <div className="w-100"></div>
- *                                                     <div className="col-12">
- *                                                         <Button color="clear" onClick={() => this.openInfoModal(r)}>More</Button>
- *                                                     </div>
- *                                                 </div>
- *                                             </div>
- *                                         </div>
- *                                     </div>
- *                                 </div>
- * </Col> */

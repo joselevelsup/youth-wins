@@ -1,4 +1,7 @@
 export function shorten(d, num, word){
+    if(!d){
+        return d;
+    }
     if (d.length <= num) {
         return d;
     }

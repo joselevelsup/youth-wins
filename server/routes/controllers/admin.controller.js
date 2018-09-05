@@ -1,12 +1,12 @@
 import {
-    Case,
+    AppliedCase,
     User,
     Resource,
     Admin
 } from "../../models";
 
-import { getImage, uploadImage } from "../../helpers/aws";
-
+import { getImage, uploadImage, replaceImage } from "../../helpers/aws";
+import { sendAcceptedEmail, sendDeniedEmail } from "../../helpers/mailer";
 import bcrypt from "bcrypt";
 
 export function getAllCases(req, res){
@@ -21,20 +21,9 @@ export function getAllCases(req, res){
   })
 }
 
-export function getCaseById(req, res){
-  Case.findById(req.params.caseId).then((caseDoc) => {
-    res.json({
-      "success": true,
-      "case": caseDoc
-    });
-  }).catch((err) => {
-    console.log(err);
-    res.status(500);
-  });
-}
-
 export function getResources(req, res){
-    Resource.find().then((resources) => {
+    Resource.find().then((r) => {
+        let resources = getImage(r);
         res.status(200).json({
             "success": true,
             "resources": resources
@@ -53,6 +42,8 @@ export function deleteResource(req, res){
         });
     } else {
         Resource.findOneAndRemove({"_id": req.body.resourceId }).then((data) => {
+            return AppliedCase.find({"resource": req.body.resourceId }).remove();
+        }).then(d => {
             res.status(200).json({
                 "success": true,
                 "message": "Successfully deleted Resource"
@@ -67,18 +58,31 @@ export function deleteResource(req, res){
 }
 
 export function createResource(req, res){
-    console.log(req.body);
+    let data = JSON.parse(req.body.data);
     new Resource({
-        organizationName: req.body.orgName,
-        contactEmail: req.body.email,
-        logo: req.body.logo,
-        description: req.body.description,
-        website: req.body.website
+        organizationName: data.organizationName,
+        email: data.email,
+        contactEmail: data.contactEmail,
+        description: data.description,
+        website: data.website
     }).save().then((data) => {
-        res.status(200).json({
-            "success": true,
-            "message": "Successfully Created Resource"
-        });
+        if(req.files == null){
+            res.status(200).json({
+                "success": true,
+                "message": "Successfully Created Resource"
+            });
+        } else {
+            uploadImage(req.files.file, data._id, "resource").then(key => {
+                data.logo = key;
+
+                return data.save();
+            }).then(data => {
+                res.status(200).json({
+                    "success": true,
+                    "message": "Successfully Created Resource"
+                });
+            });
+        }
     }).catch((err) => {
         res.status(500).json({
             "success": false,
@@ -88,24 +92,45 @@ export function createResource(req, res){
 }
 
 export function updateResource(req, res){
-    if(!req.body.resourceId){
+    let data = JSON.parse(req.body.data);
+    if(!data.id){
         res.status(500).json({
             "success": false,
             "message": "No resource id provided"
         });
     } else {
-        Resource.findOneAndUpdate({ "_id": req.body.resourceId }, {
+        Resource.findOneAndUpdate({ "_id": data.id }, {
             $set: {
-                organizationName: req.body.orgName,
-                contactEmail: req.body.email,
-                description: req.body.description
+                organizationName: data.organizationName,
+                email: data.email,
+                contactEmail: data.contactEmail,
+                description: data.description,
+                website: data.website
             }
-        }).then((data) => {
-            res.status(200).json({
-                "success": true,
-                "message": "updated the resource"
-            });
+        }, { new: true }).then((data) => {
+            if(req.files == null){
+                res.status(200).json({
+                    "success": true,
+                    "message": "updated the resource"
+                });
+            } else {
+                replaceImage(req.files.file, data, "resource").then(d => {
+                    return Resource.findOneAndUpdate({ "_id": data.id}, {
+                        $set: {
+                            logo: d
+                        }
+                    });
+                }).then(saved => {
+                    res.status(200).json({
+                        "success": true,
+                        "message": "updated the resource"
+                    });
+                }).catch(err => {
+                    console.log(err);
+                });
+            }
         }).catch((err) => {
+            console.log(err);
             res.status(500).json({
                 "success": false,
                 "message": "failed to update resource"
@@ -126,7 +151,9 @@ export function approveResource(req, res){
                 pending: false,
                 approved: true
             }
-        }).then((data) => {
+        }, { new: true }).then((data) => {
+            return sendAcceptedEmail(data.contactEmail);
+        }).then(data => {
             res.status(200).json({
                 "success": true,
                 "message": "approved"
@@ -152,7 +179,9 @@ export function denyResource(req, res){
                 pending: false,
                 approved: false
             }
-        }).then((data) => {
+        }, { new: true }).then((data) => {
+            return sendDeniedEmail(data.contactEmail);
+        }).then(data => {
             res.status(200).json({
                 "success": true,
                 "message": "denied"
@@ -192,8 +221,6 @@ export function getUsers(req, res){
 }
 
 export function createStaff(req, res){
-    console.log(req.files);
-
     const user = JSON.parse(req.body.data);
     new Admin({
         email: user.email,
@@ -292,6 +319,42 @@ export function deleteUser(req, res){
             res.status(500).json({
                 "success": false,
                 "message": "unable to delete user"
+            });
+        });
+    }
+}
+
+
+export function getAllApplications(req, res){
+    AppliedCase.find().populate("resource").then(apps => {
+        res.status(200).json({
+            "success": true,
+            "applications": apps
+        });
+    }).catch(err => {
+        res.status(500).json({
+            "success": false,
+            "message": "failed to get apps"
+        });
+    });
+}
+
+export function deleteApplication(req, res){
+    if(!req.body.appId){
+        res.status(500).json({
+            "success": false,
+            "message": "no application id provided"
+        });
+    } else {
+        AppliedCase.deleteOne({"_id": req.body.appId}).then(data => {
+            res.status(200).json({
+                "success": true,
+                "message": "application deleted"
+            });
+        }).catch(err => {
+            res.status(500).json({
+                "success": false,
+                "message": "failed to delete application"
             });
         });
     }

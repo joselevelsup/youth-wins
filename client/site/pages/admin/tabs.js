@@ -13,7 +13,7 @@ import {
     Input
 } from "reactstrap";
 import Ionicon from "react-ionicons";
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, getFormValues } from "redux-form";
 import {
     getAllResources,
     deleteResource,
@@ -24,10 +24,13 @@ import {
     getAllUsers,
     deleteStaff,
     updateStaff,
-    createStaff
+    createStaff,
+    deleteUser,
+    getAllApplications,
+    deleteApp
 } from "../../actions/admin"
 import { ResourceModal, StaffModal, CreateResource,  UserModal, EditResource, CreateStaff } from "../../components/modal";
-import { StaffItem, UserItem, ResourceItem } from "../../components/items";
+import { StaffItem, UserItem, ResourceItem, AppItem } from "../../components/items";
 import { shorten } from "../../util/helpers";
 import "./tabs.scss";
 
@@ -138,7 +141,7 @@ class ResourcesT extends React.Component{
 
 
     render(){
-        const { resources: { pending, approved }, handleSubmit } = this.props;
+        const { resources: { pending, approved }, handleSubmit, formValues } = this.props;
         return (
             <Container fluid={true} className="resourcesTab">
                 <br />
@@ -188,21 +191,22 @@ class ResourcesT extends React.Component{
                         ))
                     }
                 </Row>
-              <CreateResource open={this.state.createModal} toggle={() => this.setState({ creareModal: !this.state.createModal})} create={handleSubmit(this.createRes)}/>
+              {this.state.createModal && <CreateResource open={this.state.createModal} toggle={() => this.setState({ createModal: !this.state.createModal})} create={handleSubmit(this.createRes)} reset={this.props.destroy} createValues={formValues}/>}
               <ResourceModal open={this.state.modal} edit={() => this.editToggle()} toggle={() => this.setState({resource: null, modal: !this.state.modal})} remove={() => this.deleteRes(this.state.resource._id)} resource={this.state.resource} admin={true} approve={() => this.approveRes(this.state.resource._id)} deny={() => this.denyRes(this.state.resource._id)} />
-              <EditResource open={this.state.editModal} toggle={() => this.setState({ resource:null, editModal: !this.state.editModal})} resource={this.state.resource} />
+              {this.state.editModal && <EditResource init={this.props.initialize} open={this.state.editModal} toggle={() => this.setState({ editModal: !this.state.editModal})} updateRes={handleSubmit(this.updateRes)} reset={this.props.destroy} resource={this.state.resource} />}
             </Container>
         )
     }
 }
 
 const ResourcesForm = reduxForm({
-    form: "resource"
+    form: "resource",
 })(ResourcesT);
 
 export const ResourcesTab = connect((state) => {
     return {
-        resources: state.adminResources
+        resources: state.adminResources,
+        formValues: getFormValues("resource")(state)
     }
 })(ResourcesForm);
 
@@ -229,12 +233,16 @@ class UsersT extends React.Component{
         this.toggleUserModal = this.toggleUserModal.bind(this);
         this.toggleStaffModal = this.toggleStaffModal.bind(this);
         this.toggleCreateModal = this.toggleCreateModal.bind(this);
+        this.getUsers = this.getUsers.bind(this);
     }
 
 
+    getUsers(){
+        this.props.dispatch(getAllUsers());
+    }
 
     componentDidMount(){
-        this.props.dispatch(getAllUsers());
+        this.getUsers();
     }
 
     openStaffMember(staff){
@@ -270,9 +278,10 @@ class UsersT extends React.Component{
     }
 
     createStaffMember(values, dispatch){
-        // console.log(values);
+        const self = this;
         dispatch(createStaff(values)).then(data => {
-            console.log(data);
+            self.toggleCreateModal();
+            self.getUsers();
         }).catch(err => {
             console.log(err);
         });
@@ -280,14 +289,18 @@ class UsersT extends React.Component{
 
     deleteStaffMember(staffId){
         this.props.dispatch(deleteStaff(staffId)).then(data => {
-            console.log(data);
+            this.getUsers();
         }).catch(err => {
             console.log(err);
         });
     }
 
     deleteApplicant(userId){
-        console.log(userId);
+        this.props.dispatch(deleteUser(userId)).then(data => {
+            console.log(data);
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
     render(){
@@ -363,3 +376,89 @@ export const UsersTab = connect((state) => {
         users: state.adminUsers
     }
 })(UsersForm);
+
+
+class AppsT extends React.Component {
+    constructor(){
+        super();
+
+        this.state = {
+            resource: null,
+            status: null,
+            resourceModal: false
+        };
+
+        this.loadApps = this.loadApps.bind(this);
+        this.openResource = this.openResource.bind(this);
+        this.toggleResource = this.toggleResource.bind(this);
+        this.deleteApplication = this.deleteApplication.bind(this);
+    }
+
+    loadApps(){
+        this.props.dispatch(getAllApplications());
+    }
+
+    componentDidMount(){
+        this.loadApps();
+    }
+
+    toggleResource(){
+        this.setState({
+            resourceModal: !this.state.resourceModal
+        });
+    }
+
+    openResource(r, status){
+        this.setState({
+            resource: r,
+            status: status,
+            resourceModal: true
+        });
+    }
+
+    deleteApplication(appId){
+        const self = this;
+        this.props.dispatch(deleteApp(appId)).then(data => {
+            self.loadApps();
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
+    render(){
+        const { apps } = this.props;
+        return (
+            <Container>
+              <br />
+              <Row>
+                <Col md={12} className="text-center">
+                  <h3>Applications</h3>
+                </Col>
+              </Row>
+              <Row>
+                <Col md={{size: 4, offset: 4}}>
+                  <InputGroup>
+                    <Input placeholder="Search" />
+                    <InputGroupAddon addonType="append">
+                      <InputGroupText><Ionicon icon="ios-search" /></InputGroupText>
+                    </InputGroupAddon>
+                  </InputGroup>
+                </Col>
+              </Row>
+              <Row>
+                {
+                    apps &&
+                       apps.applications && apps.applications.map(a => (
+                           <AppItem size={4} appId={a._id} deleteApp={this.deleteApplication} resource={a.resource} openResource={this.openResource} status={a.status}/>
+                        ))
+                }
+              </Row>
+              <ResourceModal open={this.state.resourceModal} resource={this.state.resource} toggle={this.toggleResource} status={this.state.status} />
+            </Container>
+        );
+    }
+}
+
+export const ApplicationsTab = connect(state => ({
+    apps: state.adminApps
+}))(AppsT)

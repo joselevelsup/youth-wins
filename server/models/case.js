@@ -13,14 +13,14 @@ const caseModel = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "admin"
     },
-    timeCreated: {
+    dateCreated: {
         type: mongoose.Schema.Types.String,
         default: Date.now()
     },
     status: {
-        type: mongoose.Schema.Types.String,
-        default: "Created"
+        type: mongoose.Schema.Types.Boolean,
+        default: false
     }
 });
 
-export const AdminCase = mongoose.model("case", caseModel);
+export const AppliedCase = mongoose.model("applications", caseModel);

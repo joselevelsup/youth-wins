@@ -5,6 +5,8 @@ import { User } from "../models/user";
 
 export function login(req, res){
     passport.authenticate("local-login", function(err, user, info) {
+        console.log(err);
+        console.log(user);
         if(err){
             res.status(500).json({
                 message: "error has occurred"

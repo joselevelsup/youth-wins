@@ -1,4 +1,4 @@
-import { User } from "../../models/user";
+import { User, AppliedCase } from "../../models";
 
 export function currentUser(req, res){
     if(req.user){
@@ -23,36 +23,21 @@ export function getOneUser(req, res){
   });
 }
 
+export function userSuggestedResources(req, res){
+    
+}
 
-export function createUser(req, res){
-  new User(req.body).save().then((user) => {
-    res.json({
-      "success": true
+export function userAppliedResources(req, res){
+    AppliedCase.find({ "user": req.user._id}).populate("resource").then(apps => {
+        res.status(200).json({
+            "success": true,
+            "applications": apps
+        });
+    }).catch(err => {
+        res.status(500).json({
+            "success": false,
+            "message": "Failed to get resources user applied to"
+        });
     });
-  }).catch((err) => {
-    console.log(err);
-    res.status(500);
-  })
 }
 
-export function updateUser(req, res){
-  User.findByIdAndUpdate(req.params.userId, {
-    $set: req.body
-  }).then((user) => {
-    res.json({
-      "success": true,
-      "user": user
-    });
-  }).catch((err) => {
-    console.log(err);
-    res.status(500);
-  });
-}
-
-export function deleteUser(req, res){
-  User.findByIdAndRemove(req.params.userId).then((result) => {
-    res.json({
-      "success": true
-    })
-  })
-}

@@ -13,7 +13,7 @@ import {
     Row,
     Col
 } from 'reactstrap';
-import { UsersTab, ResourcesTab } from "./tabs";
+import { UsersTab, ResourcesTab, ApplicationsTab } from "./tabs";
 
 
 export default class AdminPanel extends React.Component {
@@ -58,6 +58,14 @@ export default class AdminPanel extends React.Component {
                             Users
                         </NavLink>
                     </NavItem>
+                  <NavItem>
+                    <NavLink
+                      className={this.state.activeTab === '3' ? "active": null}
+                      onClick={() => { this.toggleTab('3'); }}
+                    >
+                      Applications
+                    </NavLink>
+                  </NavItem>
                 </Nav>
                 <TabContent activeTab={this.state.activeTab}>
                     <TabPane tabId="1">
@@ -66,6 +74,9 @@ export default class AdminPanel extends React.Component {
                     <TabPane tabId="2">
                         <UsersTab />
                     </TabPane>
+                  <TabPane tabId="3">
+                    <ApplicationsTab />
+                  </TabPane>
                 </TabContent>
             </Container>
         );
