@@ -33,13 +33,16 @@ export function replaceImage(file, d, type){
         Key: d.profile || d.logo
     };
 
+
     return new Promise((resolve, reject) => {
         s3.deleteObject(params, (err, data) => {
+            let user = d.id || d._id;
+            console.log(user);
             if(err){
                 reject(err);
             }
 
-            uploadImage(file, d, type).then(data => {
+            uploadImage(file, user, type).then(data => {
                 resolve(data);
             }).catch(err => {
                 reject(err);

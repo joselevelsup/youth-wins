@@ -66,16 +66,23 @@ export function createResource(req, res){
         description: data.description,
         website: data.website
     }).save().then((data) => {
-        uploadImage(req.files.file, data._id, "resource").then(key => {
-            data.logo = key;
-
-            return data.save();
-        }).then(data => {
+        if(req.files == null){
             res.status(200).json({
                 "success": true,
                 "message": "Successfully Created Resource"
             });
-        });
+        } else {
+            uploadImage(req.files.file, data._id, "resource").then(key => {
+                data.logo = key;
+
+                return data.save();
+            }).then(data => {
+                res.status(200).json({
+                    "success": true,
+                    "message": "Successfully Created Resource"
+                });
+            });
+        }
     }).catch((err) => {
         res.status(500).json({
             "success": false,
@@ -100,21 +107,27 @@ export function updateResource(req, res){
                 description: data.description,
                 website: data.website
             }
-        }).then((data) => {
+        }, { new: true }).then((data) => {
             if(req.files == null){
                 res.status(200).json({
                     "success": true,
                     "message": "updated the resource"
                 });
             } else {
-                replaceImage(req.files.file, data._id, "resource").then(d => {
+                replaceImage(req.files.file, data, "resource").then(d => {
+                    return Resource.findOneAndUpdate({ "_id": data.id}, {
+                        $set: {
+                            logo: d
+                        }
+                    });
+                }).then(saved => {
                     res.status(200).json({
                         "success": true,
                         "message": "updated the resource"
                     });
                 }).catch(err => {
                     console.log(err);
-                })
+                });
             }
         }).catch((err) => {
             console.log(err);
