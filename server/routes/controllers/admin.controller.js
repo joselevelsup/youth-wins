@@ -6,7 +6,7 @@ import {
 } from "../../models";
 
 import { getImage, uploadImage, replaceImage } from "../../helpers/aws";
-
+import { sendAcceptedEmail, sendDeniedEmail } from "../../helpers/mailer";
 import bcrypt from "bcrypt";
 
 export function getAllCases(req, res){
@@ -138,7 +138,9 @@ export function approveResource(req, res){
                 pending: false,
                 approved: true
             }
-        }).then((data) => {
+        }, { new: true }).then((data) => {
+            return sendAcceptedEmail(data.contactEmail);
+        }).then(data => {
             res.status(200).json({
                 "success": true,
                 "message": "approved"
@@ -164,7 +166,9 @@ export function denyResource(req, res){
                 pending: false,
                 approved: false
             }
-        }).then((data) => {
+        }, { new: true }).then((data) => {
+            return sendDeniedEmail(data.contactEmail);
+        }).then(data => {
             res.status(200).json({
                 "success": true,
                 "message": "denied"
