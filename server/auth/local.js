@@ -3,7 +3,7 @@
 // const { User } = require("../models/user");
 import { Strategy as LocalStrategy } from "passport-local";
 import bcrypt from "bcrypt";
-import { User } from "../models";
+import { User, Admin } from "../models";
 
 
 module.exports = (passport) => {
@@ -22,9 +22,23 @@ module.exports = (passport) => {
                                                               console.log(err);
                                                               return done(err);
                                                           }
-                                                          if (!user) {
-                                                              console.log("not user");
-                                                              return done(null, false);
+                                                          if(!user){
+                                                              Admin.findOne({ "email": username }).select("+password").exec(function(err, admin){
+                                                                  if(err){
+                                                                      console.log(err);
+                                                                      return done(err);
+                                                                  }
+
+                                                                  if(!admin){
+                                                                      console.log("not admin either");
+                                                                      return done(null, false);
+                                                                  }
+
+                                                                  if(admin && bcrypt.compareSync(password, admin.password)){
+                                                                      console.log("admin");
+                                                                      return done(null, admin);
+                                                                  }
+                                                              })
                                                           }
                                                           if (user && bcrypt.compareSync(password, user.password)) {
                                                               console.log("user");

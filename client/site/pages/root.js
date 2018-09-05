@@ -17,9 +17,6 @@ import "../style/app.scss";
 
 
 class Root extends Component {
-	  componentDidMount(){
-		    this.props.user.loggedIn ? this.props.history.push('/home') : null
-	  }
 
 	  render(){
 		    return (

@@ -26,7 +26,7 @@ const MainNav = ({ user }) => (
                 </React.Fragment>
             :
             user.isStaff ?
-            <div className="col-1 align-self-center">
+            <div className="offset-4 col-1 align-self-center">
               <NavLink to="/login" className="link" activeClassName="active">Logout</NavLink>
             </div>
             :
