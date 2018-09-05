@@ -198,9 +198,16 @@ class UserM extends React.Component {
                           </Row>
                           <Row>
                             {
-                                userApps.map(ua => (
+                                userApps.length > 1 ?
+                                    userApps.map(ua => (
                                     <AppItem size={6} openResource={this.openResource} deleteApp={this.deleteApp} resource={ua.resource} status={ua.status} />
-                                ))
+                                    ))
+                                    :
+                                    <Col md={12}>
+                                      <div className="show-warning">
+                                        <h3>User has not applied to any resources</h3>
+                                      </div>
+                                    </Col>
                             }
                           </Row>
                         </React.Fragment>
@@ -217,109 +224,165 @@ export const UserModal = connect(state => ({
     apps: state.adminApps
 }))(UserM);
 
-export const CreateResource = ({ open, toggle, create, createValues }) => (
-    <Modal isOpen={open} toggle={toggle} size="lg">
-      <ModalBody>
-        <form onSubmit={create}>
-          <Row>
-            <Col md={6}>
-					    <div className="form-group">
-						    <label>Name</label>
-						    <Field name="orgName" className="form-control" component="input" type="text" />
-					    </div>
-            </Col>
-            <Col md={6}>
-					    <div className="form-group">
-						    <label>Email</label>
-						    <Field name="email" className="form-control" component="input" type="email" />
-					    </div>
-            </Col>
-          </Row>
-          <Row>
-            <Col md={6}>
-              <div className="form-group">
-						    <label>Website</label>
-						    <Field name="website" className="form-control" component="input" type="text" />
-					    </div>
-            </Col>
-            <Col md={6}>
-              <div className="form-group">
-						    <label>Contact Email</label>
-						    <Field name="contactEmail" className="form-control" component="input" type="text" />
-					    </div>
-            </Col>
-          </Row>
-          <Row>
-            <Col md={6}>
-              <div className="form-group">
-						    <label>Description</label>
-						    <Field name="description" className="form-control" component="input" type="text" />
-					    </div>
-            </Col>
-            <Col md={6}>
-              <label>Logo</label>
-              <Row>
-                {
-                    createValues &&
-                        <Col md={{size: 8, offset: 2}}>
-                          <img src={createValues.logo[0].preview} className="img-fluid"/>
-                        </Col>
-                }
-                <Col md={2} className="align-self-center">
-                  <Field className="picture-upload align-middle" component={DropzoneInput} name="logo"/>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-					<Button color="warning" type="submit">Create</Button>
-          </form>
-      </ModalBody>
-    </Modal>
-)
+export class CreateResource extends React.Component {
+    componentWillUnmount(){
+        this.props.reset();
+    }
+    componentDidMount(){
+        this.props.reset();
+    }
 
-export const EditResource = ({ open, toggle, resource }) => (
-    <Modal isOpen={open} toggle={toggle}>
-      <div className="modal-header">
-        <Container fluid={true}>
-          <Row>
-            <Col md={{size: 1, offset: 11}}>
-              <Button color="clear" onClick={toggle}>X</Button>
-            </Col>
-          </Row>
-        </Container>
-      </div>
-      <ModalBody>
-        <main className="form-wrap">
-          <form className="support-form">
-					  <div className="form-group support-form-items">
-						  <label>Organization Name</label>
-						  <Field name="orgName" className="form-control" component="input" type="text" />
-					  </div>
-            <div className="form-group support-form-items">
-						  <label>Website</label>
-						  <Field name="website" className="form-control" component="input" type="text" />
-					  </div>
-            <div className="form-group support-form-items">
-						  <label>Contact Email</label>
-						  <Field name="contactEmail" className="form-control" component="input" type="text" />
-					  </div>
-            <div className="form-group support-form-items">
-						  <label>Description</label>
-						  <Field name="description" className="form-control" component="input" type="text" />
-					  </div>
-					  {/* <FormGroup className="support-form-items">
-						   <Label>Logo</Label><br/>
-						   <div className="tallInput resourceUploadImage">
-							 <Button className="uploadButton" color="warning" onClick={this.fileUpload}>+</Button>
-						   </div>						
-						   <input ref={e => this.uploader = e} className="fileHidden" name="logo" type="file"/>
-					     </FormGroup> */}
-					  <Button color="warning" type="submit">submit</Button>
-          </form>
-        </main>
-      </ModalBody>
-    </Modal>
-)
+    render(){
+        const { open, toggle, create, createValues } = this.props;
+        return (
+            <Modal isOpen={open} toggle={toggle} size="lg">
+              <ModalBody>
+                <form onSubmit={create}>
+                  <Row>
+                    <Col md={6}>
+					            <div className="form-group">
+						            <label>Name</label>
+						            <Field name="organizationName" className="form-control" component="input" type="text" />
+					            </div>
+                    </Col>
+                    <Col md={6}>
+					            <div className="form-group">
+						            <label>Email</label>
+						            <Field name="email" className="form-control" component="input" type="email" />
+					            </div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md={6}>
+                      <div className="form-group">
+						            <label>Website</label>
+						            <Field name="website" className="form-control" component="input" type="text" />
+					            </div>
+                    </Col>
+                    <Col md={6}>
+                      <div className="form-group">
+						            <label>Contact Email</label>
+						            <Field name="contactEmail" className="form-control" component="input" type="text" />
+					            </div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md={6}>
+                      <div className="form-group">
+						            <label>Description</label>
+						            <Field name="description" className="form-control" component="textarea" />
+					            </div>
+                    </Col>
+                    <Col md={6}>
+                      <label>Logo</label>
+                      <Row>
+                        {
+                            (createValues && createValues.logo) &&
+                                <Col md={{size: 8, offset: 2}}>
+                                  <img src={createValues.logo && createValues.logo[0].preview} className="img-fluid"/>
+                                </Col>
+                        }
+                        <Col md={2} className="align-self-center">
+                          <Field className="picture-upload align-middle" component={DropzoneInput} name="logo"/>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md={{size: 4, offset: 4}}>
+					            <Button color="warning" className="btn-swerve" block type="submit">Create</Button>
+                    </Col>
+                  </Row>
+                </form>
+              </ModalBody>
+            </Modal>
+        );
+    }
+}
+
+export class EditResource extends React.Component{
+    
+    componentDidMount(){
+        this.props.init(this.props.resource);
+    }
+
+    componentWillUnmount(){
+        this.props.reset();
+    }
+
+    render(){
+        const { open, toggle, resource, updateRes } = this.props;
+        return (
+            <Modal isOpen={open} toggle={toggle} size="lg">
+              <div className="modal-header">
+                <Container fluid={true}>
+                  <Row>
+                    <Col md={{size: 1, offset: 11}}>
+                      <Button color="clear" onClick={toggle}>X</Button>
+                    </Col>
+                  </Row>
+                </Container>
+              </div>
+              <ModalBody>
+                <form onSubmit={updateRes}>
+                  <Row>
+                    <Col md={6}>
+					            <div className="form-group">
+						            <label>Name</label>
+						            <Field name="organizationName" className="form-control" component="input" type="text" />
+					            </div>
+                    </Col>
+                    <Col md={6}>
+					            <div className="form-group">
+						            <label>Email</label>
+						            <Field name="email" className="form-control" component="input" type="email" />
+					            </div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md={6}>
+                      <div className="form-group">
+						            <label>Website</label>
+						            <Field name="website" className="form-control" component="input" type="text" />
+					            </div>
+                    </Col>
+                    <Col md={6}>
+                      <div className="form-group">
+						            <label>Contact Email</label>
+						            <Field name="contactEmail" className="form-control" component="input" type="text" />
+					            </div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md={6}>
+                      <div className="form-group">
+						            <label>Description</label>
+						            <Field name="description" className="form-control" component="textarea" />
+					            </div>
+                    </Col>
+                    <Col md={6}>
+                      <label>Logo</label>
+                      <Row>
+                        <Col md={{size: 8, offset: 2}}>
+                          <img src={resource ? resource.logo : null} className="img-fluid"/>
+                        </Col>
+                        <Col md={2} className="align-self-center">
+                          <Field className="picture-upload align-middle" component={DropzoneInput} name="logo"/>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md={{size: 4, offset: 4}}>
+					            <Button color="warning" className="btn-swerve" block type="submit">Update</Button>
+                    </Col>
+                  </Row>
+                </form>
+              </ModalBody>
+            </Modal>
+        )
+    }
+}
 
 
 export const CreateStaff = ({ open, toggle, create }) => (

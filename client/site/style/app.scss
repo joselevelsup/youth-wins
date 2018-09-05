@@ -30,6 +30,11 @@
     }
 }
 
+.btn-swerve{
+    border-radius: 20px!important;
+    color: $no-color!important;
+}
+
 .nav-tabs{
     border-color: black!important;
     .nav-link, .nav-link:hover{
@@ -69,6 +74,19 @@
 
         &.pending{
             border-color: $warning!important;
+        }
+    }
+}
+
+.col-md-12{
+    .show-warning{
+        height: 200px;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        h3{
+            vertical-align: middle!important;
         }
     }
 }

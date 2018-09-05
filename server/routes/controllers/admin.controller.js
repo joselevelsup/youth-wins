@@ -5,7 +5,7 @@ import {
     Admin
 } from "../../models";
 
-import { getImage, uploadImage } from "../../helpers/aws";
+import { getImage, uploadImage, replaceImage } from "../../helpers/aws";
 
 import bcrypt from "bcrypt";
 
@@ -22,7 +22,8 @@ export function getAllCases(req, res){
 }
 
 export function getResources(req, res){
-    Resource.find().then((resources) => {
+    Resource.find().then((r) => {
+        let resources = getImage(r);
         res.status(200).json({
             "success": true,
             "resources": resources
@@ -41,6 +42,8 @@ export function deleteResource(req, res){
         });
     } else {
         Resource.findOneAndRemove({"_id": req.body.resourceId }).then((data) => {
+            return AppliedCase.find({"resource": req.body.resourceId }).remove();
+        }).then(d => {
             res.status(200).json({
                 "success": true,
                 "message": "Successfully deleted Resource"
@@ -55,17 +58,23 @@ export function deleteResource(req, res){
 }
 
 export function createResource(req, res){
-    console.log(req.body);
+    let data = JSON.parse(req.body.data);
     new Resource({
-        organizationName: req.body.orgName,
-        contactEmail: req.body.email,
-        logo: req.body.logo,
-        description: req.body.description,
-        website: req.body.website
+        organizationName: data.organizationName,
+        email: data.email,
+        contactEmail: data.contactEmail,
+        description: data.description,
+        website: data.website
     }).save().then((data) => {
-        res.status(200).json({
-            "success": true,
-            "message": "Successfully Created Resource"
+        uploadImage(req.files.file, data._id, "resource").then(key => {
+            data.logo = key;
+
+            return data.save();
+        }).then(data => {
+            res.status(200).json({
+                "success": true,
+                "message": "Successfully Created Resource"
+            });
         });
     }).catch((err) => {
         res.status(500).json({
@@ -76,24 +85,39 @@ export function createResource(req, res){
 }
 
 export function updateResource(req, res){
-    if(!req.body.resourceId){
+    let data = JSON.parse(req.body.data);
+    if(!data.id){
         res.status(500).json({
             "success": false,
             "message": "No resource id provided"
         });
     } else {
-        Resource.findOneAndUpdate({ "_id": req.body.resourceId }, {
+        Resource.findOneAndUpdate({ "_id": data.id }, {
             $set: {
-                organizationName: req.body.orgName,
-                contactEmail: req.body.email,
-                description: req.body.description
+                organizationName: data.organizationName,
+                email: data.email,
+                contactEmail: data.contactEmail,
+                description: data.description,
+                website: data.website
             }
         }).then((data) => {
-            res.status(200).json({
-                "success": true,
-                "message": "updated the resource"
-            });
+            if(req.files == null){
+                res.status(200).json({
+                    "success": true,
+                    "message": "updated the resource"
+                });
+            } else {
+                replaceImage(req.files.file, data._id, "resource").then(d => {
+                    res.status(200).json({
+                        "success": true,
+                        "message": "updated the resource"
+                    });
+                }).catch(err => {
+                    console.log(err);
+                })
+            }
         }).catch((err) => {
+            console.log(err);
             res.status(500).json({
                 "success": false,
                 "message": "failed to update resource"
@@ -180,8 +204,6 @@ export function getUsers(req, res){
 }
 
 export function createStaff(req, res){
-    console.log(req.files);
-
     const user = JSON.parse(req.body.data);
     new Admin({
         email: user.email,

@@ -15,6 +15,8 @@ import {
     ADMIN_UPDATE_STAFF_F,
     ADMIN_DELETE_STAFF_S,
     ADMIN_DELETE_STAFF_F,
+    ADMIN_DELETE_USER_S,
+    ADMIN_DELETE_USER_F,
     CREATED_RES_S,
     CREATED_RES_F,
     UPDATED_RES_S,
@@ -68,16 +70,32 @@ export const failedResource = err => ({
     payload: err
 });
 
-export const createResource = data => ({
-    type: API,
-    payload: {
-        url: API_ADMIN+`/resources`,
-        method: "POST",
-        data: data,
-        success: createdResource,
-        error: failedResource
+export const createResource = ({organizationName, email, website, contactEmail, description, logo, ethnicity, categoriesOfInterest }) => {
+
+    const data = new FormData();
+
+    data.append("file", logo[0]);
+    data.append("data", JSON.stringify({
+        organizationName,
+        email,
+        website,
+        contactEmail,
+        description,
+        ethnicity,
+        categoriesOfInterest
+    }));
+
+    return {
+        type: API,
+        payload: {
+            url: API_ADMIN+`/resources`,
+            method: "POST",
+            data: data,
+            success: createdResource,
+            error: failedResource
+        }
     }
-});
+};
 
 export const updatedResource = data => ({
     type: UPDATED_RES_S,
@@ -89,19 +107,30 @@ export const failedUpdateResource = err => ({
     payload: err
 });
 
-export const updateResource = ({ id, ...data }) => ({
-    type: API,
-    payload: {
-        url: API_ADMIN+`/resources`,
-        method: "PUT",
-        data: {
-            resourceId: id,
-            updates: data
-        },
-        success: updatedResource,
-        error: failedUpdateResource
+export const updateResource = (id, {organizationName, email, website, contactEmail, description, logo, ethnicity, categoriesOfInterest }) => {
+    const file = new FormData();
+    file.append('file', logo[0]);
+    file.append("data", JSON.stringify({
+        id,
+        organizationName,
+        email,
+        website,
+        contactEmail,
+        description,
+        ethnicity,
+        categoriesOfInterest
+    }));
+    return{
+        type: API,
+        payload: {
+            url: API_ADMIN+`/resources`,
+            method: "PUT",
+            data: file,
+            success: updatedResource,
+            error: failedUpdateResource
+        }
     }
-});
+};
 
 
 export const deletedResource = data => ({
@@ -248,19 +277,42 @@ export const failedDeleteStaff = err => ({
     payload: err
 });
 
-export const deleteStaff = (id, userData) => ({
+export const deleteStaff = id => ({
     type: API,
     payload: {
         url: API_ADMIN+`/users/s`,
         method: "DELETE",
         data: {
-            resourceId: id
+            staffId: id
         },
         success: deletedStaff,
         error: failedDeleteStaff
     }
 });
 
+
+export const deletedUser = data => ({
+    type: ADMIN_DELETE_USER_S,
+    payload: data
+});
+
+export const failedDeleteUser = err => ({
+    type: ADMIN_DELETE_USER_F,
+    payload: err
+});
+
+export const deleteUser = id => ({
+    type: API,
+    payload: {
+        url: API_ADMIN+`/users/a`,
+        method: "DELETE",
+        data: {
+            userId: id
+        },
+        success: deletedStaff,
+        error: failedDeleteStaff
+    }
+});
 export const allApps = data => ({
     type: ADMIN_APPS_S,
     payload: data

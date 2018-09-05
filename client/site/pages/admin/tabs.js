@@ -25,6 +25,7 @@ import {
     deleteStaff,
     updateStaff,
     createStaff,
+    deleteUser,
     getAllApplications,
     deleteApp
 } from "../../actions/admin"
@@ -190,16 +191,16 @@ class ResourcesT extends React.Component{
                         ))
                     }
                 </Row>
-              <CreateResource open={this.state.createModal} toggle={() => this.setState({ createModal: !this.state.createModal})} create={handleSubmit(this.createRes)} createValues={formValues}/>
+              {this.state.createModal && <CreateResource open={this.state.createModal} toggle={() => this.setState({ createModal: !this.state.createModal})} create={handleSubmit(this.createRes)} reset={this.props.destroy} createValues={formValues}/>}
               <ResourceModal open={this.state.modal} edit={() => this.editToggle()} toggle={() => this.setState({resource: null, modal: !this.state.modal})} remove={() => this.deleteRes(this.state.resource._id)} resource={this.state.resource} admin={true} approve={() => this.approveRes(this.state.resource._id)} deny={() => this.denyRes(this.state.resource._id)} />
-              <EditResource open={this.state.editModal} toggle={() => this.setState({ resource:null, editModal: !this.state.editModal})} resource={this.state.resource} />
+              {this.state.editModal && <EditResource init={this.props.initialize} open={this.state.editModal} toggle={() => this.setState({ editModal: !this.state.editModal})} updateRes={handleSubmit(this.updateRes)} reset={this.props.destroy} resource={this.state.resource} />}
             </Container>
         )
     }
 }
 
 const ResourcesForm = reduxForm({
-    form: "resource"
+    form: "resource",
 })(ResourcesT);
 
 export const ResourcesTab = connect((state) => {
@@ -232,12 +233,16 @@ class UsersT extends React.Component{
         this.toggleUserModal = this.toggleUserModal.bind(this);
         this.toggleStaffModal = this.toggleStaffModal.bind(this);
         this.toggleCreateModal = this.toggleCreateModal.bind(this);
+        this.getUsers = this.getUsers.bind(this);
     }
 
 
+    getUsers(){
+        this.props.dispatch(getAllUsers());
+    }
 
     componentDidMount(){
-        this.props.dispatch(getAllUsers());
+        this.getUsers();
     }
 
     openStaffMember(staff){
@@ -248,7 +253,6 @@ class UsersT extends React.Component{
     }
 
     openApplicant(user){
-        console.log(user);
         this.setState({
             user: user,
             userModal: true
@@ -274,9 +278,10 @@ class UsersT extends React.Component{
     }
 
     createStaffMember(values, dispatch){
-        // console.log(values);
+        const self = this;
         dispatch(createStaff(values)).then(data => {
-            console.log(data);
+            self.toggleCreateModal();
+            self.getUsers();
         }).catch(err => {
             console.log(err);
         });
@@ -284,14 +289,18 @@ class UsersT extends React.Component{
 
     deleteStaffMember(staffId){
         this.props.dispatch(deleteStaff(staffId)).then(data => {
-            console.log(data);
+            this.getUsers();
         }).catch(err => {
             console.log(err);
         });
     }
 
     deleteApplicant(userId){
-        console.log(userId);
+        this.props.dispatch(deleteUser(userId)).then(data => {
+            console.log(data);
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
     render(){

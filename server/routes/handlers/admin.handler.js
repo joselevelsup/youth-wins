@@ -20,9 +20,6 @@ import {
  
 const adminRouter = Router();
 
-//adminRouter
-    // .get("/", checkAdmin, getAllCases)
-    // .get("/:caseId", checkAdmin, getCaseById)
 adminRouter.get("/resources", getResources);
 adminRouter.post("/resources", createResource);
 adminRouter.put("/resources", updateResource);

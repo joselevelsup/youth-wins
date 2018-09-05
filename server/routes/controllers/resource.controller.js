@@ -1,8 +1,9 @@
 import { Resource, AppliedCase } from "../../models/";
-
+import { getImage } from "../../helpers/aws";
 
 export function getUserResources(req, res){
-    Resource.find({"approved": true}).then((resources) => {
+    Resource.find({"approved": true}).then((r) => {
+        let resources = getImage(r);
         res.status(200).json({
             "success": true,
             "resources": resources
@@ -13,9 +14,6 @@ export function getUserResources(req, res){
         });
     });
 }
-
-
-
 
 export function getOneResource(req, res){
     Resource.findOne({"_id": req.params.resourceId}).then((resource) => {

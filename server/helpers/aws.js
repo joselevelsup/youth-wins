@@ -27,10 +27,10 @@ export function uploadImage(file, user, type){
     });
 }
 
-export function replaceImage(file, user, type){
+export function replaceImage(file, d, type){
     let params = {
         Bucket: bucket,
-        Key: user.profile
+        Key: d.profile || d.logo
     };
 
     return new Promise((resolve, reject) => {
@@ -39,7 +39,7 @@ export function replaceImage(file, user, type){
                 reject(err);
             }
 
-            uploadImage(file, user, type).then(data => {
+            uploadImage(file, d, type).then(data => {
                 resolve(data);
             }).catch(err => {
                 reject(err);
