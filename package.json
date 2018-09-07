@@ -9,7 +9,8 @@
     "server:dev": "gulp dev",
     "server:build": "gulp build",
     "client:dev": "cd client && webpack-dev-server --config webpack.dev.js --hot --inline",
-    "client:build": "cd client && webpack -p --define process.env.NODE_ENV='\"production\"' --config webpack.prod.js"
+      "client:build": "cd client && webpack -p --define process.env.NODE_ENV='\"production\"' --config webpack.prod.js",
+      "seed:cms": "mongoimport --db youthwins --collection cms --file ./server/seeders/cms.json"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.4",

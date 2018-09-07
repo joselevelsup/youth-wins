@@ -30,14 +30,13 @@ export function uploadImage(file, user, type){
 export function replaceImage(file, d, type){
     let params = {
         Bucket: bucket,
-        Key: d.profile || d.logo
+        Key: d.profile || d.logo || d.bannerImage
     };
 
 
     return new Promise((resolve, reject) => {
         s3.deleteObject(params, (err, data) => {
-            let user = d.id || d._id;
-            console.log(user);
+            let user = d.id || d._id || d.type;
             if(err){
                 reject(err);
             }

@@ -13,10 +13,15 @@ import Dashboard from "./dashboard/dashboard";
 import Resources from "./resources/resources";
 import AdminPanel from "./admin/panel";
 import { CheckUser, CheckAdmin } from "../wrappers";
+import { getContent } from "../actions/auth";
 import "../style/app.scss";
 
 
 class Root extends Component {
+
+    componentDidMount(){
+        this.props.dispatch(getContent());
+    }
 
 	  render(){
 		    return (
@@ -40,7 +45,8 @@ class Root extends Component {
 	  }
 }
 
-const mapStateToProps = state => state
 
-const RootComponent = withRouter(connect(mapStateToProps)(Root))
+const RootComponent = connect(state => ({
+    content: state.content
+}))(Root)
 export default RootComponent

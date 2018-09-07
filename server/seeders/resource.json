@@ -1,0 +1,22 @@
+{
+    "pending" : false,
+    "approved" : true,
+    "applicants" : [],
+    "stateServed" : [ 
+        "NY"
+    ],
+    "ethnicityServed" : [ 
+        "White"
+    ],
+    "categories" : [ 
+        "Technology", 
+        "Healthcare"
+    ],
+    "contactEmail" : "joselevelsup@gmail.com",
+    "description" : "a dope resource",
+    "website" : "www.google.com",
+    "__v" : 0,
+    "logo" : "resource/5b8f3645208513f0a0022048/5b8f3645208513f0a0022048.png",
+    "organizationName" : "OrgName",
+    "email" : null
+}

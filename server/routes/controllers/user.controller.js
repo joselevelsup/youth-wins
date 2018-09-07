@@ -1,4 +1,4 @@
-import { User, AppliedCase } from "../../models";
+import { User, AppliedCase, CMS } from "../../models";
 
 export function currentUser(req, res){
     if(req.user){
@@ -41,3 +41,16 @@ export function userAppliedResources(req, res){
     });
 }
 
+export function appendContent(req, res){
+    CMS.find().then(data => {
+        res.status(200).json({
+            "success": true,
+            "content": data[0]
+        });
+    }).catch(err => {
+        res.status(500).json({
+            "success": false,
+            "message": "unable to retrieve content"
+        });
+    });
+}

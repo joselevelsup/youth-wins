@@ -6,6 +6,7 @@ export const CURRENT_USER = "/user/current";
 export const API_USERS = "/user";
 export const API_ADMIN = "/admin";
 export const API_RESOURCE = "/resources";
+export const API_CONTENT = "/user/content";
 
 // Constants for Actions
 export const API = "API";
@@ -52,6 +53,19 @@ export const DENIED_RES_S = "DENIED_RESOURCE_S";
 export const APPROVED_RES_F = "APPROVED_RESOURCE_F";
 export const DENIED_RES_F = "DENIED_RESOURCE_F";
 
+export const GET_CONTENT_S = "GET_CONTENT_S";
+export const GET_CONTENT_F = "GET_CONTENT_F";
+
+export const UPDATE_HOME_CONTENT_S = "UPDATE_HOME_CONTENT_S";
+export const UPDATE_HOME_CONTENT_F = "UPDATE_HOME_CONTENT_F";
+
+export const UPDATE_SUPPORT_CONTENT_S = "UPDATE_SUPPORT_CONTENT_S";
+export const UPDATE_SUPPORT_CONTENT_F = "UPDATE_SUPPORT_CONTENT_F";
+
+export const UPDATE_ABOUT_CONTENT_S = "UPDATE_ABOUT_CONTENT_S";
+export const UPDATE_ABOUT_CONTENT_F = "UPDATE_ABOUT_CONTENT_F";
 
 export const USER_INFO_S = "USER_INFO_S";
 export const USER_INFO_F = "USER_INFO_F";
+
+export const CONTENT_S = "CONTENT_S";

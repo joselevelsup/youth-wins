@@ -1,0 +1,32 @@
+{
+    "home": {
+        "bannerText": "Welcome to YouthWINS",
+        "bannerImage":"https://images.unsplash.com/photo-1496516348160-24b35a31856f?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=d03b0bd7933d352b19b6d5ea282dc84d&auto=format&fit=crop&w=500&q=60",
+        "titleText": "Something",
+        "body": "something body"
+    },
+    "aboutUs": {
+        "bannerText": "Our Mission",
+        "bannerImage": "",
+        "section1": {
+            "titleText": "Who are we?",
+            "body":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean posuere, metus eu euismod porta, enim tellus efficitur risus, sed efficitur ligula erat eget libero. Suspendisse id lacinia ante."
+        },
+        "section2": {
+            "titleText":"Our Benefits",
+            "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean posuere, metus eu euismod porta, enim tellus efficitur risus, sed efficitur ligula erat eget libero. Suspendisse id lacinia ante."
+        }
+    },
+    "supportUs": {
+        "bannerText": "",
+        "bannerImage":"",
+        "section1": {
+            "titleText": "Donate",
+            "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean posuere, metus eu euismod porta, enim tellus efficitur risus, sed efficitur ligula erat eget libero. Suspendisse id lacinia ante."
+        },
+        "section2": {
+            "titleText": "Become a Resource",
+            "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean posuere, metus eu euismod porta, enim tellus efficitur risus, sed efficitur ligula erat eget libero. Suspendisse id lacinia ante."
+        }
+    }
+}

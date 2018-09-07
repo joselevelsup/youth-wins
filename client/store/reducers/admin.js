@@ -13,6 +13,8 @@ import {
     APPROVED_RES_F,
     DENIED_RES_S,
     DENIED_RES_F,
+    GET_CONTENT_S,
+    GET_CONTENT_F
 } from "../../site/constants/constants";
 
 const initialState = [];
@@ -67,3 +69,15 @@ export const adminApps = (state = initialState, action) => {
         return state || initialState;
     }
 }
+
+export const adminSettings = (state = initialState, action) => {
+    switch(action.type){
+    case GET_CONTENT_S:
+    case GET_CONTENT_F:
+        return action.payload;
+
+    default:
+        return state || initialState
+    }
+}
+

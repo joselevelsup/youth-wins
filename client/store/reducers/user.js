@@ -2,7 +2,8 @@ import axios from 'axios'
 import {
     LOG_IN,
     SIGN_UP,
-    USER_S
+    USER_S,
+    CONTENT_S
 } from "../../site/constants/constants";
 const initialState = {
 	loggedIn: false
@@ -70,5 +71,15 @@ export const currentReducer = (state = initialUser, action) => {
 
     default:
         return state || initialUser;
+    }
+}
+
+export const contentReducer = (state = initialState, action) => {
+    switch(action.type){
+        case CONTENT_S:
+        return action.payload;
+
+    default:
+        return state || {};
     }
 }

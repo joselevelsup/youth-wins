@@ -25,7 +25,15 @@ import {
     APPROVED_RES_S,
     APPROVED_RES_F,
     DENIED_RES_S,
-    DENIED_RES_F
+    DENIED_RES_F,
+    GET_CONTENT_S,
+    GET_CONTENT_F,
+    UPDATE_HOME_CONTENT_S,
+    UPDATE_HOME_CONTENT_F,
+    UPDATE_SUPPORT_CONTENT_S,
+    UPDATE_SUPPORT_CONTENT_F,
+    UPDATE_ABOUT_CONTENT_S,
+    UPDATE_ABOUT_CONTENT_F
 } from "../constants/constants";
 
 export const adminSuccess = data => ({
@@ -354,3 +362,114 @@ export const deleteApp = (appId) => ({
     }
 });
 
+export const gotContent = data => ({
+    type: GET_CONTENT_S,
+    payload: data
+});
+
+export const failedContent = err => ({
+    type: GET_CONTENT_F,
+    payload: err
+});
+
+export const getContent = () => ({
+    type: API,
+    payload: {
+        url: API_ADMIN+`/cms`,
+        success: gotContent,
+        failure: failedContent
+    }
+})
+
+export const updatedHome = data => ({
+    type: UPDATE_HOME_CONTENT_S,
+    payload: data
+});
+
+export const failedToUpdateHome = err => ({
+    type: UPDATE_HOME_CONTENT_F,
+    payload: err
+});
+
+export const updateHomeContent = ({bannerText, bannerImage, titleText, body}) => {
+
+    const content = new FormData();
+    bannerImage && content.append("file", bannerImage[0]);
+    content.append("data", JSON.stringify({
+        bannerText,
+        titleText,
+        body
+    }));
+
+    return {
+        type: API,
+        payload: {
+            url: API_ADMIN+"/cms/home",
+            method: "PUT",
+            data: content,
+            success: updatedHome,
+            error: failedToUpdateHome
+        }
+    };
+};
+
+export const updatedSupport = data => ({
+    type: UPDATE_SUPPORT_CONTENT_S,
+    payload: data
+});
+
+export const failedToUpdateSupport = err => ({
+    type: UPDATE_SUPPORT_CONTENT_F,
+    payload: err
+});
+
+export const updateSupportContent = ({bannerText, bannerImage, section1Title, section1Body, section2Title, section2Body}) => {
+
+    const content = new FormData();
+    bannerImage && content.append("file", bannerImage[0]);
+    content.append("data", JSON.stringify({
+        bannerText, bannerImage, section1Title, section1Body, section2Title, section2Body
+    }));
+
+    return {
+        type: API,
+        payload: {
+            url: API_ADMIN+"/cms/support",
+            method: "PUT",
+            data: content,
+            success: updatedSupport,
+            error: failedToUpdateSupport
+        }
+    };
+};
+
+
+export const updatedAbout = data => ({
+    type: UPDATE_ABOUT_CONTENT_S,
+    payload: data
+});
+
+export const failedToUpdateAbout = err => ({
+    type: UPDATE_ABOUT_CONTENT_F,
+    payload: err
+});
+
+export const updateAboutContent = ({bannerText, bannerImage, section1Title, section1Body, section2Title, section2Body}) => {
+
+    const content = new FormData();
+    bannerImage && content.append("file", bannerImage[0]);
+    content.append("data", JSON.stringify({
+        bannerText, bannerImage, section1Title, section1Body, section2Title, section2Body
+    }));
+
+    return {
+        type: API,
+        payload: {
+            url: API_ADMIN+"/cms/about",
+            method: "PUT",
+            data: content,
+            success: updatedAbout,
+            error: failedToUpdateAbout
+        }
+    };
+};
