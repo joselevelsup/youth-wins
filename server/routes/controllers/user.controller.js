@@ -1,4 +1,5 @@
-import { User, AppliedCase } from "../../models";
+import { User, AppliedCase, Resource } from "../../models";
+import * as _ from 'lodash'
 
 export function currentUser(req, res){
     if(req.user){
@@ -24,7 +25,17 @@ export function getOneUser(req, res){
 }
 
 export function userSuggestedResources(req, res){
-    
+	Resource.find({"approved": true}).then(resources => {
+		const suggestions = resources.filter(resource => (
+				resource.stateServed === req.user.state && 
+				resource.ethnicityServed === req.user.ethnicity &&
+				!!_.intersection(resource.categories, req.user.categoriesOfInterest).length
+		))
+
+		res.status(200).json({
+			resources: suggestions
+		})
+	})
 }
 
 export function userAppliedResources(req, res){
