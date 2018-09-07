@@ -21,7 +21,7 @@ class Dashboard extends React.Component{
 
     componentDidMount(){
         this.props.dispatch(getUserInfo());
-        // this.props.dispatch(getUserSuggested());
+        this.props.dispatch(getUserSuggested());
     }
 
     openResource(r, stat){
