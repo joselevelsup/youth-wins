@@ -67,7 +67,8 @@
     .media-body{
         border: solid 2px $b-color;
         border-left: none;
-        border-radius: 0 50px 50px 0;
+        border-radius: 0 30px 30px 0;
+        height: 110px;
         p{
             font-size: 13px;
         }
@@ -75,6 +76,24 @@
         &.pending{
             border-color: $warning!important;
         }
+    }
+}
+
+.searchText{
+    .form-control{
+        border-right: none!important;
+    }
+    .input-group-text{
+        background-color: transparent!important;
+        border-left: none!important;
+    }
+}
+
+.info-header{
+    color: white;
+    background-color: $secondary!important;
+    .close{
+        color: white!important;
     }
 }
 
@@ -88,6 +107,13 @@
         h3{
             vertical-align: middle!important;
         }
+    }
+}
+
+.form-control{
+    &.filter{
+        background-color: $secondary!important;
+        color: $no-color!important;
     }
 }
 

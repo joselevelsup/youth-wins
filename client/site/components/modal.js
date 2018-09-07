@@ -14,11 +14,22 @@ import {
 } from "reactstrap";
 import { AppItem } from "../components/items";
 
-export const YouthModal = ({ open, toggle }) => (
-        <Modal isOpen={open} toggle={toggle}>
-            <ModalHeader toggle={toggle}> Thank you for applying</ModalHeader>
-            <ModalFooter><Button color="primary" onClick={toggle}>Continue</Button></ModalFooter>
-        </Modal>
+export const YouthModal = ({ open, toggle, applying, push }) => (
+    <Modal isOpen={open} toggle={toggle}>
+      <ModalHeader toggle={toggle} className="text-center info-header">
+        {
+            applying ?
+                `Thank you for applying`
+                :
+                `You are currently not logged in. Please Sign up in order to apply for this resource`
+        }
+      </ModalHeader>
+      <ModalFooter>
+        <div className="ml-auto mr-auto">
+         <Button color="primary" style={{width: 200}} block  className="btn-swerve" onClick={applying ? () => toggle() : () => push("/signup")}>Continue</Button>
+        </div>
+      </ModalFooter>
+    </Modal>
 );
 
 export const ResourceModal = ({ open, toggle, resource, apply, admin, edit, remove, approve, deny, status }) => (
