@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { getUserInfo, getUserSuggested } from "../../actions/dashboard";
 import { ResourceModal } from "../../components/modal";
-import { AppItem } from "../../components/items";
+import { AppItem, ResourceItem } from "../../components/items";
 import "./dashboard.scss";
 
 class Dashboard extends React.Component{
@@ -46,14 +46,22 @@ class Dashboard extends React.Component{
               <div className="row">
                 <div className="col-12">
                   <h4 className="text-center">Suggested</h4>
+				  {
+                      dashboard ?
+					  	dashboard.suggestions && dashboard.suggestions.map(s => (
+							<ResourceItem resource={s} />
+						))
+                          :
+                          <React.Fragment/>
+                  }
                 </div>
               </div>
               <div className="row">
                   {
                       dashboard ?
-                          dashboard.length && dashboard.map(d => (
-                              <AppItem openResource={this.openResource} resource={d.resource} status={d.status} />
-                          ))
+					  	dashboard.applications && dashboard.applications.map(d => (
+							<AppItem openResource={this.openResource} resource={d.resource} status={d.status} />
+						))
                           :
                           <React.Fragment/>
                   }
