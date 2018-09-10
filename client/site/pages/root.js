@@ -26,7 +26,7 @@ class Root extends Component {
 	  render(){
 		    return (
             <React.Fragment>
-              <MainNavBar />
+              <MainNavBar push={this.props.history.push} />
               <Container fluid={true}>
 			          <Switch>
 				          <Route exact path="/" component={Home}/>
@@ -46,7 +46,5 @@ class Root extends Component {
 }
 
 
-const RootComponent = connect(state => ({
-    content: state.content
-}))(Root)
+const RootComponent = withRouter(connect()(Root))
 export default RootComponent

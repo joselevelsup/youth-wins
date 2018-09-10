@@ -1,4 +1,4 @@
-import { CMS } from "../../models";
+import { Admin, CMS } from "../../models";
 import { uploadImage, replaceImage } from "../../helpers/aws";
 
 export function getAllContent(req, res){
@@ -14,7 +14,6 @@ export function getAllContent(req, res){
         });
     });
 }
-
 
 export function updateHomeContent(req, res){
     const data = JSON.parse(req.body.data);
@@ -174,4 +173,40 @@ export function updateAboutContent(req, res){
     }).catch(err => {
         console.log(err);
     });
+}
+
+
+export function addMember(req, res){
+    if(!req.body.userId){
+        res.status(500).json({
+            "success": false,
+            "message": "no user id provided"
+        });
+    } else {
+        CMS.findOne().then(cms => {
+            if(cms.team.some(t => t == req.body.userId)){
+                return CMS.findOneAndUpdate({}, {
+                    $pull: {
+                        "team": req.body.userId
+                    }
+                });
+            } else {
+                return CMS.findOneAndUpdate({}, {
+                    $push: {
+                        "team": req.body.userId
+                    }
+                });
+            }
+        }).then(data => {
+            res.status(200).json({
+                "success": true
+            });
+        }).catch(err => {
+            console.log(err);
+            res.status(500).json({
+                "success": false,
+                "message": "unable to add or remove member"
+            });
+        });
+    }
 }

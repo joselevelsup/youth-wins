@@ -33,7 +33,9 @@ import {
     UPDATE_SUPPORT_CONTENT_S,
     UPDATE_SUPPORT_CONTENT_F,
     UPDATE_ABOUT_CONTENT_S,
-    UPDATE_ABOUT_CONTENT_F
+    UPDATE_ABOUT_CONTENT_F,
+    ADDED_MEMBER,
+    FAILED_ADD_MEMBER
 } from "../constants/constants";
 
 export const adminSuccess = data => ({
@@ -227,17 +229,17 @@ export const failedCreateStaff = err => ({
     payload: err
 });
 
-export const createStaff = ({firstName, lastName, password, cpassword, position, email, profile}) => {
-    console.log(profile);
+export const createStaff = ({firstName, lastName, password, cpassword, position, email, profile, description}) => {
     const file = new FormData();
-    file.append('file', profile[0]);
+    profile && file.append('file', profile[0]);
     file.append("data", JSON.stringify({
         firstName,
         lastName,
         password,
         cpassword,
         position,
-        email
+        email,
+        description
     }));
     return {
         type: API,
@@ -372,6 +374,15 @@ export const failedContent = err => ({
     payload: err
 });
 
+export const getEditableContent = () => ({
+    type: API,
+    payload: {
+        url: API_ADMIN+`/cms/e`,
+        success: gotContent,
+        failure: failedContent
+    }
+})
+
 export const getContent = () => ({
     type: API,
     payload: {
@@ -379,7 +390,7 @@ export const getContent = () => ({
         success: gotContent,
         failure: failedContent
     }
-})
+});
 
 export const updatedHome = data => ({
     type: UPDATE_HOME_CONTENT_S,
@@ -473,3 +484,26 @@ export const updateAboutContent = ({bannerText, bannerImage, section1Title, sect
         }
     };
 };
+
+export const addedMember = data => ({
+    type: ADDED_MEMBER,
+    payload: data
+});
+
+export const failedToAddMember = err => ({
+    type: FAILED_ADD_MEMBER,
+    payload: err
+});
+
+export const addMember = id => ({
+    type: API,
+    payload: {
+        url: API_ADMIN+"/cms/add-member",
+        method: "POST",
+        data: {
+            userId: id
+        },
+        success: addedMember,
+        error: failedToAddMember
+    }
+});

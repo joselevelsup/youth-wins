@@ -1,11 +1,21 @@
 @import "../style/variables.scss";
 
+
+.bg-youth{
+    background-color: $secondary!important;
+
+    .nav-item > a, .navbar-brand{
+        color: $no-color!important;
+    }
+}
+
 .header{
     background-color: $secondary;
 
     .nav-content{
         height: 70px;
     }
+
     a.link{
         color: $no-color;
     }

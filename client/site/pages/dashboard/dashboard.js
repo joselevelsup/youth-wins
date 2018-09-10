@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { getUserInfo, getUserSuggested } from "../../actions/dashboard";
+import { getUserInfo, getUserSuggested, toggleResponse } from "../../actions/dashboard";
 import { ResourceModal } from "../../components/modal";
 import { AppItem } from "../../components/items";
 import "./dashboard.scss";
@@ -15,18 +15,25 @@ class Dashboard extends React.Component{
             status: null
         };
 
+        this.loadUserInfo = this.loadUserInfo.bind(this);
         this.openResource = this.openResource.bind(this);
         this.toggleResource = this.toggleResource.bind(this);
+        this.toggleResponse = this.toggleResponse.bind(this);
+    }
+
+    loadUserInfo(){
+        this.props.dispatch(getUserInfo());
     }
 
     componentDidMount(){
-        this.props.dispatch(getUserInfo());
+        this.loadUserInfo();
         // this.props.dispatch(getUserSuggested());
     }
 
-    openResource(r, stat){
+    openResource(r, stat, id){
         this.setState({
             resource: r,
+            appId: id,
             status: stat,
             resourceModal: true
         });
@@ -36,6 +43,11 @@ class Dashboard extends React.Component{
         this.setState({
             resourceModal: !this.state.resourceModal
         });
+    }
+
+    toggleResponse(status){
+        this.props.dispatch(toggleResponse(status, this.state.appId));
+        this.loadUserInfo();
     }
 
     render(){
@@ -51,13 +63,13 @@ class Dashboard extends React.Component{
                   {
                       dashboard ?
                           dashboard.applications && dashboard.applications.map(d => (
-                              <AppItem openResource={this.openResource} resource={d.resource} status={d.status} />
+                              <AppItem size={4} appId={d._id} openResource={this.openResource} resource={d.resource} status={d.status} />
                           ))
                           :
                           <React.Fragment/>
                   }
               </div>
-              <ResourceModal open={this.state.resourceModal} toggle={this.toggleResource} resource={this.state.resource} status={this.state.status} />
+              {this.state.resource && <ResourceModal open={this.state.resourceModal} toggle={this.toggleResource} resource={this.state.resource} status={this.state.status} toggleResponse={this.toggleResponse} /> }
             </div>
         );
     }

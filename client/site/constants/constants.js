@@ -2,6 +2,7 @@
 //export const API_URL = "http://localhost:8080";
 export const LOGIN = "/login";
 export const SIGNUP = "/signup";
+export const LOGOUT = "/logout";
 export const CURRENT_USER = "/user/current";
 export const API_USERS = "/user";
 export const API_ADMIN = "/admin";
@@ -15,6 +16,8 @@ export const RESOURCES_S = "RESOURCES_S";
 
 export const LOG_IN = "LOG_IN";
 export const SIGN_UP = "SIGN_UP";
+export const LOGOUT_S = "LOGOUT_S";
+export const LOGOUT_F = "LOGOUT_F";
 
 export const APPLY_S = "APPLY_S";
 export const APPLY_F = "APPLY_F";
@@ -69,3 +72,9 @@ export const USER_INFO_S = "USER_INFO_S";
 export const USER_INFO_F = "USER_INFO_F";
 
 export const CONTENT_S = "CONTENT_S";
+
+export const ADDED_MEMBER = "ADDED_MEMBER";
+export const FAILED_ADD_MEMBER = "FAILED_ADD_MEMBER";
+
+export const TOGGLE_S = "TOGGLE_S";
+export const TOGGLE_F = "TOGGLE_F";

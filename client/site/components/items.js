@@ -94,7 +94,6 @@ export const UserItem = ({ user, deleteUser, openUser }) => {
                   <div className="col-2 align-self-center" onClick={() => openUser(user)}> <div className="rounded-circle profile"></div></div>
               }
             </React.Fragment>
-                
                 <div className="media-body">
                     <div className="row">
                         <div className="col-8 align-self-center">
@@ -115,7 +114,7 @@ export const AppItem = ({ status, resource, deleteApp, size,  openResource, appI
     return (
         <Col md={size} className="appItem">
           <div className="media">
-             <div className="col-2 align-self-center" onClick={() => openResource(resource, status)}> <div className={status ?"rounded-circle profile filled": "rounded-circle profile"}></div></div>
+             <div className="col-2 align-self-center" onClick={() => openResource(resource, status, appId)}> <div className={status ?"rounded-circle profile filled": "rounded-circle profile"}></div></div>
             <div className="media-body">
               <div className="row">
                 <div className="col-8 align-self-center">
@@ -131,4 +130,36 @@ export const AppItem = ({ status, resource, deleteApp, size,  openResource, appI
           </div>
         </Col>
     );
+}
+
+
+export const TeamItem = ({ staff, shown, addToSite }) => {
+    return (
+        <Col md={4} className="teamItem">
+          <div className="media">
+            <React.Fragment>
+              {
+                  staff.profile ?
+                      <img className="align-self-center img-fluid rounded-circle profile" src={staff.profile} />
+                  :
+                  <div className="col-2 align-self-center">
+                    <div className="rounded-circle profile"></div>
+                  </div>
+              }
+            </React.Fragment>
+            <div className="media-body">
+              <div className="row">
+                <div className="col-8 align-self-center">
+                  <h5><span className="ml-4 align-middle">{staff.firstName} {staff.lastName}</span></h5>
+                </div>
+                <div className="offset-1 col-1 align-self-center">
+                  <div className="mt-1">
+                    <div onClick={() => addToSite(staff._id)} className={shown ? "rounded-circle filled-2": "rounded-circle"}></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Col>
+    )
 }

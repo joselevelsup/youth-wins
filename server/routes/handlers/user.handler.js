@@ -4,7 +4,8 @@ import {
     userSuggestedResources,
     userAppliedResources,
     currentUser,
-    appendContent
+    appendContent,
+    toggleResponse
 } from "../controllers/user.controller";
 
 const userRouter = Router();
@@ -16,4 +17,5 @@ userRouter
 
 userRouter.get("/content", appendContent);
 
+userRouter.post("/apps/toggle", toggleResponse);
 export default userRouter;

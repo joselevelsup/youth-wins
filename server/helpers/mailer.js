@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import { accepted, denied } from "./mail-templates";
+import { applying, accepted, denied } from "./mail-templates";
 
 const mailHelper = nodemailer.createTransport({
     service: "gmail",
@@ -8,6 +8,25 @@ const mailHelper = nodemailer.createTransport({
         pass: process.env.MAILPASS
     }
 });
+
+export const sendUserInfo = (to, resource, user) => {
+    return new Promise((resolve, reject) => {
+        var mailOpts = {
+            from: process.env.MAILUSER,
+            to: to,
+            subject: `Applicant for ${resource}`,
+            html: applying(user)
+        };
+
+        mailHelper.sendMail(mailOpts, function(err, info){
+            if(err){
+                reject(err);
+            } else {
+                resolve(info);
+            }
+        });
+    })
+}
 
 
 export const sendAcceptedEmail = (to) => {

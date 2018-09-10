@@ -227,20 +227,26 @@ export function createStaff(req, res){
         password: bcrypt.hashSync(user.password, 10),
         firstName: user.firstName,
         lastName: user.lastName,
-        bio: user.bio,
+        description: user.description,
         isAdmin: user.isAdmin ? user.isAdmin : false,
     }).save().then((data) => {
-        console.log(data);
-        uploadImage(req.files.file, data._id, "admin").then(key => {
-            data.profile = key;
-
-            return data.save();
-        }).then(data => {
+        if(!req.files){
             res.status(200).json({
                 "success": true,
                 "message": "Successfully created user"
             });
-        });
+        } else {
+            uploadImage(req.files.file, data._id, "admin").then(key => {
+                data.profile = key;
+
+                return data.save();
+            }).then(data => {
+                res.status(200).json({
+                    "success": true,
+                    "message": "Successfully created user"
+                });
+            });
+        }
     }).catch((err) => {
         res.status(500).json({
             "success": false,

@@ -2,51 +2,75 @@ import React from "react";
 import { Row, Col } from "reactstrap";
 import { NavLink, Link } from "react-router-dom";
 import { connect } from "react-redux";
+import { logOutUser } from "../actions/auth";
 import "./nav.scss";
 
-const MainNav = ({ user }) => (
-    <div className="container-fluid header">
-      <div className="row nav-content">
-        <div className="offset-md-5 col-2 text-center align-self-center">
-          <h3><Link to="/" className="link">Youth Wins</Link></h3>
-        </div>
-        {
-            user &&
-                user.loggedIn == false ?
-                <React.Fragment>
-                  <div className="offset-md-1 col align-self-center">
-                    <NavLink to="/about" className="link" activeClassName="active">About Us</NavLink>
-                  </div>
-                  <div className="col align-self-center">
-                    <NavLink to="/support" className="link" activeClassName="active">Support Us</NavLink>
-                  </div>
-                  <div className="col align-self-center">
-                    <NavLink to="/login" className="link" activeClassName="active">Login</NavLink>
-                  </div>
-                </React.Fragment>
-            :
-            user.isStaff ?
-            <div className="offset-4 col-1 align-self-center">
-              <NavLink to="/login" className="link" activeClassName="active">Logout</NavLink>
-            </div>
-            :
-            <React.Fragment>
-              <div className="offset-md-2 col-1 align-self-center">
-                <NavLink to="/dashboard" className="link" activeClassName="active">Dashboard</NavLink>
-              </div>
-              <div className="col-1 align-self-center">
-                <NavLink to="/resources" className="link" activeClassName="active">Resources</NavLink>
-              </div>
-              <div className="col-1 align-self-center">
-                <NavLink to="/login" className="link" activeClassName="active">Logout</NavLink>
-              </div>
-            </React.Fragment>
-        }
-        </div>
-    </div>
-)
 
+class MainNav extends React.Component {
+    constructor(){
+        super();
+
+        this.logOut = this.logOut.bind(this);
+    }
+
+    logOut(){
+        this.props.dispatch(logOutUser()).then(data => {
+            this.props.push("/login");
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
+    render(){
+        const { user } = this.props;
+        return (
+            <nav className="navbar navbar-expand-lg bg-youth">
+              <div className="navbar-collapse collapse"></div>
+              <Link to="/" className="navbar-brand text-center mx-auto"><h3>Youth Wins</h3></Link>
+              <div className="navbar-collapse collapse">
+                <ul className="nav navbar-nav ml-auto">
+                  {
+                      user &&
+                          user.loggedIn == false ?
+                          <React.Fragment>
+                            <li className="nav-item text-center">
+                              <NavLink to="/about" activeClassName="active">About Us</NavLink>
+                            </li>
+                            <li className="nav-item text-center">
+                              <NavLink to="/support" activeClassName="active">Support Us</NavLink>
+                            </li>
+                            <li className="nav-item text-center">
+                              <NavLink to="/login" activeClassName="active">Login</NavLink>
+                            </li>
+                          </React.Fragment>
+                          :
+                          user.isStaff ?
+                          <li className="nav-item text-center">
+                            <NavLink to="/login" activeClassName="active">Logout</NavLink>
+                          </li>
+                          :
+                          <React.Fragment>
+                            <li className="nav-item text-center">
+                              <NavLink to="/dashboard" activeClassName="active">Dashboard</NavLink>
+                            </li>
+                            <li className="nav-item text-center">
+                              <NavLink to="/resources" activeClassName="active">Resources</NavLink>
+                            </li>
+                            <li className="nav-item text-center">
+                              <NavLink to="/login" activeClassName="active">Logout</NavLink>
+                            </li>
+                          </React.Fragment>
+                  } 
+                </ul>
+              </div>
+            </nav>
+        )
+    }
+}
 
 export const MainNavBar = connect(state => ({
     user: state.user
 }))(MainNav)
+
+
+

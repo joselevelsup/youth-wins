@@ -62,7 +62,8 @@ const cmsModel = new mongoose.Schema({
                 type: String
             }
         }
-    }
+    },
+    team: [mongoose.Schema.Types.ObjectId]
 });
 
 

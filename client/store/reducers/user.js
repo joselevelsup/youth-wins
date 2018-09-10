@@ -3,7 +3,8 @@ import {
     LOG_IN,
     SIGN_UP,
     USER_S,
-    CONTENT_S
+    CONTENT_S,
+    LOGOUT_S
 } from "../../site/constants/constants";
 const initialState = {
 	loggedIn: false
@@ -57,8 +58,9 @@ export const userReducer = (state = initialState, action) => {
   case "LOG_IN_F":
       return action.payload;
   case SIGN_UP:
-			const signedUp = action.loggedIn === 200 ? true : false
-			return Object.assign({}, ...state, {loggedIn: signedUp})
+      return action.payload;
+  case LOGOUT_S:
+      return initialState;
 		default:
 			return state
 	}
