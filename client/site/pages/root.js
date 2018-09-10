@@ -29,7 +29,7 @@ class Root extends Component {
 				          <Route exact path="/signup" component={Signup}/>
                   <Route exact path="/support" component={Support}/>
 				          <Route exact path="/about" component={AboutUs}/>
-                  <Route exact path="/dashboard" component={CheckUser(Dashboard)}/>
+                  <Route exact path="/dashboard" component={Dashboard}/>
 				          <Route exact path="/resources" component={Resources}/>
                   <Route exact path="/admin" component={AdminPanel} />
 				          <Route component={Landing}/>
