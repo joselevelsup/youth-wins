@@ -39,7 +39,8 @@ class Dashboard extends React.Component{
     }
 
     render(){
-        const { dashboard } = this.props;
+		const { dashboard } = this.props;
+
         return(
             <div className="container dashboard">
               <div className="row">
@@ -50,7 +51,7 @@ class Dashboard extends React.Component{
               <div className="row">
                   {
                       dashboard ?
-                          dashboard.applications && dashboard.applications.map(d => (
+                          dashboard.length && dashboard.map(d => (
                               <AppItem openResource={this.openResource} resource={d.resource} status={d.status} />
                           ))
                           :
