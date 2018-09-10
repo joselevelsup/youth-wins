@@ -77,10 +77,8 @@ export function signup(req, res){
                 message: "user already exists"
             });
         }
-    }).then((u) => {
-        res.status(200).json({
-            message: "successful signup"
-        });
+    }).then((user) => {
+        res.status(200).json(user);
     }).catch((err) => {
         console.log(err);
         res.status(500).json({

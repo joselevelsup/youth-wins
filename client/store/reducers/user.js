@@ -14,11 +14,11 @@ const initialUser = [];
 // const LOG_IN = 'LOG_IN'
 // const SIGN_UP = 'SIGN_UP'
 
-//Action creators
-// const signUpAction = status => ({
-// 	type: SIGN_UP,
-// 	status
-// })
+// Action creators
+const signUpAction = status => ({
+	type: SIGN_UP,
+	status
+})
 
 // const logInAction = status => ({
 // 	type: LOG_IN,
@@ -26,16 +26,16 @@ const initialUser = [];
 // })
 
 //Thunk creators
-// export function signUp(user){
-// 	return function thunk (dispatch){
-// 		return axios.post('/signup', user)
-// 		.then(res => res.status)
-// 		.then(status => {
-// 			const action = signUpAction(status)
-// 			dispatch(action);
-// 		})
-// 	}
-// }
+export function signUp(user){
+	return function thunk (dispatch){
+		return axios.post('/signup', user)
+		.then(res => res.status)
+		.then(status => {
+			const action = signUpAction(status)
+			dispatch(action);
+		})
+	}
+}
 
 // export function logIn(user){
 // 	return function thunk (dispatch){
@@ -51,13 +51,13 @@ const initialUser = [];
 export const userReducer = (state = initialState, action) => {
 	switch(action.type){
 	case LOG_IN:
-      action.payload.password = null;
-      return action.payload;
-  case "LOG_IN_F":
-      return action.payload;
-  case SIGN_UP:
-			const signedUp = action.loggedIn === 200 ? true : false
-			return Object.assign({}, ...state, {loggedIn: signedUp})
+      	action.payload.password = null;
+      	return action.payload;
+  	case "LOG_IN_F":
+     	return action.payload;
+ 	case SIGN_UP:
+	 	action.payload.password = null;
+		return action.payload
 		default:
 			return state
 	}
