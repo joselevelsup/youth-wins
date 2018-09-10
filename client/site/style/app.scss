@@ -38,6 +38,13 @@
 .navbar{
     .nav-item{
         width: 100px!important;
+
+        a.link{
+            cursor: pointer;
+            &:hover{
+                text-decoration: underline;
+            }
+        }
     }
 }
 

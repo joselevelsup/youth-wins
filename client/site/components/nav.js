@@ -46,7 +46,7 @@ class MainNav extends React.Component {
                           :
                           user.isStaff ?
                           <li className="nav-item text-center">
-                            <NavLink to="/login" activeClassName="active">Logout</NavLink>
+                            <a onClick={this.logOut} className="link">Logout</a>
                           </li>
                           :
                           <React.Fragment>
@@ -57,7 +57,7 @@ class MainNav extends React.Component {
                               <NavLink to="/resources" activeClassName="active">Resources</NavLink>
                             </li>
                             <li className="nav-item text-center">
-                              <NavLink to="/login" activeClassName="active">Logout</NavLink>
+                              <a onClick={this.logOut} className="link">Logout</a>
                             </li>
                           </React.Fragment>
                   } 
