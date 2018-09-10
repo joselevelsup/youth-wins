@@ -1,10 +1,8 @@
 import CheckUser from "./checkuser";
-//import CheckAdmin from "./checkadmin";
-import InjectContent from "./injectcontent";
+import CheckAdmin from "./checkadmin";
 
 
 export {
     CheckUser,
-    InjectContent
-    //CheckAdmin
+    CheckAdmin
 }

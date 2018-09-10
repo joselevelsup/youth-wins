@@ -36,7 +36,7 @@ class Root extends Component {
 				          <Route exact path="/about" component={AboutUs}/>
                   <Route exact path="/dashboard" component={CheckUser(Dashboard)}/>
 				          <Route exact path="/resources" component={Resources}/>
-                  <Route exact path="/admin" component={AdminPanel} />
+                  <Route exact path="/admin" component={CheckAdmin(AdminPanel)} />
 				          <Route component={Landing}/>
 			          </Switch>
               </Container>
