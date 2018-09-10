@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { getUserInfo, getUserSuggested } from "../../actions/dashboard";
+import { applyResource } from "../../actions/resource";
 import { ResourceModal } from "../../components/modal";
 import { AppItem, ResourceItem } from "../../components/items";
 import "./dashboard.scss";
@@ -16,7 +17,17 @@ class Dashboard extends React.Component{
         };
 
         this.openResource = this.openResource.bind(this);
-        this.toggleResource = this.toggleResource.bind(this);
+		this.toggleResource = this.toggleResource.bind(this);
+		this.applyResource = this.applyResource.bind(this);
+	}
+	
+	applyResource(resourceId){
+		const self = this;
+        this.props.dispatch(applyResource(resourceId)).then(data => {
+           self.toggleResource();
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
     componentDidMount(){
@@ -49,7 +60,7 @@ class Dashboard extends React.Component{
 				  {
                       dashboard ?
 					  	dashboard.suggestions.resources && dashboard.suggestions.resources.map(s => (
-							<ResourceItem resource={s} />
+							<ResourceItem openResource={this.openResource} resource={s} apply={this.applyResource} />
 						))
                           :
                           <React.Fragment/>
