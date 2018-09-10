@@ -15,7 +15,7 @@ resourceRouter
     .get("/", getUserResources)
     .get("/:resourceId", getOneResource)
     .post("/", applyResource)
-    .post("/", checkAdmin, createResource)
+    .post("/create-resource",  createResource)
     .put("/:resourceId", checkAdmin, updateResource)
     .delete("/:resourceId", checkAdmin, deleteResource);
 

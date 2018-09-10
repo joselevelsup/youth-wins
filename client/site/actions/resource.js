@@ -4,7 +4,10 @@ import {
     RESOURCES_S,
     RESOURCES_F,
     APPLY_S,
-    APPLY_F
+    APPLY_F,
+    CREATED_RES_S,
+    CREATED_RES_F,
+
 } from "../constants/constants";
 
 export const applySuccess = data => ({
@@ -61,7 +64,7 @@ export const failedCreateResource = err => ({
 
 export const createResource = ({ organizationName, contactEmail, website, ethnicityServed,  description, logo, categories, stateServed }) => {
 	const file = new FormData()
-	file.append('file', logo[0])
+	logo && file.append('file', logo[0])
 	file.append('data', JSON.stringify({
 		organizationName, 
 		contactEmail, 
@@ -76,7 +79,7 @@ export const createResource = ({ organizationName, contactEmail, website, ethnic
 	return {
 		type: API,
 		payload: {
-			url: API_RESOURCE,
+			url: API_RESOURCE+"/create-resource",
 			method: 'POST',
 			success: createdResource,
 			error: failedCreateResource,

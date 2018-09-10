@@ -1,8 +1,11 @@
 import React, { Component, createRef } from 'react'
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap'
+import { Button, Form, FormGroup, Label, Input, FormText, Alert } from 'reactstrap'
+import { connect } from "react-redux";
+import { reduxForm, Field } from "redux-form";
+import DropzoneInput from "../components/dropzone";
 import { createResource } from '../actions/resource'
 
-export default class BecomeResource extends Component {
+class BecomeRes extends Component {
 	constructor(){
 		super()
 		this.state = {
@@ -18,7 +21,7 @@ export default class BecomeResource extends Component {
 		this.uploader = createRef()
 		this.handleChange = this.handleChange.bind(this)
 		this.fileUpload = this.fileUpload.bind(this)
-
+      this.createRes = this.createRes.bind(this);
 	}
 
 	handleChange(e){
@@ -35,48 +38,72 @@ export default class BecomeResource extends Component {
 		this.uploader.click()
 	}
 
-	render(){
-		return (
-			<main className="form-wrap">
-				<Form className="support-form">
-					<FormGroup className="support-form-items">
-						<Label>Name</Label>
-						<Input name="organizationName" onChange={this.handleChange}/>
-					</FormGroup>
-					<FormGroup className="support-form-items">
-						<Label>Email</Label>
-						<Input name="contactEmail" onChange={this.handleChange}/>
-					</FormGroup>
-					<FormGroup className="support-form-items">
-						<Label>Website</Label>
-						<Input name="website" onChange={this.handleChange}/>
-					</FormGroup>
-					<FormGroup className="support-form-items">
-						<Label>Ethnicities Served</Label>
-						<Input name="ethnicityServed" onChange={this.handleChange}/>
-					</FormGroup>
-					<FormGroup className="support-form-items">
-						<Label>State served</Label>
-						<Input name="stateServed" onChange={this.handleChange}/>
-					</FormGroup>
-					<FormGroup className="support-form-items">
-						<Label>Categories</Label>
-						<Input name="categories" onChange={this.handleChange}/>
-					</FormGroup>
-					<FormGroup className="support-form-items">
-						<Label>Description</Label>
-						<Input className="tallInput" name="description" onChange={this.handleChange}/>
-					</FormGroup>
-					<FormGroup className="support-form-items">
-						<Label>Logo</Label><br/>
-						<div className="tallInput resourceUploadImage">
-							<Button className="uploadButton" color="warning" onClick={this.fileUpload}>+</Button>
-						</div>						
-						<input ref={e => this.uploader = e} className="fileHidden" name="logo" type="file"/>
-					</FormGroup>
-					<Button color="warning" onClick={() => {}}>Proceed to Intake</Button>
-				</Form>
-			</main>
+    createRes(values, dispatch){
+        dispatch(createResource(values)).then(data => {
+            this.setState({
+                created: true
+            });
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
+	  render(){
+        const { handleSubmit } = this.props;
+		    return (
+            <React.Fragment>
+              {
+                  this.state.created &&
+                      <Alert color="success">
+                        Successfully created a Resource
+                      </Alert>
+              }
+			        <main className="form-wrap">
+				        <Form className="support-form" onSubmit={handleSubmit(this.createRes)}>
+					        <FormGroup className="support-form-items">
+						        <Label>Name</Label>
+					          <Field className="form-control" name="organizationName" component="input" type="text"/>
+                  </FormGroup>
+					        <FormGroup className="support-form-items">
+						        <Label>Email</Label>
+					          <Field className="form-control" name="contactEmail" component="input" type="email"/>
+					        </FormGroup>
+					        <FormGroup className="support-form-items">
+						        <Label>Website</Label>
+					          <Field className="form-control" name="website" component="input" type="text"/>
+					        </FormGroup>
+					        <FormGroup className="support-form-items">
+						        <Label>Ethnicities Served</Label>
+					          <Field className="form-control" name="ethnicityServed" component="input" type="text"/>
+					        </FormGroup>
+					        <FormGroup className="support-form-items">
+						        <Label>State served</Label>
+					          <Field className="form-control" name="stateServed" component="input" type="text"/>
+					        </FormGroup>
+					        <FormGroup className="support-form-items">
+						        <Label>Categories</Label>
+					          <Field className="form-control" name="categories" component="input" type="text"/>
+					        </FormGroup>
+					        <FormGroup className="support-form-items">
+						        <Label>Description</Label>
+					          <Field className="form-control" name="description" component="textarea" rows="8" />
+					        </FormGroup>
+					        <FormGroup className="support-form-items">
+						        <Label>Logo</Label><br/>
+                    <Field component={DropzoneInput} name="logo" />
+					        </FormGroup>
+					        <Button color="warning" type="submit">Proceed to Intake</Button>
+				        </Form>
+			        </main>
+            </React.Fragment>
 		)
 	}
 }
+
+const BecomeResourceForm = reduxForm({
+    form: "becomeResource"
+})(BecomeRes)
+
+const BecomeResource = connect()(BecomeResourceForm);
+
+export default BecomeResource;

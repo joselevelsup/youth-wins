@@ -1,5 +1,5 @@
 import { Resource } from "../../models/resource";
-
+import { uploadImage } from "../../helpers/aws";
 
 
 export function getUserResources(req, res){
@@ -29,8 +29,6 @@ export function getOneResource(req, res){
 }
 
 export function applyResource(req, res){
-    console.log(req.body);
-    console.log(req.user);
     Resource.findOneAndUpdate({ "_id": req.body.resourceId }, {
         $push: {
             applicants: req.user._id
@@ -47,15 +45,51 @@ export function applyResource(req, res){
 }
 
 export function createResource(req, res){
-    new Resource(req.body).save().then(() => {
-        res.status(200).json({
-            "success": true
-        });
+    let data = JSON.parse(req.body.data);
+    new Resource({
+        organizationName: data.organizationName,
+        email: data.email,
+        contactEmail: data.contactEmail,
+        description: data.description,
+        website: data.website
+    }).save().then((d) => {
+        if(req.files == null){
+            d.stateServed.push(data.stateServed);
+            d.ethnicityServed.push(data.ethnicityServed);
+            d.categories.push(data.categories);
+
+            d.save().then(() => {
+                res.status(200).json({
+                    "success": true,
+                    "message": "Successfully Created Resource"
+                });
+            }).catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    "success": false,
+                    "message": "unable to save"
+                });
+            })
+        } else {
+            uploadImage(req.files.file, data._id, "resource").then(key => {
+                d.logo = key;
+
+                return d.save();
+            }).then(data => {
+                res.status(200).json({
+                    "success": true,
+                    "message": "Successfully Created Resource"
+                });
+            });
+        }
     }).catch((err) => {
-        console.log(err);
-        res.status(500);
+        res.status(500).json({
+            "success": false,
+            "message": "Unable to create Resource"
+        });
     });
 }
+
 
 export function updateResource(req, res){
     Resource.findOneAndUpdate({"shortUrl": req.params.resourceId}).then((result) => {
