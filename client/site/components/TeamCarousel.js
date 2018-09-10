@@ -65,7 +65,7 @@ export default class TeamCarousel extends Component {
                       <div key={i} className="carouselItem">
 			                  <img className="carouselImg" src={t.profile}/>
 			                  <h3>{t.firstName} {t.lastName}</h3>
-			                  <p>This will be the bio </p>
+			                  <p>{t.description} </p>
 			                  <br/>
 		                  </div>))
               }
