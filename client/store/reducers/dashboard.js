@@ -16,7 +16,7 @@ export default function dashboard(state = initialState, action){
     case USER_INFO_F:
 		return action.payload;
 	case SUG_RESOURCES_S:
-		return {...state, suggestions: action.payload.suggestions}
+		return {...state, suggestions: action.payload}
     default:
         return state || initialState;
     }

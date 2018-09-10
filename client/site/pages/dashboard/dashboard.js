@@ -39,8 +39,8 @@ class Dashboard extends React.Component{
     }
 
     render(){
-		const { dashboard } = this.props;
-
+        console.log(this.props);
+		    const { dashboard } = this.props;
         return(
             <div className="container dashboard">
               <div className="row">
@@ -48,7 +48,7 @@ class Dashboard extends React.Component{
                   <h4 className="text-center">Suggested</h4>
 				  {
                       dashboard ?
-					  	dashboard.suggestions && dashboard.suggestions.map(s => (
+					  	dashboard.suggestions.resources && dashboard.suggestions.resources.map(s => (
 							<ResourceItem resource={s} />
 						))
                           :
