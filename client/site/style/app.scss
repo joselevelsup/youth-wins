@@ -68,8 +68,8 @@
         z-index: 100;
         margin-right: -30px;
         background-color: $no-color;
-        width: 120px;
-        height: 120px;
+        width: 128px;
+        height: 128px;
     }
     img.logo{
         border: 5px solid $b-color;
@@ -82,6 +82,9 @@
         border: solid 2px $b-color;
         border-left: none;
         border-radius: 0 50px 50px 0;
+        .push-words{
+            margin-left: 10%;
+        }
         p{
             font-size: 13px;
         }
@@ -90,6 +93,14 @@
             border-color: $warning!important;
         }
     }
+}
+
+.no-paddding{
+    padding: 0!important;
+}
+
+.underline{
+    border-bottom: 1px solid black;
 }
 
 .col-md-12{

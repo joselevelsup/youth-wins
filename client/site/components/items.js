@@ -15,20 +15,20 @@ export const ResourceItem = ({ resource, deleteResource, openResource, apply, ad
 
                         <img className="align-self-center rounded-circle logo" onClick={() => openResource(resource)} width="128" height="128" src={resource.logo} />
                         :
-                        <div className="col-2 align-self-center" onClick={() => openResource(resource)}> <div className="rounded-circle logo"></div></div>
+                        <div className="align-self-center rounded-circle logo " onClick={() => openResource(resource)}></div>
                     }
                   </React.Fragment>
-                  <div className={`media-body align-self-center ${resource.pending && "pending" }`}>
+                  <div className={`media-body align-self-center ${resource.pending ? "pending" : "" }`}>
                         <div className="row">
                             <div className="offset-1 col-7">
                                 <div className="row">
                                     <div className="col-12">
-                                        <h5 className="ml-4">{resource.organizationName}</h5>
+                                        <h5 className="push-words">{resource.organizationName}</h5>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="col-12">
-                                        <p className="ml-4">{shorten(resource.description, 100, true)}</p>
+                                        <p className="push-words">{shorten(resource.description, 100, true)}</p>
                                     </div>
                                 </div>
                             </div>

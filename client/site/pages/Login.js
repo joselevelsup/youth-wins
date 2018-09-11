@@ -16,7 +16,11 @@ class Login extends Component {
 
 	  loginUser(values){
 		    this.props.dispatch(logIn(values)).then(data => {
-		        this.props.history.push('/home');
+            if(data.isStaff){
+                this.props.history.push("/admin");
+            } else {
+                this.props.history.push("/dashboard");
+            }
         }).catch(err => {
             console.log(err);
         });

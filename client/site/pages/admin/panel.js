@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import {
     Container,
     TabContent,
@@ -21,7 +22,7 @@ import {
 } from "./tabs";
 
 
-export default class AdminPanel extends React.Component {
+class AdminPanel extends React.Component {
 
     constructor(props) {
         super(props);
@@ -43,9 +44,14 @@ export default class AdminPanel extends React.Component {
    
 
     render(){
+        const { user } = this.props;
         return (
             <Container>
+              <Row>
                 <br />
+              </Row>
+              <Row>
+                 <div className="col-md-8" style={{padding: 0}}>
                 <Nav tabs>
                     <NavItem>
                         <NavLink
@@ -80,6 +86,16 @@ export default class AdminPanel extends React.Component {
                     </NavLink>
                   </NavItem>
                 </Nav>
+                </div>
+
+                 <div className="col-md-4 underline" style={{padding: 0}}>
+                  {
+                      user &&
+                          <h4>Welcome {user.firstName} {user.lastName}</h4>
+                  }
+                </div>
+              </Row>
+                <br />
                 <TabContent activeTab={this.state.activeTab}>
                     <TabPane tabId="1">
                         <ResourcesTab  />
@@ -98,3 +114,7 @@ export default class AdminPanel extends React.Component {
         );
     }
 }
+
+export default connect(state => ({
+    user: state.user
+}))(AdminPanel);
