@@ -1,5 +1,6 @@
 import React from "react";
 import deleteIcon from "../assets/delete.png";
+import Ionicon from "react-ionicons";
 import { Row, Col, Button } from "reactstrap";
 import { shorten } from "../util/helpers"
 
@@ -42,7 +43,7 @@ export const ResourceItem = ({ resource, deleteResource, openResource, apply, ad
                             {
                                 (resource && admin) &&
                                 <div className="col-2 align-self-center">
-                                    <Button color="clear" className="rounded-circle" onClick={() => deleteResource(resource._id)}><img src={deleteIcon} width="60" height="60" /></Button>
+                                  <button className="btn btn-remove rounded-circle mx-auto" onClick={() => deleteResource(resource._id)}><Ionicon icon="md-remove" fontSize="40px" color="#fff"/></button>
                                 </div>
                             }
                         </div>
@@ -72,7 +73,7 @@ export const StaffItem = ({ staff, deleteStaff, openStaff}) => {
                             <h5><span className="ml-4 align-center">{staff.firstName} {staff.lastName}</span></h5>
                         </div>
                         <div className="col-2 align-self-center">
-                            <Button color="clear" className="rounded-circle" onClick={() => deleteStaff(staff._id)}><img src={deleteIcon} width="50" height="50" /></Button>
+                          <button className="btn btn-remove sm-remove rounded-circle mx-auto" onClick={() => deleteStaff(staff._id)}><Ionicon icon="md-remove" fontSize="40px" color="#fff"/></button>
                         </div>
                     </div>
                 </div>
@@ -99,7 +100,7 @@ export const UserItem = ({ user, deleteUser, openUser }) => {
                             <h5><span className="ml-4 align-center">{user.firstName} {user.lastName}</span></h5>
                         </div>
                         <div className="col-2 align-self-center">
-                            <Button color="clear" className="rounded-circle" onClick={() => deleteUser(user._id)}><img src={deleteIcon} width="50" height="50" /></Button>
+                          <button className="btn btn-remove sm-remove rounded-circle mx-auto" onClick={() => deleteUser(user._id)}><Ionicon icon="md-remove" fontSize="40px" color="#fff"/></button>
                         </div>
                     </div>
                 </div>
@@ -113,7 +114,7 @@ export const AppItem = ({ status, resource, deleteApp, size,  openResource, appI
     return (
         <Col md={size} className="appItem">
           <div className="media">
-             <div className="col-2 align-self-center" onClick={() => openResource(resource, status, appId)}> <div className={status ?"rounded-circle profile filled": "rounded-circle profile"}></div></div>
+             <div className="col-2 align-self-center" onClick={() => openResource(resource, status, appId)}> <div className={status ?"rounded-circle profile filled": "rounded-circle profile unfilled"}></div></div>
             <div className="media-body">
               <div className="row">
                 <div className="col-8 align-self-center">
@@ -122,7 +123,7 @@ export const AppItem = ({ status, resource, deleteApp, size,  openResource, appI
                   </div>
                 </div>
                 <div className="col-2 align-self-center">
-                  <Button color="clear" className="rounded-circle" onClick={() => deleteApp(appId)}><img src={deleteIcon} width="50" height="50" /></Button>
+                  <button className="btn btn-remove sm-remove rounded-circle mx-auto" onClick={() => deleteApp(appId)}><Ionicon icon="md-remove" fontSize="40px" color="#fff"/></button>
                 </div>
               </div>
             </div>

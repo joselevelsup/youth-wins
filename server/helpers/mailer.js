@@ -3,9 +3,15 @@ import { applying, accepted, denied } from "./mail-templates";
 
 const mailHelper = nodemailer.createTransport({
     service: "gmail",
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, 
     auth: {
+        type: "OAuth2",
         user: process.env.MAILUSER,
-        pass: process.env.MAILPASS
+        clientId: process.env.MAIL_CLIENT_ID, //Client ID from Google API Console
+        clientSecret: process.env.MAIL_CLIENT_SECRET, // Client Secret from Google API Console
+        refreshToken: process.env.MAIL_REFRESH_TOKEN // Refresh Token from https://developers.google.com/oauthplayground/
     }
 });
 
@@ -20,10 +26,8 @@ export const sendUserInfo = (to, resource, user) => {
 
         mailHelper.sendMail(mailOpts, function(err, info){
             if(err){
-                console.log(err);
                 reject(err);
             } else {
-                console.lgo(info);
                 resolve(info);
             }
         });

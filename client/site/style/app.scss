@@ -35,6 +35,24 @@
     color: $no-color!important;
 }
 
+.btn-remove{
+    background-color: $added!important;
+    width: 50px;
+    height: 50px;
+    padding-left: 6px!important;
+
+    &.sm-remove{
+        margin: 10px;
+        width: 35px!important;
+        height: 35px!important;
+        padding: 0!important;
+        svg{
+            width: 35px!important;
+            height: 35px!important;
+        }
+    }
+}
+
 .border-color{
     border: 1px solid black;
 }
@@ -226,6 +244,10 @@
 
         &.filled{
             background-color: $primary;
+        }
+
+        &.unfilled{
+            background-color: $no-color;
         }
     }
     .media-body {
