@@ -5,13 +5,14 @@
   "main": "server.js",
   "license": "MIT",
   "private": true,
-  "scripts": {
-      "server:dev": "gulp dev",
-      "server:build": "gulp build",
-      "client:dev": "cd client && webpack-dev-server --config webpack.dev.js --hot --inline",
-      "client:build": "cd client && webpack -p --define process.env.NODE_ENV='\"production\"' --config webpack.prod.js",
-      "heroku-postbuild": "npm run server:build && npm run client:build",
-      "seed:cms": "mongoimport --db youthwins --collection cms --file ./server/seeders/cms.json"
+    "scripts": {
+        "start": "node ./build/server.js",
+        "server:dev": "gulp dev",
+        "server:build": "gulp build",
+        "client:dev": "cd client && webpack-dev-server --config webpack.dev.js --hot --inline",
+        "client:build": "cd client && webpack -p --define process.env.NODE_ENV='\"production\"' --config webpack.prod.js",
+        "heroku-postbuild": "npm run server:build && npm run client:build",
+        "seed:cms": "mongoimport --db youthwins --collection cms --file ./server/seeders/cms.json"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.4",
