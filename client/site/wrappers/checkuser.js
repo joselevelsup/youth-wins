@@ -7,19 +7,21 @@ export default (WComponent) => {
     class Checkuser extends React.Component{
         constructor(){
             super();
-            this.state = {
-                auth: true,
-                redirect: false
-            };
+            this.state = {};
         }
-
         componentDidMount(){
-            this.props.dispatch(getCurrentUser()).catch(err => {
+            const { user } = this.props;
+            if(user && user.loggedIn == false){
                 this.setState({
                     auth: false,
                     redirect: true
                 });
-            })
+            } else {
+                this.setState({
+                    auth: true,
+                    redirect: false
+                });
+            }
         }
 
         render(){
@@ -29,17 +31,15 @@ export default (WComponent) => {
                         this.state.auth ?
                         <WComponent {...this.props} />
                         :
-                        <React.Fragment>
-                            {
-                                this.state.redirect &&
-                                <Redirect to="/" />
-                            }
-                        </React.Fragment>
+                        this.state.redirect &&
+                            <Redirect to="/login" />
                     }
                 </div>
             );
         }
     }
 
-    return connect()(Checkuser);
+    return connect(state => ({
+        user: state.user
+    }))(Checkuser);
 }

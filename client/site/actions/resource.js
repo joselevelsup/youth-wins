@@ -23,7 +23,7 @@ export const applyFail = err => ({
 export const applyResource = (id) => ({
     type: API,
     payload: {
-        url: API_RESOURCE,
+        url: API_RESOURCE+"/apply",
         data: {
             resourceId: id
         },

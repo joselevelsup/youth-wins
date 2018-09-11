@@ -32,10 +32,6 @@ const userModel = new mongoose.Schema({
     categoriesOfInterest: {
         type: mongoose.Schema.Types.Array,
         default: []
-    },
-    appliedTo: {
-        type: [mongoose.Schema.Types.Array],
-        default: []
     }
 });
 

@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 const resourceModel = new mongoose.Schema({
     organizationName: String,
     contactEmail: String,
+    email: String,
     logo: String,
     description: String,
     website: String,

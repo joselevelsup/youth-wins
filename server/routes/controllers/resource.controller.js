@@ -1,9 +1,10 @@
-import { Resource } from "../../models/resource";
-import { uploadImage } from "../../helpers/aws";
 
+import { Resource, AppliedCase } from "../../models/";
+import { getImage, uploadImage } from "../../helpers/aws";
 
 export function getUserResources(req, res){
-    Resource.find({"approved": true}).then((resources) => {
+    Resource.find({"approved": true}).then((r) => {
+        let resources = getImage(r);
         res.status(200).json({
             "success": true,
             "resources": resources
@@ -15,9 +16,8 @@ export function getUserResources(req, res){
     });
 }
 
-
 export function getOneResource(req, res){
-    Resource.findOne({"shortUrl": req.params.resourceId}).then((resource) => {
+    Resource.findOne({"_id": req.params.resourceId}).then((resource) => {
         res.status(200).json({
             "success": true,
             "resource": resource
@@ -25,7 +25,7 @@ export function getOneResource(req, res){
     }).catch((err) => {
         console.log(err);
         res.status(500);
-    })
+    });
 }
 
 export function applyResource(req, res){
@@ -34,7 +34,13 @@ export function applyResource(req, res){
             applicants: req.user._id
         }
     }).then((data) => {
+        return new AppliedCase({
+            user: req.user._id,
+            resource: req.body.resourceId
+        }).save();
+    }).then(data => {
         res.status(200).json({
+            success: true,
             message: "applied"
         });
     }).catch((err) => {
@@ -87,28 +93,5 @@ export function createResource(req, res){
             "success": false,
             "message": "Unable to create Resource"
         });
-    });
-}
-
-
-export function updateResource(req, res){
-    Resource.findOneAndUpdate({"shortUrl": req.params.resourceId}).then((result) => {
-        res.status(200).json({
-            "success": true,
-        });
-    }).catch((err) => {
-        console.log(err);
-        res.status(500);
-    })
-}
-
-export function deleteResource(req, res){
-    Resource.findOneAndRemove({"shortUrl": req.params.resourceId}).then((result) => {
-        res.status(200).json({
-            "success": true
-        });
-    }).catch((err) => {
-        console.log(err);
-        res.status(500);
     });
 }

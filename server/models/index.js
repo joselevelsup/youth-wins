@@ -1,11 +1,11 @@
 import { User, Admin } from "./user";
 import { Resource } from "./resource";
-import { AdminCase } from "./case";
+import { AppliedCase } from "./case";
 
 
 export {
     User,
     Admin,
     Resource,
-    AdminCase
+    AppliedCase
 };

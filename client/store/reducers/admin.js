@@ -4,6 +4,9 @@ import {
     ADMIN_RES_S,
     ADMIN_USERS_S,
     ADMIN_APPS_S,
+    ADMIN_APPS_F,
+    ADMIN_APPS_D_S,
+    ADMIN_APPS_D_F,
     CREATED_RES_S,
     CREATED_RES_F,
     APPROVED_RES_S,
@@ -44,6 +47,22 @@ export const adminUsers = (state = initialState, action) => {
             applicants: action.payload.users,
             staff: action.payload.admins,
         };
+    default:
+        return state || initialState;
+    }
+}
+
+
+export const adminApps = (state = initialState, action) => {
+    switch(action.type){
+    case ADMIN_APPS_S:
+    case ADMIN_APPS_F:
+        return action.payload;
+
+    case ADMIN_APPS_D_S:
+    case ADMIN_APPS_D_F:
+        return action.payload;
+
     default:
         return state || initialState;
     }

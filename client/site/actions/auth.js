@@ -3,7 +3,9 @@ import {
     LOGIN,
     LOG_IN,
     USER_S,
-    CURRENT_USER
+    CURRENT_USER,
+	SIGNUP,
+	SIGN_UP
 } from "../constants/constants";
 
 export const loginSuccess = data => ({
@@ -29,6 +31,28 @@ export const logIn = ({ email, password }) => ({
         error: loginError
     }
 });
+
+export const signupSuccess = data => ({
+	type: SIGN_UP,
+	payload: data
+})
+
+export const signupError = err => ({
+	type: "SIGN_UP_F",
+	payload: err
+})
+
+
+export const signUp = data => ({
+	type: API,
+	payload: {
+		url: SIGNUP,
+		method: "POST",
+		success: signupSuccess,
+		error: signupError,
+		data
+	}
+})
 
 export const currentSuccess = data => ({
     type: USER_S,

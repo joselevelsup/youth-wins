@@ -27,14 +27,17 @@ export function uploadImage(file, user, type){
     });
 }
 
-export function replaceImage(file, user, type){
+export function replaceImage(file, d, type){
     let params = {
         Bucket: bucket,
-        Key: user.profile
+        Key: d.profile || d.logo
     };
+
 
     return new Promise((resolve, reject) => {
         s3.deleteObject(params, (err, data) => {
+            let user = d.id || d._id;
+            console.log(user);
             if(err){
                 reject(err);
             }

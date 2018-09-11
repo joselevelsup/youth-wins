@@ -181,4 +181,17 @@ h1 {
 figure {
 	margin: 0;
 	position: relative;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.home-login {
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+}
+
+.home-logo {
+	width: 20vw;
 }

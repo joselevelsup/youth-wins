@@ -13,14 +13,13 @@ import {
     updateStaff,
     deleteStaff,
     updateUser,
-    deleteUser
+    deleteUser,
+    getAllApplications,
+    deleteApplication
 } from "../controllers/admin.controller";
-
+ 
 const adminRouter = Router();
 
-//adminRouter
-    // .get("/", checkAdmin, getAllCases)
-    // .get("/:caseId", checkAdmin, getCaseById)
 adminRouter.get("/resources", getResources);
 adminRouter.post("/resources", createResource);
 adminRouter.put("/resources", updateResource);
@@ -37,6 +36,7 @@ adminRouter.put("/users/s", updateStaff);
 adminRouter.delete("/users/s", deleteStaff);
 // adminRouter.put("/users", updateUser);
 
-
+adminRouter.get("/apps", getAllApplications);
+adminRouter.delete("/apps", deleteApplication);
 
 export default adminRouter;
