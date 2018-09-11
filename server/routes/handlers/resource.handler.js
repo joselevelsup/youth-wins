@@ -10,6 +10,7 @@ const resourceRouter = Router();
 
 resourceRouter
     .get("/", getUserResources)
+    .post("/create-resource",  createResource)
     .post("/apply", applyResource)
 
 export default resourceRouter;
