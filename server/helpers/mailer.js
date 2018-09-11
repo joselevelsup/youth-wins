@@ -20,8 +20,10 @@ export const sendUserInfo = (to, resource, user) => {
 
         mailHelper.sendMail(mailOpts, function(err, info){
             if(err){
+                console.log(err);
                 reject(err);
             } else {
+                console.lgo(info);
                 resolve(info);
             }
         });
