@@ -26,14 +26,11 @@ export function getOneUser(req, res){
 
 export function userSuggestedResources(req, res){
 	Resource.find({"approved": true}).then(resources => {
-
 		const suggestions = resources.filter(resource => (
-				resource.stateServed == req.user.state && 
-				resource.ethnicityServed == req.user.ethnicity &&
+				resource.stateServed.includes(req.user.state) && 
+				resource.ethnicityServed.includes(req.user.ethnicity) &&
 				!!_.intersection(resource.categories, req.user.categoriesOfInterest).length
 		));
-
-      console.log(suggestions);
 
 		res.status(200).json({
 			resources: suggestions
