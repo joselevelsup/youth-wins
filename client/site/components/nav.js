@@ -15,13 +15,13 @@ const MainNav = ({ user }) => (
                 user.loggedIn == false ?
                 <React.Fragment>
                   <div className="offset-md-1 col align-self-center">
+                    <NavLink to="/resources" className="link" activeClassName="active">Resources</NavLink>
+                  </div>
+                  <div className="col align-self-center">
                     <NavLink to="/about" className="link" activeClassName="active">About Us</NavLink>
                   </div>
                   <div className="col align-self-center">
                     <NavLink to="/support" className="link" activeClassName="active">Support Us</NavLink>
-                  </div>
-                  <div className="col align-self-center">
-                    <NavLink to="/login" className="link" activeClassName="active">Login</NavLink>
                   </div>
                 </React.Fragment>
             :

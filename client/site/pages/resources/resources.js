@@ -11,10 +11,14 @@ import {
     Input
 } from "reactstrap";
 import Ionicon from "react-ionicons";
+import { reduxForm, Field } from "redux-form";
+import { states } from "../../constants/states";
+import { ethnicity } from "../../constants/ethicity";
 import { YouthModal, ResourceModal } from "../../components/modal";
 import { fetchResources, applyResource } from "../../actions/resource";
 import { chunk } from "../../components/helpers";
 import { ResourceItem } from "../../components/items";
+import { Select } from "../../components/forms";
 
 class Resources extends React.Component {
 
@@ -24,13 +28,17 @@ class Resources extends React.Component {
         this.state = {
             modal: false,
             infoModal: false,
-            resource: null
-        }
+            resource: null,
+            res: null,
+            filtered: false
+        };
 
         this.applyResource = this.applyResource.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
         this.openInfoModal = this.openInfoModal.bind(this);
         this.toggleInfoModal = this.toggleInfoModal.bind(this);
+        this.filter = this.filter.bind(this);
+        this.searchText = this.searchText.bind(this);
     }
 
     componentDidMount(){
@@ -66,11 +74,51 @@ class Resources extends React.Component {
         });
     }
 
+    filter(values){
+        const { resources, reset } = this.props;
+
+        if(values.reset){
+            this.setState({
+                filtered: false
+            });
+            reset();
+        } else {
+            let filteredResources = resources.filter(r => {
+                if(r.stateServed.some(s => s === values.state) || r.ethnicityServed.some(e => e === values.ethnicity) || r.categories.some(c => c === values.categories)){
+                    return r;
+                }
+            });
+
+            this.setState({
+                filtered: true,
+                res: filteredResources
+            });
+        }
+
+    }
+
+    searchText(e){
+        const { resources } = this.props;
+
+        if(e.target.value == ""){
+            this.setState({
+                filtered: false
+            });
+        } else {
+            let filtered = resources.filter(r => r.organizationName.toLowerCase() === e.target.value.toLowerCase());
+
+            this.setState({
+                filtered: true,
+                res: filtered
+            });
+        }
+    }
 
     render(){
-        const { resources } = this.props;
+        const { resources, user } = this.props;
+        const { res, filtered } = this.state;
         return (
-            <Container>
+            <React.Fragment>
                 <Row>
                     <br />
                 </Row>
@@ -81,32 +129,81 @@ class Resources extends React.Component {
                 </Row>
                 <Row>
                     <Col md={{size: 4, offset: 4}}>
-                        <InputGroup>
-                            <Input placeholder="Search" />
+                        <InputGroup className="searchText">
+                          <Input placeholder="Search" onChange={this.searchText} />
                             <InputGroupAddon addonType="append">
                                 <InputGroupText><Ionicon icon="ios-search" /></InputGroupText>
                             </InputGroupAddon>
                         </InputGroup>
                     </Col>
                 </Row>
+              <br />
+              <form>
+                <Row>
+                  <Col md={{size: 2, offset: 1}}>
+                    <Field component={Select} className="form-control filter" name="state">
+                      <option value={null}>Select State</option>
+                      {
+                          states.map(s => (
+                              <option value={s.abbreviation}>{s.name}</option>
+                          ))
+                      }
+                    </Field>
+                  </Col>
+                  <Col md={2}>
+                    <Field component={Select} className="form-control filter" name="ethnicity">
+                      <option value={null}>Select Ethnicity</option>
+                      {
+                          ethnicity.map(e => (
+                              <option value={e}>{e}</option>
+                          ))
+                      }
+                    </Field>
+                  </Col>
+                  <Col md={2}>
+                    <Field component={Select} className="form-control filter" name="categories">
+                      <option value={null}>Select Category</option>
+                      <option value="Healthcare">Healthcare</option>
+                      <option value="Housing">Housing</option>
+                      <option value="Technology">Technology</option>
+                    </Field>
+                  </Col>
+                  <Col md={2}>
+                    <button className="btn btn-secondary btn-block" onClick={this.props.handleSubmit(this.filter)}>Filter</button>
+                  </Col>
+                  <Col md={2}>
+                    <button className="btn btn-secondary btn-block" onClick={this.props.handleSubmit((values, dispatch) => this.filter({ ...values, reset: true }))}>Reset</button>
+                  </Col>
+                </Row>
+              </form>
                 <Row>
                     {
-                       resources && resources.map(r => (
-                            <ResourceItem full={true} resource={r} openResource={this.openInfoModal} apply={this.applyResource} />
+                        (resources && !filtered) && resources.map(r => (
+                            <ResourceItem full={true} resource={r} openResource={this.openInfoModal} apply={(user && user.loggedIn == false) ? this.toggleModal : this.applyResource} />
                         ))
                     }
+                  {
+                      (res && filtered) && res.map(r => (
+                          <ResourceItem full={true} resource={r} openResource={this.openInfoModal} apply={(user && user.loggedIn == false) ? this.toggleModal : this.applyResource} />
+                      ))
+                  }
                 </Row>
                 <ResourceModal open={this.state.infoModal} toggle={this.toggleInfoModal} apply={this.applyResource} resource={this.state.resource} />
-                <YouthModal open={this.state.modal} toggle={this.toggleModal} />
-            </Container>
+              <YouthModal open={this.state.modal} push={this.props.history.push} applying={(user && user.loggedIn == false) ? false : true} toggle={this.toggleModal} />
+            </React.Fragment>
         );
     }
 }
 
 function mapStateToProps(state){
     return {
-        resources: state.resources
+        resources: state.resources,
+        user: state.user
     };
 }
 
-export default connect(mapStateToProps)(Resources)
+const ResourcesF = reduxForm({
+    form: "resource-filter"
+})(Resources);
+
+export default connect(mapStateToProps)(ResourcesF)
