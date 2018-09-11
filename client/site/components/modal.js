@@ -2,6 +2,9 @@ import React from "react";
 import { connect } from "react-redux";
 import { Field } from "redux-form";
 import DropzoneInput from "../components/dropzone";
+import SelectField from "../components/multi-select";
+import { ethnicity } from "../constants/ethnicity";
+import { states } from "../constants/states";
 import {
     Button,
     Modal,
@@ -32,89 +35,110 @@ export const YouthModal = ({ open, toggle, applying, push }) => (
     </Modal>
 );
 
-export const ResourceModal = ({ open, toggle, resource, apply, admin, edit, remove, approve, deny, status }) => (
-    <Modal isOpen={open} toggle={toggle}>
-        <div className="modal-header">
-            <Container fluid={true}>
-                <Row>
+export class ResourceModal extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            checked: props.status || null
+        };
+
+        this.toggleResponse = this.toggleResponse.bind(this);
+    }
+
+    toggleResponse(e){
+        this.props.toggleResponse(this.state.checked);
+        this.setState({
+            checked: !this.state.checked
+        });
+    }
+
+    render(){
+        const { open, toggle, resource, apply, admin, edit, remove, approve, deny, status } = this.props;
+        return (
+            <Modal isOpen={open} toggle={toggle}>
+              <div className="modal-header">
+                <Container fluid={true}>
+                  <Row>
                     <Col md={{size: 1, offset: 11}}>
-                        <Button color="clear" onClick={toggle}>X</Button>
+                      <Button color="clear" onClick={toggle}>X</Button>
                     </Col>
-                </Row>
-            </Container>
-        </div>
-        <ModalBody>
-            {
-                resource &&
-                    <React.Fragment>
-                <Row>
-                    <Col md={4}>
-                        <img className="img-fluid rounded-circle" src={resource.logo} />
-                    </Col>
-                    <Col>
-                        <Row>
-                           <h3> {resource.organizationName}</h3>
-                        </Row>
-                        <Row>
-                            <p>{resource.description}</p>
-                        </Row>
-                    </Col>
-                </Row>
-                    <React.Fragment>
-                    {
-                      (typeof status !== "undefined") &&
-                            <Row>
-                              <Col md={{size: 2, offset: 4}} className="text-center">
-                                <label className="custom-check">
-                                  <input type="checkbox" checked={status} />
-                                  <span className="checkmark"></span>
-                                </label>
+                  </Row>
+                </Container>
+              </div>
+              <ModalBody>
+                {
+                    resource &&
+                        <React.Fragment>
+                          <Row>
+                            <Col md={4}>
+                              <img className="img-fluid rounded-circle" src={resource.logo} />
+                            </Col>
+                            <Col>
+                              <Row>
+                                <h3> {resource.organizationName}</h3>
+                              </Row>
+                              <Row>
+                                <p>{resource.description}</p>
+                              </Row>
+                            </Col>
+                          </Row>
+                          <React.Fragment>
+                            {
+                                (typeof status !== "undefined") &&
+                                    <Row>
+                                      <Col md={{size: 2, offset: 4}} className="text-center">
+                                        <label className="custom-check">
+                                          <input type="checkbox" checked={this.state.checked} onChange={this.toggleResponse}  />
+                                          <span className="checkmark"></span>
+                                        </label>
+                                      </Col>
+                                      <Col className="align-self-center">
+                                        <div className="align-middle">
+                                          <h5>Responded</h5>
+                                        </div>
+                                      </Col>
+                                    </Row>
+                            }
+                          </React.Fragment>
+                        </React.Fragment>
+                }
+              </ModalBody>
+              <React.Fragment>
+                {
+                    apply &&
+                        <ModalFooter>
+                          <Col md={{size: 3, offset: 9}}>
+                            <Button className="primary" onClick={() => apply(resource._id)}>Apply</Button>
+                          </Col>
+                        </ModalFooter>
+                }
+                {
+                    (resource && admin) && (
+                        resource.pending ?
+                            <ModalFooter>
+                              <Col md={{size: 4, offset: 4}}>
+                                <Button onClick={approve} block color="primary">Approve</Button>
                               </Col>
-                              <Col className="align-self-center">
-                                <div className="align-middle">
-                                  <h5>Responded</h5>
-                                </div>
+                              <Col md={4}>
+                                <Button onClick={deny} block color="secondary">Deny</Button>
                               </Col>
-                            </Row>
-                    }
-                    </React.Fragment>
-                </React.Fragment>
-            }
-        </ModalBody>
-        <React.Fragment>
-            {
-                apply &&
-                <ModalFooter>
-                    <Col md={{size: 3, offset: 9}}>
-                        <Button className="primary" onClick={() => apply(resource._id)}>Apply</Button>
-                    </Col>
-                </ModalFooter>
-            }
-            {
-                (resource && admin) && (
-                    resource.pending ?
-                    <ModalFooter>
-                        <Col md={{size: 4, offset: 4}}>
-                          <Button onClick={approve} block color="primary">Approve</Button>
-                        </Col>
-                        <Col md={4}>
-                          <Button onClick={deny} block color="secondary">Deny</Button>
-                        </Col>
-                    </ModalFooter>
-                    :
-                    <ModalFooter>
-                        <Col md={{size: 4, offset: 4}}>
-                          <Button onClick={edit} block color="primary">Edit</Button>
-                        </Col>
-                        <Col md={4}>
-                          <Button onClick={remove} block color="secondary">Remove</Button>
-                        </Col>
-                    </ModalFooter>
+                            </ModalFooter>
+                        :
+                        <ModalFooter>
+                          <Col md={{size: 4, offset: 4}}>
+                            <Button onClick={edit} block color="primary">Edit</Button>
+                          </Col>
+                          <Col md={4}>
+                            <Button onClick={remove} block color="secondary">Remove</Button>
+                          </Col>
+                        </ModalFooter>
                     )
-            }
-        </React.Fragment>
-    </Modal>
-);
+                }
+              </React.Fragment>
+            </Modal>
+        )
+    }
+}
 
 
 export const StaffModal = ({ open, toggle, staff, deleteStaff }) => (
@@ -247,6 +271,15 @@ export class CreateResource extends React.Component {
         const { open, toggle, create, createValues } = this.props;
         return (
             <Modal isOpen={open} toggle={toggle} size="lg">
+              <div className="modal-header">
+                <Container fluid={true}>
+                  <Row>
+                    <Col md={{size: 1, offset: 11}}>
+                      <Button color="clear" onClick={toggle}>X</Button>
+                    </Col>
+                  </Row>
+                </Container>
+              </div>
               <ModalBody>
                 <form onSubmit={create}>
                   <Row>
@@ -275,6 +308,16 @@ export class CreateResource extends React.Component {
 						            <label>Contact Email</label>
 						            <Field name="contactEmail" className="form-control" component="input" type="text" />
 					            </div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md={6}>
+                      <label>Ethnicity Served</label>
+                      <Field component={SelectField} name="ethnicityServed" options={ethnicity.map(e => ({ value: e, label: e}))} />
+                    </Col>
+                    <Col md={6}>
+                      <label>State Served</label>
+                      <Field component={SelectField} name="stateServed" options={states.map(s => ({ value: s.abbreviation, label: s.name}))} />
                     </Col>
                   </Row>
                   <Row>
@@ -362,6 +405,16 @@ export class EditResource extends React.Component{
 						            <label>Contact Email</label>
 						            <Field name="contactEmail" className="form-control" component="input" type="text" />
 					            </div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md={6}>
+                      <label>Ethnicity Served</label>
+                      <Field component={SelectField} name="ethnicityServed" options={ethnicity.map(e => ({ value: e, label: e}))} />
+                    </Col>
+                    <Col md={6}>
+                      <label>State Served</label>
+                      <Field component={SelectField} name="stateServed" options={states.map(s => ({ value: s.abbreviation, label: s.name}))} />
                     </Col>
                   </Row>
                   <Row>
@@ -459,12 +512,19 @@ export const CreateStaff = ({ open, toggle, create }) => (
                 <div className="row">
                   <div className="col-12">
                     <label>Bio</label>
-                    <Field name="bio" className="form-control" component="textarea" />
+                    <Field name="description" className="form-control" component="textarea" />
                   </div>
                 </div>
               </div>
             </div>
-					  <Button color="warning" type="submit">submit</Button>
+            <div className="row">
+              <br />
+            </div>
+            <div className="row">
+              <div className="offset-4 col-4">
+					      <Button color="warning" className="btn-swerve" block type="submit">Create</Button>
+              </div>
+            </div>
           </form>
       </ModalBody>
     </Modal>

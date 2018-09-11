@@ -13,15 +13,20 @@ import Dashboard from "./dashboard/dashboard";
 import Resources from "./resources/resources";
 import AdminPanel from "./admin/panel";
 import { CheckUser, CheckAdmin } from "../wrappers";
+import { getContent } from "../actions/auth";
 import "../style/app.scss";
 
 
 class Root extends Component {
 
+    componentDidMount(){
+        this.props.dispatch(getContent());
+    }
+
 	  render(){
 		    return (
             <React.Fragment>
-              <MainNavBar />
+              <MainNavBar push={this.props.history.push} />
               <Container fluid={true}>
 			          <Switch>
 				          <Route exact path="/" component={Home}/>
@@ -31,7 +36,7 @@ class Root extends Component {
 				          <Route exact path="/about" component={AboutUs}/>
                   <Route exact path="/dashboard" component={Dashboard}/>
 				          <Route exact path="/resources" component={Resources}/>
-                  <Route exact path="/admin" component={AdminPanel} />
+                  <Route exact path="/admin" component={CheckAdmin(AdminPanel)} />
 				          <Route component={Landing}/>
 			          </Switch>
               </Container>
@@ -40,7 +45,6 @@ class Root extends Component {
 	  }
 }
 
-const mapStateToProps = state => state
 
-const RootComponent = withRouter(connect(mapStateToProps)(Root))
+const RootComponent = withRouter(connect()(Root))
 export default RootComponent

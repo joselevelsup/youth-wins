@@ -1,6 +1,6 @@
-import { User, AppliedCase, Resource } from "../../models";
+
+import { User, AppliedCase, CMS, Admin, Resource } from "../../models";
 import * as _ from 'lodash'
-import { getImage } from '../../helpers/aws'
 
 export function currentUser(req, res){
     if(req.user){
@@ -40,7 +40,8 @@ export function userSuggestedResources(req, res){
 }
 
 export function userAppliedResources(req, res){
-    AppliedCase.find({ "user": req.user._id}).populate("resource").then(apps => {
+    AppliedCase.find({ "user": req.user._id}).populate("resource").then(a => {
+        let apps = getImage(a);
         res.status(200).json({
             "success": true,
             "applications": apps
@@ -53,3 +54,45 @@ export function userAppliedResources(req, res){
     });
 }
 
+export function appendContent(req, res){
+    CMS.findOne().then(data => {
+        Admin.find().then(a => {
+            let admins = getImage(a);
+            let teamMap = admins.filter(a => data.team.filter(t => a._id.toString() === t.toString()));
+            let content = Object.assign({team: teamMap}, { home: data.home, aboutUs: data.aboutUs, supportUs: data.supportUs });
+            res.status(200).json({
+                "success": true,
+                "content": content
+            });
+        }).catch(err => {
+            res.status(500).json({
+                "success": false,
+                "message": "unable to get data"
+            });
+        });
+    }).catch(err => {
+        res.status(500).json({
+            "success": false,
+            "message": "unable to get data"
+        });
+    });
+}
+
+
+export function toggleResponse(req, res){
+    console.log(req.body);
+    AppliedCase.findOneAndUpdate({ "_id": req.body.appId }, {
+        $set: {
+            "status": !req.body.status
+        }
+    }, { new: true }).then(data => {
+        console.log(data);
+        res.status(200).json({
+            "success": true
+        });
+    }).catch(err => {
+        res.status(500).json({
+            "success": false
+        });
+    });
+}

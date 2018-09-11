@@ -3,7 +3,9 @@ import { Router } from "express";
 import {
     userSuggestedResources,
     userAppliedResources,
-    currentUser
+    currentUser,
+    appendContent,
+    toggleResponse
 } from "../controllers/user.controller";
 
 const userRouter = Router();
@@ -13,4 +15,7 @@ userRouter
     .get("/apps", userAppliedResources)
     .get("/suggested", userSuggestedResources);
 
+userRouter.get("/content", appendContent);
+
+userRouter.post("/apps/toggle", toggleResponse);
 export default userRouter;

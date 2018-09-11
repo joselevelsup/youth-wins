@@ -30,18 +30,15 @@ module.exports = (passport) => {
                                                                   }
 
                                                                   if(!admin){
-                                                                      console.log("not admin either");
                                                                       return done(null, false);
                                                                   }
 
                                                                   if(admin && bcrypt.compareSync(password, admin.password)){
-                                                                      console.log("admin");
                                                                       return done(null, admin);
                                                                   }
                                                               })
                                                           }
                                                           if (user && bcrypt.compareSync(password, user.password)) {
-                                                              console.log("user");
                                                               return done(null, user);
                                                           }
                                                       });

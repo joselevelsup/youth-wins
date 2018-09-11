@@ -30,14 +30,13 @@ export function uploadImage(file, user, type){
 export function replaceImage(file, d, type){
     let params = {
         Bucket: bucket,
-        Key: d.profile || d.logo
+        Key: d.profile || d.logo || d.bannerImage
     };
 
 
     return new Promise((resolve, reject) => {
         s3.deleteObject(params, (err, data) => {
-            let user = d.id || d._id;
-            console.log(user);
+            let user = d.id || d._id || d.type;
             if(err){
                 reject(err);
             }
@@ -52,16 +51,28 @@ export function replaceImage(file, d, type){
 }
 
 export function getImage(arr){
-    arr.map(a => {
-        if(a.profile){
-            a.profile = `https://${bucket}.s3.amazonaws.com/${a.profile}`;
-        }
-        if(a.logo){
-            a.logo = `https://${bucket}.s3.amazonaws.com/${a.logo}`;
-        }
+    if(arr.length > 1){
+        arr.map(a => {
+            if(a.profile){
+                a.profile = `https://${bucket}.s3.amazonaws.com/${a.profile}`;
+            }
+            if(a.logo){
+                a.logo = `https://${bucket}.s3.amazonaws.com/${a.logo}`;
+            }
 
-        return a;
-    });
+            if(a.resource){
+                a.resource.logo = `https://${bucket}.s3.amazonaws.com/${a.resource.logo}`;
+            }
 
-    return arr;
+            return a;
+        });
+
+        return arr;
+    } else {
+        if(arr.logo){
+            let newLink = `https://${bucket}.s3.amazonaws.com/${arr.logo}`;
+            let newObj = Object.assign({ logo: newLink }, arr);
+            return newObj;
+        }
+    }
 }

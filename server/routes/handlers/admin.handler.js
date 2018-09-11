@@ -17,8 +17,23 @@ import {
     getAllApplications,
     deleteApplication
 } from "../controllers/admin.controller";
- 
+
+
+import {
+    getAllContent,
+    updateHomeContent,
+    updateSupportContent,
+    updateAboutContent,
+    addMember
+} from "../controllers/cms.controller";
 const adminRouter = Router();
+
+adminRouter.get("/cms/e", getAllContent);
+adminRouter.put("/cms/home", updateHomeContent);
+adminRouter.put("/cms/support", updateSupportContent);
+adminRouter.put("/cms/about", updateAboutContent);
+
+adminRouter.post("/cms/add-member", addMember);
 
 adminRouter.get("/resources", getResources);
 adminRouter.post("/resources", createResource);

@@ -1,0 +1,10 @@
+{
+    "isStaff" : true,
+    "email" : "joselevelsup@gmail.com",
+    "password" : "$2b$10$OybGbKbDQpyCZDCf2.0/l.TfWe84V4yQHi4jeslrlH/wWLbjGjIyW",
+    "firstName" : "Andre",
+    "lastName" : "Watts",
+    "isAdmin" : false,
+    "__v" : 0,
+    "profile" : "admin/5b8f27d24b9296e96a29c126/5b8f27d24b9296e96a29c126.png"
+}

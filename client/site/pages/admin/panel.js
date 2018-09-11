@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import {
     Container,
     TabContent,
@@ -13,10 +14,15 @@ import {
     Row,
     Col
 } from 'reactstrap';
-import { UsersTab, ResourcesTab, ApplicationsTab } from "./tabs";
+import {
+    UsersTab,
+    ResourcesTab,
+    ApplicationsTab,
+    SettingsTab
+} from "./tabs";
 
 
-export default class AdminPanel extends React.Component {
+class AdminPanel extends React.Component {
 
     constructor(props) {
         super(props);
@@ -38,9 +44,14 @@ export default class AdminPanel extends React.Component {
    
 
     render(){
+        const { user } = this.props;
         return (
             <Container>
+              <Row>
                 <br />
+              </Row>
+              <Row>
+                 <div className="col-md-8" style={{padding: 0}}>
                 <Nav tabs>
                     <NavItem>
                         <NavLink
@@ -66,7 +77,25 @@ export default class AdminPanel extends React.Component {
                       Applications
                     </NavLink>
                   </NavItem>
+                  <NavItem>
+                    <NavLink
+                      className={this.state.activeTab === '4' ? "active": null}
+                      onClick={() => { this.toggleTab('4'); }}
+                    >
+                      Settings
+                    </NavLink>
+                  </NavItem>
                 </Nav>
+                </div>
+
+                 <div className="col-md-4 underline" style={{padding: 0}}>
+                  {
+                      user &&
+                          <h4>Welcome {user.firstName} {user.lastName}</h4>
+                  }
+                </div>
+              </Row>
+                <br />
                 <TabContent activeTab={this.state.activeTab}>
                     <TabPane tabId="1">
                         <ResourcesTab  />
@@ -77,8 +106,15 @@ export default class AdminPanel extends React.Component {
                   <TabPane tabId="3">
                     <ApplicationsTab />
                   </TabPane>
+                  <TabPane tabId="4">
+                    <SettingsTab />
+                  </TabPane>
                 </TabContent>
             </Container>
         );
     }
 }
+
+export default connect(state => ({
+    user: state.user
+}))(AdminPanel);

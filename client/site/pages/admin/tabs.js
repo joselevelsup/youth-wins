@@ -10,7 +10,8 @@ import {
     InputGroup,
     InputGroupAddon,
     InputGroupText,
-    Input
+    Input,
+    Alert
 } from "reactstrap";
 import Ionicon from "react-ionicons";
 import { Field, reduxForm, getFormValues } from "redux-form";
@@ -27,10 +28,18 @@ import {
     createStaff,
     deleteUser,
     getAllApplications,
-    deleteApp
-} from "../../actions/admin"
+    deleteApp,
+    getEditableContent,
+    updateHomeContent,
+    updateSupportContent,
+    updateAboutContent,
+    addMember
+} from "../../actions/admin";
+
+import { toggleResponse } from "../../actions/dashboard";
 import { ResourceModal, StaffModal, CreateResource,  UserModal, EditResource, CreateStaff } from "../../components/modal";
-import { StaffItem, UserItem, ResourceItem, AppItem } from "../../components/items";
+import { StaffItem, UserItem, ResourceItem, AppItem, TeamItem } from "../../components/items";
+import DropzoneInput from "../../components/dropzone";
 import { shorten } from "../../util/helpers";
 import "./tabs.scss";
 
@@ -392,6 +401,8 @@ class AppsT extends React.Component {
         this.openResource = this.openResource.bind(this);
         this.toggleResource = this.toggleResource.bind(this);
         this.deleteApplication = this.deleteApplication.bind(this);
+        this.toggleResponse = this.toggleResponse.bind(this);
+
     }
 
     loadApps(){
@@ -408,12 +419,18 @@ class AppsT extends React.Component {
         });
     }
 
-    openResource(r, status){
+    openResource(r, status, appId){
         this.setState({
             resource: r,
+            appId: appId,
             status: status,
             resourceModal: true
         });
+    }
+
+    toggleResponse(status){
+        this.props.dispatch(toggleResponse(status, this.state.appId));
+        this.loadApps();
     }
 
     deleteApplication(appId){
@@ -446,14 +463,17 @@ class AppsT extends React.Component {
                 </Col>
               </Row>
               <Row>
+                <br />
+              </Row>
+              <Row>
                 {
                     apps &&
                        apps.applications && apps.applications.map(a => (
-                           <AppItem size={4} appId={a._id} deleteApp={this.deleteApplication} resource={a.resource} openResource={this.openResource} status={a.status}/>
+                           <AppItem size={4}  appId={a._id} deleteApp={this.deleteApplication} resource={a.resource} openResource={this.openResource} status={a.status}/>
                         ))
                 }
               </Row>
-              <ResourceModal open={this.state.resourceModal} resource={this.state.resource} toggle={this.toggleResource} status={this.state.status} />
+              {this.state.resource && <ResourceModal open={this.state.resourceModal} resource={this.state.resource} toggle={this.toggleResource} status={this.state.status} toggleResponse={this.toggleResponse} />}
             </Container>
         );
     }
@@ -462,3 +482,366 @@ class AppsT extends React.Component {
 export const ApplicationsTab = connect(state => ({
     apps: state.adminApps
 }))(AppsT)
+
+
+class SettingsT extends React.Component{
+    constructor(){
+        super();
+
+        this.state = {
+            view: 1,
+            homeUpdate: false,
+            supportUpdate: false,
+            aboutUpdate: false
+        };
+
+        this.loadContent = this.loadContent.bind(this);
+        this.updateHome = this.updateHome.bind(this);
+        this.updateSupport = this.updateSupport.bind(this);
+        this.updateAbout = this.updateAbout.bind(this);
+        this.addToSite = this.addToSite.bind(this);
+    }
+
+    loadContent(){
+        this.props.dispatch(getEditableContent());
+    }
+
+    componentDidMount(){
+        this.loadContent();
+    }
+
+    updateHome(values, dispatch){
+        const { home } = values;
+
+        dispatch(updateHomeContent(home)).then(data => {
+            if(data.success){
+                this.setState({
+                    homeUpdate: true
+                });
+            }
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
+    updateSupport(values, dispatch){
+        const { support } = values;
+
+        dispatch(updateSupportContent(support)).then(data => {
+            if(data.success){
+                this.setState({
+                    supportUpdate: true
+                });
+            }
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
+    updateAbout(values, dispatch){
+        const { about } = values;
+
+        dispatch(updateAboutContent(about)).then(data => {
+            if(data.success){
+                this.setState({
+                    aboutUpdate: true
+                });
+            }
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
+    addToSite(id){
+        this.props.dispatch(addMember(id)).then(data => {
+            if(data.success){
+                this.loadContent();
+            }
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
+    render(){
+        const { homeCms, aboutCms, supportCms, team, staff } = this.props;
+        const { homeUpdate, aboutUpdate, supportUpdate } = this.state;
+        return (
+            <Container>
+              <Row>
+                <br />
+              </Row>
+              <Row>
+                <Col md={12} className="text-center">
+                  <h3>Settings</h3>
+                </Col>
+              </Row>
+              <Row>
+                <br />
+              </Row>
+              <Row>
+                <Col md={3} className="text-center">
+                  <button className={this.state.view == 1 ? "btn btn-secondary btn-lg w-50" : "btn btn-outline-secondary btn-lg w-50"} onClick={() => this.setState({ view: 1 })}> Home</button>
+                </Col>
+                <Col md={3} className="text-center">
+                  <button className={this.state.view == 2 ?  "btn btn-secondary btn-lg w-50" : "btn btn-outline-secondary btn-lg w-50" } onClick={() => this.setState({ view: 2 })}> About Us</button>
+                </Col>
+                <Col md={3} className="text-center">
+                  <button className={this.state.view == 3 ?  "btn btn-secondary btn-lg w-50" : "btn btn-outline-secondary btn-lg w-50" } onClick={() => this.setState({ view: 3 })}> Support Us</button>
+                </Col>
+                <Col md={3} className="text-center">
+                  <button className={this.state.view == 4 ?  "btn btn-secondary btn-lg w-50" : "btn btn-outline-secondary btn-lg w-50" } onClick={() => this.setState({ view: 4 })}> Team</button>
+                </Col>
+              </Row>
+              <Row>
+                <br />
+              </Row>
+
+              {
+                  (this.state.view === 1 && homeCms) &&
+                      <Container>
+                        {
+                            homeUpdate &&
+                                <Alert color="success">
+                                  Home Page Data Successfully Updated
+                                </Alert>
+                        }
+
+                        <form onSubmit={this.props.handleSubmit(this.updateHome)}>
+                        <Row>
+                          <Col md={{size: 4, offset: 4}}>
+                            <label><h5>Banner Text</h5></label>
+                            <Field className="form-control" component="input" type="text" name="home.bannerText" />
+                          </Col>
+                        </Row>
+                        <Row>
+                          <br />
+                        </Row>
+                        <Row>
+                          <Col md={{size: 4, offset: 4}}>
+                            <label><h5>Banner Image</h5></label>
+                            <Field component={DropzoneInput} name="home.bannerImage" />
+                          </Col>
+                        </Row>
+                        <Row>
+                          <br />
+                        </Row>
+                        <Row>
+                          <Col md={{size: 4, offset: 4}}>
+                            <label><h5>Title Text</h5></label>
+                            <Field className="form-control" component="input" type="text" name="home.titleText" />
+                          </Col>
+                        </Row>
+                        <Row>
+                          <br />
+                        </Row>
+                        <Row>
+                          <Col md={{size: 4, offset: 4}}>
+                            <label><h5>Body Text</h5></label>
+                            <Field className="form-control" component="textarea" name="home.body" />
+                          </Col>
+                        </Row>
+                          <Row>
+                            <br />
+                          </Row>
+                          <Row>
+                            <Col md={{size: 4, offset: 4}} className="text-center">
+                              <button className="btn btn-block btn-primary btn-swerve">Update</button>
+                            </Col>
+                          </Row>
+                        </form>
+                      </Container>
+
+              }
+
+              {
+                  (this.state.view === 2 && aboutCms) &&
+                      <Container>
+                        {
+                            aboutUpdate &&
+                                <Alert color="success">
+                                  About Page Data Successfully Updated
+                                </Alert>
+                        }
+                        <form onSubmit={this.props.handleSubmit(this.updateAbout)}>
+                        <Row>
+                          <Col md={{size: 4, offset: 1}}>
+                            <label><h5>Banner Text</h5></label>
+                            <Field className="form-control" component="input" type="text" name="about.bannerText" />
+                          </Col>
+                          <Col md={{size: 4, offset: 2}}>
+                            <label><h5>Banner Image</h5></label>
+                            <Field component={DropzoneInput} name="about.bannerImage" />
+                          </Col>
+                        </Row>
+                        <Row>
+                          <br />
+                        </Row>
+                          <Row>
+                            <Col md={6}>
+                              <Row>
+                                <Col md={12} className="text-center">
+                                  <h5>Section 1</h5>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col md={{size: 8, offset: 2}}>
+                                  <label><h5>Title Text</h5></label>
+                                  <Field className="form-control" component="input" type="text" name="about.section1Title" />
+                                </Col>
+                              </Row>
+                              <Row>
+                                <br />
+                              </Row>
+                              <Row>
+                                <Col md={{size: 8, offset: 2}}>
+                                  <label><h5>Body Text</h5></label>
+                                  <Field className="form-control" component="textarea" name="about.section1Body" />
+                                </Col>
+                              </Row>
+                            </Col>
+
+                            <Col md={6}>
+                              <Row>
+                                <Col md={12} className="text-center">
+                                  <h5>Section 2</h5>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col md={{size: 8, offset: 2}}>
+                                  <label><h5>Title Text</h5></label>
+                                  <Field className="form-control" component="input" type="text" name="about.section2Title" />
+                                </Col>
+                              </Row>
+                              <Row>
+                                <br />
+                              </Row>
+                              <Row>
+                                <Col md={{size: 8, offset: 2}}>
+                                  <label><h5>Body Text</h5></label>
+                                  <Field className="form-control" component="textarea" name="about.section2Body" />
+                                </Col>
+                              </Row>
+                            </Col>
+                          </Row>
+                        <Row>
+                          <br />
+                        </Row>
+                          <Row>
+                            <Col md={{size: 4, offset: 4}} className="text-center">
+                              <button className="btn btn-block btn-primary btn-swerve">Update</button>
+                            </Col>
+                          </Row>
+                        </form>
+                      </Container>
+              }
+
+              {
+                  (this.state.view === 3 && supportCms) &&
+                      <Container>
+                        {
+                            supportUpdate &&
+                                <Alert color="success">
+                                  Support Page Data Successfully Updated
+                                </Alert>
+                        }
+                        <form onSubmit={this.props.handleSubmit(this.updateSupport)}>
+                        <Row>
+                          <Col md={{size: 4, offset: 1}}>
+                            <label><h5>Banner Text</h5></label>
+                            <Field className="form-control" component="input" type="text" name="support.bannerText" />
+                          </Col>
+                          <Col md={{size: 4, offset: 2}}>
+                            <label><h5>Banner Image</h5></label>
+                            <Field component={DropzoneInput} name="support.bannerImage" />
+                          </Col>
+                        </Row>
+                        <Row>
+                          <br />
+                        </Row>
+                          <Row>
+                            <Col md={6}>
+                              <Row>
+                                <Col md={12} className="text-center">
+                                  <h5>Section 1</h5>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col md={{size: 8, offset: 2}}>
+                                  <label><h5>Title Text</h5></label>
+                                  <Field className="form-control" component="input" type="text" name="support.section1Title" />
+                                </Col>
+                              </Row>
+                              <Row>
+                                <br />
+                              </Row>
+                              <Row>
+                                <Col md={{size: 8, offset: 2}}>
+                                  <label><h5>Body Text</h5></label>
+                                  <Field className="form-control" component="textarea" name="support.section1Body" />
+                                </Col>
+                              </Row>
+                            </Col>
+
+                            <Col md={6}>
+                              <Row>
+                                <Col md={12} className="text-center">
+                                  <h5>Section 2</h5>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col md={{size: 8, offset: 2}}>
+                                  <label><h5>Title Text</h5></label>
+                                  <Field className="form-control" component="input" type="text" name="support.section2Title" />
+                                </Col>
+                              </Row>
+                              <Row>
+                                <br />
+                              </Row>
+                              <Row>
+                                <Col md={{size: 8, offset: 2}}>
+                                  <label><h5>Body Text</h5></label>
+                                  <Field className="form-control" component="textarea" name="support.section2Body" />
+                                </Col>
+                              </Row>
+                            </Col>
+                          </Row>
+                        <Row>
+                          <br />
+                        </Row>
+                          <Row>
+                            <Col md={{size: 4, offset: 4}} className="text-center">
+                              <button className="btn btn-block btn-primary btn-swerve">Update</button>
+                            </Col>
+                          </Row>
+                        </form>
+                      </Container>
+              }
+
+              {
+                  (this.state.view === 4 && (staff && team)) &&
+                      <Container>
+                        <Row>
+                          {
+                              staff.map(s => (
+                                  <TeamItem staff={s} shown={team.some(t => t === s._id)} addToSite={this.addToSite} />
+                              ))
+                          }
+                        </Row>
+                      </Container>
+              }
+            </Container>
+        );
+    }
+}
+
+const SettingsForm = reduxForm({
+    form: "cmsForm"
+})(SettingsT);
+
+export const SettingsTab = connect(state => ({
+    homeCms: (state.cms && state.cms.content) ? state.cms.content[0].home : [],
+    supportCms: (state.cms && state.cms.content) ? state.cms.content[0].supportUs : [],
+    aboutCms: (state.cms && state.cms.content) ? state.cms.content[0].aboutUs : [],
+    staff: (state.adminUsers && state.adminUsers.staff) ? state.adminUsers.staff : [],
+    team: (state.cms && state.cms.content) ? state.cms.content[0].team : []
+}))(SettingsForm);

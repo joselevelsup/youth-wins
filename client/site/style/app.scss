@@ -35,12 +35,26 @@
     color: $no-color!important;
 }
 
+.navbar{
+    .nav-item{
+        width: 100px!important;
+
+        a.link{
+            cursor: pointer;
+            &:hover{
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
 .nav-tabs{
     border-color: black!important;
     .nav-link, .nav-link:hover{
         border-color: black!important;
         border-radius: 0!important;
-        cursor: pointer
+        cursor: pointer;
+        text-align: center;
     }
     .nav-link.active{
         border-bottom-color: $no-color!important;
@@ -54,8 +68,8 @@
         z-index: 100;
         margin-right: -30px;
         background-color: $no-color;
-        width: 120px;
-        height: 120px;
+        width: 128px;
+        height: 128px;
     }
     img.logo{
         border: 5px solid $b-color;
@@ -67,8 +81,10 @@
     .media-body{
         border: solid 2px $b-color;
         border-left: none;
-        border-radius: 0 30px 30px 0;
-        height: 110px;
+        border-radius: 0 50px 50px 0;
+        .push-words{
+            margin-left: 10%;
+        }
         p{
             font-size: 13px;
         }
@@ -79,6 +95,13 @@
     }
 }
 
+.no-paddding{
+    padding: 0!important;
+}
+
+.underline{
+    border-bottom: 1px solid black;
+}
 .searchText{
     .form-control{
         border-right: none!important;
@@ -206,4 +229,39 @@
             }
         }
     }
+}
+
+
+.teamItem{
+    .profile{
+        border: 5px solid $b-color;
+        width: 70px;
+        height: 70px;
+        margin: -10px;
+    }
+    .media-body {
+        .row {
+            border: solid 2px $b-color;
+            border-left: none;
+            border-radius: 0 50px 50px 0;
+            .col-1{
+                width: 50px;
+                height: 50px;
+                cursor: pointer;
+                .rounded-circle{
+                    border: solid 1px $b-color;
+                    width: 40px;
+                    height: 40px;
+                }
+                .filled-2{
+                    background-color: $added;
+                }
+            }
+        }
+    }
+}
+
+
+.label{
+    margin-left: 5px;
 }

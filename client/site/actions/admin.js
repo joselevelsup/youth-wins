@@ -25,7 +25,17 @@ import {
     APPROVED_RES_S,
     APPROVED_RES_F,
     DENIED_RES_S,
-    DENIED_RES_F
+    DENIED_RES_F,
+    GET_CONTENT_S,
+    GET_CONTENT_F,
+    UPDATE_HOME_CONTENT_S,
+    UPDATE_HOME_CONTENT_F,
+    UPDATE_SUPPORT_CONTENT_S,
+    UPDATE_SUPPORT_CONTENT_F,
+    UPDATE_ABOUT_CONTENT_S,
+    UPDATE_ABOUT_CONTENT_F,
+    ADDED_MEMBER,
+    FAILED_ADD_MEMBER
 } from "../constants/constants";
 
 export const adminSuccess = data => ({
@@ -70,18 +80,19 @@ export const failedResource = err => ({
     payload: err
 });
 
-export const createResource = ({organizationName, email, website, contactEmail, description, logo, ethnicity, categoriesOfInterest }) => {
+export const createResource = ({organizationName, email, website, contactEmail, description, logo, ethnicityServed, categoriesOfInterest, stateServed }) => {
 
     const data = new FormData();
 
-    data.append("file", logo[0]);
+    logo && data.append("file", logo[0]);
     data.append("data", JSON.stringify({
         organizationName,
         email,
         website,
         contactEmail,
         description,
-        ethnicity,
+        ethnicityServed,
+        stateServed,
         categoriesOfInterest
     }));
 
@@ -107,9 +118,9 @@ export const failedUpdateResource = err => ({
     payload: err
 });
 
-export const updateResource = (id, {organizationName, email, website, contactEmail, description, logo, ethnicity, categoriesOfInterest }) => {
+export const updateResource = (id, {organizationName, email, website, contactEmail, description, logo, ethnicityServed, stateServed, categoriesOfInterest }) => {
     const file = new FormData();
-    file.append('file', logo[0]);
+    logo && file.append('file', logo[0]);
     file.append("data", JSON.stringify({
         id,
         organizationName,
@@ -117,7 +128,8 @@ export const updateResource = (id, {organizationName, email, website, contactEma
         website,
         contactEmail,
         description,
-        ethnicity,
+        ethnicityServed,
+        stateServed,
         categoriesOfInterest
     }));
     return{
@@ -219,17 +231,17 @@ export const failedCreateStaff = err => ({
     payload: err
 });
 
-export const createStaff = ({firstName, lastName, password, cpassword, position, email, profile}) => {
-    console.log(profile);
+export const createStaff = ({firstName, lastName, password, cpassword, position, email, profile, description}) => {
     const file = new FormData();
-    file.append('file', profile[0]);
+    profile && file.append('file', profile[0]);
     file.append("data", JSON.stringify({
         firstName,
         lastName,
         password,
         cpassword,
         position,
-        email
+        email,
+        description
     }));
     return {
         type: API,
@@ -354,3 +366,146 @@ export const deleteApp = (appId) => ({
     }
 });
 
+export const gotContent = data => ({
+    type: GET_CONTENT_S,
+    payload: data
+});
+
+export const failedContent = err => ({
+    type: GET_CONTENT_F,
+    payload: err
+});
+
+export const getEditableContent = () => ({
+    type: API,
+    payload: {
+        url: API_ADMIN+`/cms/e`,
+        success: gotContent,
+        failure: failedContent
+    }
+})
+
+export const getContent = () => ({
+    type: API,
+    payload: {
+        url: API_ADMIN+`/cms`,
+        success: gotContent,
+        failure: failedContent
+    }
+});
+
+export const updatedHome = data => ({
+    type: UPDATE_HOME_CONTENT_S,
+    payload: data
+});
+
+export const failedToUpdateHome = err => ({
+    type: UPDATE_HOME_CONTENT_F,
+    payload: err
+});
+
+export const updateHomeContent = ({bannerText, bannerImage, titleText, body}) => {
+
+    const content = new FormData();
+    bannerImage && content.append("file", bannerImage[0]);
+    content.append("data", JSON.stringify({
+        bannerText,
+        titleText,
+        body
+    }));
+
+    return {
+        type: API,
+        payload: {
+            url: API_ADMIN+"/cms/home",
+            method: "PUT",
+            data: content,
+            success: updatedHome,
+            error: failedToUpdateHome
+        }
+    };
+};
+
+export const updatedSupport = data => ({
+    type: UPDATE_SUPPORT_CONTENT_S,
+    payload: data
+});
+
+export const failedToUpdateSupport = err => ({
+    type: UPDATE_SUPPORT_CONTENT_F,
+    payload: err
+});
+
+export const updateSupportContent = ({bannerText, bannerImage, section1Title, section1Body, section2Title, section2Body}) => {
+
+    const content = new FormData();
+    bannerImage && content.append("file", bannerImage[0]);
+    content.append("data", JSON.stringify({
+        bannerText, bannerImage, section1Title, section1Body, section2Title, section2Body
+    }));
+
+    return {
+        type: API,
+        payload: {
+            url: API_ADMIN+"/cms/support",
+            method: "PUT",
+            data: content,
+            success: updatedSupport,
+            error: failedToUpdateSupport
+        }
+    };
+};
+
+
+export const updatedAbout = data => ({
+    type: UPDATE_ABOUT_CONTENT_S,
+    payload: data
+});
+
+export const failedToUpdateAbout = err => ({
+    type: UPDATE_ABOUT_CONTENT_F,
+    payload: err
+});
+
+export const updateAboutContent = ({bannerText, bannerImage, section1Title, section1Body, section2Title, section2Body}) => {
+
+    const content = new FormData();
+    bannerImage && content.append("file", bannerImage[0]);
+    content.append("data", JSON.stringify({
+        bannerText, bannerImage, section1Title, section1Body, section2Title, section2Body
+    }));
+
+    return {
+        type: API,
+        payload: {
+            url: API_ADMIN+"/cms/about",
+            method: "PUT",
+            data: content,
+            success: updatedAbout,
+            error: failedToUpdateAbout
+        }
+    };
+};
+
+export const addedMember = data => ({
+    type: ADDED_MEMBER,
+    payload: data
+});
+
+export const failedToAddMember = err => ({
+    type: FAILED_ADD_MEMBER,
+    payload: err
+});
+
+export const addMember = id => ({
+    type: API,
+    payload: {
+        url: API_ADMIN+"/cms/add-member",
+        method: "POST",
+        data: {
+            userId: id
+        },
+        success: addedMember,
+        error: failedToAddMember
+    }
+});

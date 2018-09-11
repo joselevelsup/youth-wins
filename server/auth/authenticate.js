@@ -6,8 +6,6 @@ import { getImage } from '../helpers/aws'
 
 export function login(req, res){
     passport.authenticate("local-login", function(err, user, info) {
-        console.log(err);
-        console.log(user);
         if(err){
             res.status(500).json({
                 message: "error has occurred"
@@ -85,5 +83,14 @@ export function signup(req, res){
         res.status(500).json({
             message: "Unable to register user"
         });
+    });
+}
+
+
+export function logOut(req, res){
+    req.logout();
+
+    res.status(200).json({
+        "success": true
     });
 }

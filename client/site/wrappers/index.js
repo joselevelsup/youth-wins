@@ -1,7 +1,8 @@
 import CheckUser from "./checkuser";
-//import CheckAdmin from "./checkadmin";
+import CheckAdmin from "./checkadmin";
+
 
 export {
     CheckUser,
-    //CheckAdmin
+    CheckAdmin
 }

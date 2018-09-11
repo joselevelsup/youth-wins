@@ -18,32 +18,22 @@ export default class TeamCarousel extends Component {
 		  children: [],
 		  activeItemIndex: 0,
 		});
-	 
-		setTimeout(() => {
-		  this.setState({
-			children: this.createChildren(20),
-		  })
-		}, 100);
 	}
 
-	createChildren() {
-		return divs.map(i => <div key={i} className="carouselItem">
-			<img className="carouselImg" src="https://pbs.twimg.com/profile_images/879995771227185152/c4vfQ_Gm_400x400.jpg"/>
-			<h3>Name Here</h3>
-			<p>This will be the bio </p>
-			<br/>
-		</div>)
+	  createChildren() {
+        const { team } = this.props;
+        console.log(team);
+		    return 
 	}
-
   	changeActiveItem(activeItemIndex){this.setState({ activeItemIndex })}
 
 	render(){
 		const {
 			activeItemIndex,
 			children,
-		} = this.state
+		} = this.state;
+      const { team } = this.props;
 
-		console.log(children)
 
 		return (
 			<div>
@@ -70,7 +60,15 @@ export default class TeamCarousel extends Component {
 						outsideChevron={true}
 						className="teamCarousel"
 						>
-							{children}
+              {
+                  team.map((t, i) => (
+                      <div key={i} className="carouselItem">
+			                  <img className="carouselImg" src={t.profile}/>
+			                  <h3>{t.firstName} {t.lastName}</h3>
+			                  <p>{t.description} </p>
+			                  <br/>
+		                  </div>))
+              }
 						</ItemsCarousel>
 						<br/><br/>
 					</div>

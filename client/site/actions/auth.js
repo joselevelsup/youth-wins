@@ -2,8 +2,13 @@ import {
     API,
     LOGIN,
     LOG_IN,
+    LOGOUT,
     USER_S,
     CURRENT_USER,
+    API_CONTENT,
+    CONTENT_S,
+    LOGOUT_S,
+    LOGOUT_F,
 	SIGNUP,
 	SIGN_UP
 } from "../constants/constants";
@@ -29,6 +34,25 @@ export const logIn = ({ email, password }) => ({
         },
         success: loginSuccess,
         error: loginError
+    }
+});
+
+export const logoutSuccess = data => ({
+    type: LOGOUT_S,
+    payload: null
+});
+
+export const logoutError = err => ({
+    type: LOGOUT_F,
+    payload: err
+});
+
+export const logOutUser = () => ({
+    type: API,
+    payload: {
+        url: LOGOUT,
+        success: logoutSuccess,
+        error: logoutError
     }
 });
 
@@ -64,5 +88,18 @@ export const getCurrentUser = () => ({
     payload: {
         url: CURRENT_USER,
         success: currentSuccess
+    }
+})
+
+export const contentLoaded = data => ({
+    type: CONTENT_S,
+    payload: data
+});
+
+export const getContent = () => ({
+    type: API,
+    payload: {
+        url: API_CONTENT,
+        success: contentLoaded
     }
 })

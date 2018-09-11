@@ -1,0 +1,19 @@
+{
+    "income" : 140000,
+    "inMilitary" : false,
+    "profile" : "user/5b88b2e4be391208303e8883/5b88b2e4be391208303e8883.png",
+    "categoriesOfInterest" : [],
+    "appliedTo" : [],
+    "email" : "someone@mail.com",
+    "password" : "$2b$10$j.BvdBSk2QSh6wKIn3lB4eW.EvmGxNEdnbaANS7kG4zuHdnB4eyN.",
+    "firstName" : "Andre",
+    "lastName" : "Watts",
+    "zipCode" : 10472,
+    "streetAddress" : "14 main st",
+    "city" : "Bronx",
+    "state" : "New York",
+    "age" : 21,
+    "ethnicity" : "Ethnicity 1",
+    "educationLevel" : "Level 1",
+    "__v" : 0
+}
