@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import passport from "passport";
 import encryptSsn from "../helpers/encrypt";
 import { User } from "../models/user";
+import { getImage } from '../helpers/aws'
 
 export function login(req, res){
     passport.authenticate("local-login", function(err, user, info) {
@@ -19,7 +20,7 @@ export function login(req, res){
                         message: "error has occurred"
                     });
                 } else {
-                    res.status(200).json(req.user);
+                    res.status(200).json(getImage([req.user])[0]);
                 }
             });
         }
