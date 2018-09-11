@@ -2,6 +2,9 @@ import React from "react";
 import { connect } from "react-redux";
 import { Field } from "redux-form";
 import DropzoneInput from "../components/dropzone";
+import SelectField from "../components/multi-select";
+import { ethnicity } from "../constants/ethnicity";
+import { states } from "../constants/states";
 import {
     Button,
     Modal,
@@ -257,6 +260,15 @@ export class CreateResource extends React.Component {
         const { open, toggle, create, createValues } = this.props;
         return (
             <Modal isOpen={open} toggle={toggle} size="lg">
+              <div className="modal-header">
+                <Container fluid={true}>
+                  <Row>
+                    <Col md={{size: 1, offset: 11}}>
+                      <Button color="clear" onClick={toggle}>X</Button>
+                    </Col>
+                  </Row>
+                </Container>
+              </div>
               <ModalBody>
                 <form onSubmit={create}>
                   <Row>
@@ -285,6 +297,16 @@ export class CreateResource extends React.Component {
 						            <label>Contact Email</label>
 						            <Field name="contactEmail" className="form-control" component="input" type="text" />
 					            </div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md={6}>
+                      <label>Ethnicity Served</label>
+                      <Field component={SelectField} name="ethnicityServed" options={ethnicity.map(e => ({ value: e, label: e}))} />
+                    </Col>
+                    <Col md={6}>
+                      <label>State Served</label>
+                      <Field component={SelectField} name="stateServed" options={states.map(s => ({ value: s.abbreviation, label: s.name}))} />
                     </Col>
                   </Row>
                   <Row>
@@ -372,6 +394,16 @@ export class EditResource extends React.Component{
 						            <label>Contact Email</label>
 						            <Field name="contactEmail" className="form-control" component="input" type="text" />
 					            </div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md={6}>
+                      <label>Ethnicity Served</label>
+                      <Field component={SelectField} name="ethnicityServed" options={ethnicity.map(e => ({ value: e, label: e}))} />
+                    </Col>
+                    <Col md={6}>
+                      <label>State Served</label>
+                      <Field component={SelectField} name="stateServed" options={states.map(s => ({ value: s.abbreviation, label: s.name}))} />
                     </Col>
                   </Row>
                   <Row>
@@ -474,7 +506,14 @@ export const CreateStaff = ({ open, toggle, create }) => (
                 </div>
               </div>
             </div>
-					  <Button color="warning" type="submit">submit</Button>
+            <div className="row">
+              <br />
+            </div>
+            <div className="row">
+              <div className="offset-4 col-4">
+					      <Button color="warning" className="btn-swerve" block type="submit">Create</Button>
+              </div>
+            </div>
           </form>
       </ModalBody>
     </Modal>

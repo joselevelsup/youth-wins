@@ -59,12 +59,15 @@ export function deleteResource(req, res){
 
 export function createResource(req, res){
     let data = JSON.parse(req.body.data);
+     
     new Resource({
         organizationName: data.organizationName,
         email: data.email,
         contactEmail: data.contactEmail,
         description: data.description,
-        website: data.website
+        website: data.website,
+        ethnicityServed: typeof data.ethnicityServed != "object" ? data.ethnicityServed.split(" ---- ") : data.ethnicityServed,
+        stateServed: typeof data.stateServed != "object" ? data.stateServed.split(" ---- ") : data.stateServed,
     }).save().then((data) => {
         if(req.files == null){
             res.status(200).json({
@@ -94,7 +97,7 @@ export function createResource(req, res){
 export function updateResource(req, res){
     let data = JSON.parse(req.body.data);
     if(!data.id){
-        res.status(500).json({
+        res.status(500).json({ 
             "success": false,
             "message": "No resource id provided"
         });
@@ -105,7 +108,9 @@ export function updateResource(req, res){
                 email: data.email,
                 contactEmail: data.contactEmail,
                 description: data.description,
-                website: data.website
+                website: data.website,
+                ethnicityServed: typeof data.ethnicityServed != "object" ? data.ethnicityServed.split(" ---- ") : data.ethnicityServed,
+                stateServed: typeof data.stateServed != "object" ? data.stateServed.split(" ---- ") : data.stateServed,
             }
         }, { new: true }).then((data) => {
             if(req.files == null){

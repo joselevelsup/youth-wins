@@ -80,18 +80,19 @@ export const failedResource = err => ({
     payload: err
 });
 
-export const createResource = ({organizationName, email, website, contactEmail, description, logo, ethnicity, categoriesOfInterest }) => {
+export const createResource = ({organizationName, email, website, contactEmail, description, logo, ethnicityServed, categoriesOfInterest, stateServed }) => {
 
     const data = new FormData();
 
-    data.append("file", logo[0]);
+    logo && data.append("file", logo[0]);
     data.append("data", JSON.stringify({
         organizationName,
         email,
         website,
         contactEmail,
         description,
-        ethnicity,
+        ethnicityServed,
+        stateServed,
         categoriesOfInterest
     }));
 
@@ -117,9 +118,9 @@ export const failedUpdateResource = err => ({
     payload: err
 });
 
-export const updateResource = (id, {organizationName, email, website, contactEmail, description, logo, ethnicity, categoriesOfInterest }) => {
+export const updateResource = (id, {organizationName, email, website, contactEmail, description, logo, ethnicityServed, stateServed, categoriesOfInterest }) => {
     const file = new FormData();
-    file.append('file', logo[0]);
+    logo && file.append('file', logo[0]);
     file.append("data", JSON.stringify({
         id,
         organizationName,
@@ -127,7 +128,8 @@ export const updateResource = (id, {organizationName, email, website, contactEma
         website,
         contactEmail,
         description,
-        ethnicity,
+        ethnicityServed,
+        stateServed,
         categoriesOfInterest
     }));
     return{
