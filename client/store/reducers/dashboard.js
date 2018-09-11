@@ -1,18 +1,22 @@
 import {
     USER_INFO_S,
-    USER_INFO_F
+    USER_INFO_F,
+	SUG_RESOURCES_S
 } from "../../site/constants/constants";
 
-const initialState = [];
+const initialState = {
+	user: {},
+	suggestions: []
+};
 
 export default function dashboard(state = initialState, action){
     switch(action.type){
     case USER_INFO_S:
-        return action.payload;
-
+        return {...state, user: action.payload}
     case USER_INFO_F:
-        return action.payload;
-
+		return action.payload;
+	case SUG_RESOURCES_S:
+		return {...state, suggestions: action.payload.resources}
     default:
         return state || initialState;
     }
