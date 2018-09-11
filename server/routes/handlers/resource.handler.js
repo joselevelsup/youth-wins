@@ -3,7 +3,8 @@ import { checkUser, checkAdmin } from "../../helpers/access";
 import {
     getUserResources,
     applyResource,
-    userAppliedResources
+    userAppliedResources,
+    createResource
 } from "../controllers/resource.controller";
 
 const resourceRouter = Router();

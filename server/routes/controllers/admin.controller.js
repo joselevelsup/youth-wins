@@ -338,9 +338,10 @@ export function deleteUser(req, res){
 
 export function getAllApplications(req, res){
     AppliedCase.find().populate("resource").then(apps => {
+        let applications = getImage(apps);
         res.status(200).json({
             "success": true,
-            "applications": apps
+            "applications": applications
         });
     }).catch(err => {
         res.status(500).json({

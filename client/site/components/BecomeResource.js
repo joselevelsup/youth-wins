@@ -3,7 +3,10 @@ import { Button, Form, FormGroup, Label, Input, FormText, Alert } from 'reactstr
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 import DropzoneInput from "../components/dropzone";
-import { createResource } from '../actions/resource'
+import SelectField from "../components/multi-select";
+import { ethnicity } from "../constants/ethnicity";
+import { states } from "../constants/states";
+import { createResource } from '../actions/resource';
 
 class BecomeRes extends Component {
 	constructor(){
@@ -74,11 +77,11 @@ class BecomeRes extends Component {
 					        </FormGroup>
 					        <FormGroup className="support-form-items">
 						        <Label>Ethnicities Served</Label>
-					          <Field className="form-control" name="ethnicityServed" component="input" type="text"/>
+                    <Field component={SelectField} name="ethnicityServed" options={ethnicity.map(e => ({ value: e, label: e}))} />
 					        </FormGroup>
 					        <FormGroup className="support-form-items">
 						        <Label>State served</Label>
-					          <Field className="form-control" name="stateServed" component="input" type="text"/>
+                    <Field component={SelectField} name="stateServed" options={states.map(s => ({ value: s.abbreviation, label: s.name}))} />
 					        </FormGroup>
 					        <FormGroup className="support-form-items">
 						        <Label>Categories</Label>

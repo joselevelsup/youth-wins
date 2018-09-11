@@ -6,7 +6,7 @@ import { shorten } from "../util/helpers"
 export const ResourceItem = ({ resource, deleteResource, openResource, apply, admin, full }) => {
     return (
         <React.Fragment>
-          <Col md={full ? {size:6, offset: 2} : 6} className="resourceItem">
+          <Col md={6} className="resourceItem">
                 <div className="media">
                   <React.Fragment>
                     {
@@ -18,8 +18,8 @@ export const ResourceItem = ({ resource, deleteResource, openResource, apply, ad
                     }
                   </React.Fragment>
                   <div className={`media-body align-self-center ${resource.pending ? "pending" : "" }`}>
-                        <div className="row">
-                            <div className="offset-1 col-7">
+                        <div className="row h-100">
+                           <div className={full ? "offset-1 col-6" : "offset-1 col-7"}>
                                 <div className="row">
                                     <div className="col-12">
                                         <h5 className="push-words">{resource.organizationName}</h5>
@@ -31,6 +31,14 @@ export const ResourceItem = ({ resource, deleteResource, openResource, apply, ad
                                     </div>
                                 </div>
                             </div>
+                          {
+                              full &&
+                                  <Col md={4} className="text-center align-self-center">
+                                    <Button className="left-right-rounded" block  color="primary" onClick={() => apply(resource._id)}>Apply</Button>
+                                    <div className="w-100"></div>
+                                    <Button color="link" onClick={() => openResource(resource)}>More</Button>
+                                  </Col>
+                          }
                             {
                                 (resource && admin) &&
                                 <div className="col-2 align-self-center">
@@ -41,14 +49,6 @@ export const ResourceItem = ({ resource, deleteResource, openResource, apply, ad
                     </div>
                 </div>
             </Col>
-            {
-                full &&
-                <Col md={2} className="text-center align-self-center">
-                    <Button className="left-right-rounded" block size="lg" color="primary" onClick={() => apply(resource._id)}>Apply</Button>
-                    <div className="w-100"></div>
-                    <Button color="link" onClick={() => openResource(resource)}>More</Button>
-                </Col>
-            }
         </React.Fragment>
     );
 }

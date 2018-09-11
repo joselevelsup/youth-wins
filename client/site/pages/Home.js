@@ -15,15 +15,18 @@ class Home extends Component {
 	}
 
 	loginUser(values){
-		this.props.dispatch(logIn(values)).then(data => {
-			this.props.history.push('/home');
+		  this.props.dispatch(logIn(values)).then(data => {
+          if(data.isStaff){
+			        this.props.history.push('/admin');
+          } else {
+              this.props.history.push("/dashboard");
+          }
 		}).catch(err => {
 			console.log(err);
 		});
   }
 	render(){
-		const { handleSubmit } = this.props
-		console.log(this.props)
+		  const { handleSubmit, home } = this.props
 		return (
 			<div>
 				<figure>
@@ -49,13 +52,6 @@ class Home extends Component {
 				{
               home &&
                   <React.Fragment>
-				            <figure>
-					            <img className="support-img home-image" src='https://www.quirkybyte.com/wp-content/uploads/2017/08/FRIENDSHIP.jpg'/>
-					            <div className="button-container">
-						            <Link to="/login"><Button color="warning" size="lg">Login</Button></Link>
-						            <Link to="/signup"><Button color="warning" size="lg">Signup</Button></Link>
-					            </div>
-				            </figure>
 				            <section className="foot-container home-footer">
 					            <br/><br/>
 					            <h1>{home.titleText}</h1>

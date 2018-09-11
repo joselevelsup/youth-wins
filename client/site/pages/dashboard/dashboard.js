@@ -64,44 +64,70 @@ class Dashboard extends React.Component{
     }
 
     render(){
-		const { dashboard, user } = this.props;
+		    const { suggestions, applications, user } = this.props;
         return(
             <div className="container dashboard">
-				<div className="title">
-					<h1 className="welcome">Welcome {user.firstName} {user.lastName}</h1>
-					{user.profile ? <img className="profile-pic" src={user.profile}/> : null}
-				</div>
+              <div className="row">
+                <br />
+              </div>
+				      <div className="row">
+                <div className="col-2">
+					        {user.profile ? <img className="img-fluid rounded-circle border-color" src={user.profile}/> : null}
+                </div>
+                <div className="col-8 align-self-center">
+					        <h3 className="welcome">Welcome {user.firstName} {user.lastName}</h3>
+                </div>
+				      </div>
               <div className="row">
                 <div className="col-12">
                   <h4 className="text-center">Suggested</h4>
+                </div>
+              </div>
+              <div className="row">
 				  {
-                      dashboard ?
-					  	dashboard.suggestions && dashboard.suggestions.map(s => (
-							<ResourceItem openResource={this.openResource} resource={s} apply={this.applyResource} />
+                      suggestions ?
+					  	suggestions && suggestions.map(s => (
+							    <ResourceItem full={true} openResource={this.openResource} resource={s} apply={this.applyResource} />
 						))
                           :
                           <React.Fragment/>
                   }
+              </div>
+              <div className="row">
+                <div className="col-12 text-center">
+                  <button className="btn btn-secondary btn-lg" onClick={() => this.props.history.push("/resources")}>Explore</button>
+                </div>
+              </div>
+              <div className="row">
+                <br />
+              </div>
+              <div className="row">
+                <br />
+              </div>
+              <div className="row">
+                <div className="col-12">
+                  <h4 className="text-center">My Applications</h4>
                 </div>
               </div>
               <div className="row">
                   {
-                      dashboard ?
-                          dashboard.applications && dashboard.applications.map(d => (
+                      applications ?
+                          applications && applications.map(d => (
                               <AppItem size={4} appId={d._id} openResource={this.openResource} resource={d.resource} status={d.status} />
                           ))
                           :
                           <React.Fragment/>
                   }
-              </div>
+                </div>
               {this.state.resource && <ResourceModal open={this.state.resourceModal} toggle={this.toggleResource} resource={this.state.resource} status={this.state.status} toggleResponse={this.toggleResponse} /> }
-            </div>
+              </div>
         );
     }
 }
 
 const DashboardPage = connect(state => ({
-	dashboard: state.dashboard,
+	  suggestions: state.dashboard && state.dashboard.suggestions,
+    applications: state.dashboard && (state.dashboard.user.success ? state.dashboard.user.applications : []),
 	user: state.user
 }))(Dashboard);
 export default DashboardPage;

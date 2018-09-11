@@ -18,7 +18,7 @@ export function login(req, res){
                         message: "error has occurred"
                     });
                 } else {
-                    res.status(200).json(getImage([req.user])[0]);
+                    res.status(200).json(getImage(req.user));
                 }
             });
         }

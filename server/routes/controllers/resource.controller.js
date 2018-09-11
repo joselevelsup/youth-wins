@@ -67,25 +67,15 @@ export function createResource(req, res){
         email: data.email,
         contactEmail: data.contactEmail,
         description: data.description,
-        website: data.website
+        website: data.website,
+        ethnicityServed: typeof data.ethnicityServed != "object" ? data.ethnicityServed.split(" ---- ") : data.ethnicityServed,
+        stateServed: typeof data.stateServed != "object" ? data.stateServed.split(" ---- ") : data.stateServed,
     }).save().then((d) => {
         if(req.files == null){
-            d.stateServed.push(data.stateServed);
-            d.ethnicityServed.push(data.ethnicityServed);
-            d.categories.push(data.categories);
-
-            d.save().then(() => {
-                res.status(200).json({
-                    "success": true,
-                    "message": "Successfully Created Resource"
-                });
-            }).catch(err => {
-                console.log(err);
-                res.status(500).json({
-                    "success": false,
-                    "message": "unable to save"
-                });
-            })
+            res.status(200).json({
+                "success": true,
+                "message": "Successfully Created Resource"
+            });
         } else {
             uploadImage(req.files.file, data._id, "resource").then(key => {
                 d.logo = key;

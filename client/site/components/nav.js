@@ -15,7 +15,7 @@ class MainNav extends React.Component {
 
     logOut(){
         this.props.dispatch(logOutUser()).then(data => {
-            this.props.push("/login");
+            this.props.push("/");
         }).catch(err => {
             console.log(err);
         });
@@ -34,13 +34,13 @@ class MainNav extends React.Component {
                           user.loggedIn == false ?
                           <React.Fragment>
                             <li className="nav-item text-center">
+                              <NavLink to="/resources" activeClassName="active">Resources</NavLink>
+                            </li>
+                            <li className="nav-item text-center">
                               <NavLink to="/about" activeClassName="active">About Us</NavLink>
                             </li>
                             <li className="nav-item text-center">
                               <NavLink to="/support" activeClassName="active">Support Us</NavLink>
-                            </li>
-                            <li className="nav-item text-center">
-                              <NavLink to="/login" activeClassName="active">Login</NavLink>
                             </li>
                           </React.Fragment>
                           :

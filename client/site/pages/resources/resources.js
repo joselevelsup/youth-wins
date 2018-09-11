@@ -118,7 +118,7 @@ class Resources extends React.Component {
         const { resources, user } = this.props;
         const { res, filtered } = this.state;
         return (
-            <React.Fragment>
+            <Container>
                 <Row>
                     <br />
                 </Row>
@@ -190,7 +190,7 @@ class Resources extends React.Component {
                 </Row>
                 <ResourceModal open={this.state.infoModal} toggle={this.toggleInfoModal} apply={this.applyResource} resource={this.state.resource} />
               <YouthModal open={this.state.modal} push={this.props.history.push} applying={(user && user.loggedIn == false) ? false : true} toggle={this.toggleModal} />
-            </React.Fragment>
+            </Container>
         );
     }
 }

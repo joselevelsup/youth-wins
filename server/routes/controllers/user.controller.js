@@ -1,6 +1,7 @@
 
 import { User, AppliedCase, CMS, Admin, Resource } from "../../models";
-import * as _ from 'lodash'
+import * as _ from 'lodash';
+import { getImage } from "../../helpers/aws";
 
 export function currentUser(req, res){
     if(req.user){
@@ -26,15 +27,16 @@ export function getOneUser(req, res){
 }
 
 export function userSuggestedResources(req, res){
-	Resource.find({"approved": true}).then(resources => {
-		const suggestions = resources.filter(resource => (
+	  Resource.find({"approved": true}).then(resources => {
+        let r = getImage(resources);
+		let suggestions = r.filter(resource => (
 				resource.stateServed.includes(req.user.state) && 
 				resource.ethnicityServed.includes(req.user.ethnicity) &&
 				!!_.intersection(resource.categories, req.user.categoriesOfInterest).length
 		));
 
 		res.status(200).json({
-			resources: suggestions
+			  resources: suggestions
 		})
 	})
 }
@@ -65,12 +67,14 @@ export function appendContent(req, res){
                 "content": content
             });
         }).catch(err => {
+            console.log(err);
             res.status(500).json({
                 "success": false,
                 "message": "unable to get data"
             });
         });
     }).catch(err => {
+        console.log(err);
         res.status(500).json({
             "success": false,
             "message": "unable to get data"
@@ -80,7 +84,6 @@ export function appendContent(req, res){
 
 
 export function toggleResponse(req, res){
-    console.log(req.body);
     AppliedCase.findOneAndUpdate({ "_id": req.body.appId }, {
         $set: {
             "status": !req.body.status

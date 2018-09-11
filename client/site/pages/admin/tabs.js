@@ -445,7 +445,7 @@ class AppsT extends React.Component {
     render(){
         const { apps } = this.props;
         return (
-            <Container>
+            <Container fluid={true}>
               <br />
               <Row>
                 <Col md={12} className="text-center">
@@ -580,16 +580,16 @@ class SettingsT extends React.Component{
               </Row>
               <Row>
                 <Col md={3} className="text-center">
-                  <button className={this.state.view == 1 ? "btn btn-secondary btn-lg w-50" : "btn btn-outline-secondary btn-lg w-50"} onClick={() => this.setState({ view: 1 })}> Home</button>
+                  <button className={this.state.view == 1 ? "btn btn-secondary btn-lg" : "btn btn-outline-secondary btn-lg"} onClick={() => this.setState({ view: 1 })}> Home</button>
                 </Col>
                 <Col md={3} className="text-center">
-                  <button className={this.state.view == 2 ?  "btn btn-secondary btn-lg w-50" : "btn btn-outline-secondary btn-lg w-50" } onClick={() => this.setState({ view: 2 })}> About Us</button>
+                  <button className={this.state.view == 2 ?  "btn btn-secondary btn-lg" : "btn btn-outline-secondary btn-lg" } onClick={() => this.setState({ view: 2 })}> About Us</button>
                 </Col>
                 <Col md={3} className="text-center">
-                  <button className={this.state.view == 3 ?  "btn btn-secondary btn-lg w-50" : "btn btn-outline-secondary btn-lg w-50" } onClick={() => this.setState({ view: 3 })}> Support Us</button>
+                  <button className={this.state.view == 3 ?  "btn btn-secondary btn-lg" : "btn btn-outline-secondary btn-lg" } onClick={() => this.setState({ view: 3 })}> Support Us</button>
                 </Col>
                 <Col md={3} className="text-center">
-                  <button className={this.state.view == 4 ?  "btn btn-secondary btn-lg w-50" : "btn btn-outline-secondary btn-lg w-50" } onClick={() => this.setState({ view: 4 })}> Team</button>
+                  <button className={this.state.view == 4 ?  "btn btn-secondary btn-lg" : "btn btn-outline-secondary btn-lg" } onClick={() => this.setState({ view: 4 })}> Team</button>
                 </Col>
               </Row>
               <Row>

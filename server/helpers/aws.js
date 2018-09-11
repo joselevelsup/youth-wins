@@ -51,6 +51,7 @@ export function replaceImage(file, d, type){
 }
 
 export function getImage(arr){
+    var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
     if(arr.length > 1){
         arr.map(a => {
             if(a.profile){
@@ -61,7 +62,9 @@ export function getImage(arr){
             }
 
             if(a.resource){
-                a.resource.logo = `https://${bucket}.s3.amazonaws.com/${a.resource.logo}`;
+                if(!regexp.test(a.resource.logo)){
+                    a.resource.logo = `https://${bucket}.s3.amazonaws.com/${a.resource.logo}`;
+                }
             }
 
             return a;
@@ -73,6 +76,10 @@ export function getImage(arr){
             let newLink = `https://${bucket}.s3.amazonaws.com/${arr.logo}`;
             let newObj = Object.assign({ logo: newLink }, arr);
             return newObj;
+        }
+        if(arr.profile){
+            arr.profile = `https://${bucket}.s3.amazonaws.com/${arr.profile}`;
+            return arr;
         }
     }
 }

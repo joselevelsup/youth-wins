@@ -32,7 +32,7 @@ export default (WComponent) => {
                         <WComponent {...this.props} />
                         :
                         this.state.redirect &&
-                            <Redirect to="/login" />
+                            <Redirect to="/" />
                     }
                 </div>
             );
