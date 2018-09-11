@@ -1,6 +1,7 @@
+
 import { Resource, AppliedCase } from "../../models/";
-import { getImage } from "../../helpers/aws";
 import { sendUserInfo } from "../../helpers/mailer";
+import { getImage, uploadImage } from "../../helpers/aws";
 
 export function getUserResources(req, res){
     Resource.find({"approved": true}).then((r) => {
@@ -60,12 +61,47 @@ export function applyResource(req, res){
 }
 
 export function createResource(req, res){
-    new Resource(req.body).save().then(() => {
-        res.status(200).json({
-            "success": true
-        });
+    let data = JSON.parse(req.body.data);
+    new Resource({
+        organizationName: data.organizationName,
+        email: data.email,
+        contactEmail: data.contactEmail,
+        description: data.description,
+        website: data.website
+    }).save().then((d) => {
+        if(req.files == null){
+            d.stateServed.push(data.stateServed);
+            d.ethnicityServed.push(data.ethnicityServed);
+            d.categories.push(data.categories);
+
+            d.save().then(() => {
+                res.status(200).json({
+                    "success": true,
+                    "message": "Successfully Created Resource"
+                });
+            }).catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    "success": false,
+                    "message": "unable to save"
+                });
+            })
+        } else {
+            uploadImage(req.files.file, data._id, "resource").then(key => {
+                d.logo = key;
+
+                return d.save();
+            }).then(data => {
+                res.status(200).json({
+                    "success": true,
+                    "message": "Successfully Created Resource"
+                });
+            });
+        }
     }).catch((err) => {
-        console.log(err);
-        res.status(500);
+        res.status(500).json({
+            "success": false,
+            "message": "Unable to create Resource"
+        });
     });
 }

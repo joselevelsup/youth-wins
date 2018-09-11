@@ -102,6 +102,23 @@
 .underline{
     border-bottom: 1px solid black;
 }
+.searchText{
+    .form-control{
+        border-right: none!important;
+    }
+    .input-group-text{
+        background-color: transparent!important;
+        border-left: none!important;
+    }
+}
+
+.info-header{
+    color: white;
+    background-color: $secondary!important;
+    .close{
+        color: white!important;
+    }
+}
 
 .col-md-12{
     .show-warning{
@@ -113,6 +130,13 @@
         h3{
             vertical-align: middle!important;
         }
+    }
+}
+
+.form-control{
+    &.filter{
+        background-color: $secondary!important;
+        color: $no-color!important;
     }
 }
 

@@ -30,7 +30,7 @@ const userModel = new mongoose.Schema({
     },
     educationLevel: String,
     categoriesOfInterest: {
-        type: mongoose.Schema.Types.Array,
+        type: [mongoose.Schema.Types.String],
         default: []
     }
 });

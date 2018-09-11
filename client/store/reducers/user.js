@@ -16,11 +16,11 @@ const initialUser = [];
 // const LOG_IN = 'LOG_IN'
 // const SIGN_UP = 'SIGN_UP'
 
-//Action creators
-// const signUpAction = status => ({
-// 	type: SIGN_UP,
-// 	status
-// })
+// Action creators
+const signUpAction = status => ({
+	type: SIGN_UP,
+	status
+})
 
 // const logInAction = status => ({
 // 	type: LOG_IN,
@@ -28,16 +28,16 @@ const initialUser = [];
 // })
 
 //Thunk creators
-// export function signUp(user){
-// 	return function thunk (dispatch){
-// 		return axios.post('/signup', user)
-// 		.then(res => res.status)
-// 		.then(status => {
-// 			const action = signUpAction(status)
-// 			dispatch(action);
-// 		})
-// 	}
-// }
+export function signUp(user){
+	return function thunk (dispatch){
+		return axios.post('/signup', user)
+		.then(res => res.status)
+		.then(status => {
+			const action = signUpAction(status)
+			dispatch(action);
+		})
+	}
+}
 
 // export function logIn(user){
 // 	return function thunk (dispatch){
@@ -58,9 +58,11 @@ export const userReducer = (state = initialState, action) => {
   case "LOG_IN_F":
       return action.payload;
   case SIGN_UP:
-      return action.payload;
+	 	action.payload.password = null;
+		return action.payload
   case LOGOUT_S:
       return initialState;
+      
 		default:
 			return state
 	}

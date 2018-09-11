@@ -1,8 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import { getUserInfo, getUserSuggested, toggleResponse } from "../../actions/dashboard";
+import { applyResource } from "../../actions/resource";
 import { ResourceModal } from "../../components/modal";
-import { AppItem } from "../../components/items";
+import { AppItem, ResourceItem } from "../../components/items";
 import "./dashboard.scss";
 
 class Dashboard extends React.Component{
@@ -17,17 +18,29 @@ class Dashboard extends React.Component{
 
         this.loadUserInfo = this.loadUserInfo.bind(this);
         this.openResource = this.openResource.bind(this);
+
         this.toggleResource = this.toggleResource.bind(this);
         this.toggleResponse = this.toggleResponse.bind(this);
+
+		this.applyResource = this.applyResource.bind(this);
+	}
+	
+	applyResource(resourceId){
+		const self = this;
+        this.props.dispatch(applyResource(resourceId)).then(data => {
+           self.toggleResource();
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
     loadUserInfo(){
         this.props.dispatch(getUserInfo());
+      this.props.dispatch(getUserSuggested());
     }
 
     componentDidMount(){
         this.loadUserInfo();
-        // this.props.dispatch(getUserSuggested());
     }
 
     openResource(r, stat, id){
@@ -51,12 +64,24 @@ class Dashboard extends React.Component{
     }
 
     render(){
-        const { dashboard } = this.props;
+		const { dashboard, user } = this.props;
         return(
             <div className="container dashboard">
+				<div className="title">
+					<h1 className="welcome">Welcome {user.firstName} {user.lastName}</h1>
+					{user.profile ? <img className="profile-pic" src={user.profile}/> : null}
+				</div>
               <div className="row">
                 <div className="col-12">
                   <h4 className="text-center">Suggested</h4>
+				  {
+                      dashboard ?
+					  	dashboard.suggestions && dashboard.suggestions.map(s => (
+							<ResourceItem openResource={this.openResource} resource={s} apply={this.applyResource} />
+						))
+                          :
+                          <React.Fragment/>
+                  }
                 </div>
               </div>
               <div className="row">
@@ -76,6 +101,7 @@ class Dashboard extends React.Component{
 }
 
 const DashboardPage = connect(state => ({
-    dashboard: state.dashboard
+	dashboard: state.dashboard,
+	user: state.user
 }))(Dashboard);
 export default DashboardPage;

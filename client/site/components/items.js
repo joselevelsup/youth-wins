@@ -8,7 +8,6 @@ export const ResourceItem = ({ resource, deleteResource, openResource, apply, ad
         <React.Fragment>
           <Col md={full ? {size:6, offset: 2} : 6} className="resourceItem">
                 <div className="media">
-
                   <React.Fragment>
                     {
                         resource.logo ?
@@ -44,7 +43,7 @@ export const ResourceItem = ({ resource, deleteResource, openResource, apply, ad
             </Col>
             {
                 full &&
-                <Col md={3} className="text-center align-self-center">
+                <Col md={2} className="text-center align-self-center">
                     <Button className="left-right-rounded" block size="lg" color="primary" onClick={() => apply(resource._id)}>Apply</Button>
                     <div className="w-100"></div>
                     <Button color="link" onClick={() => openResource(resource)}>More</Button>

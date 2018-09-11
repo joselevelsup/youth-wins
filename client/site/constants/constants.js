@@ -13,6 +13,8 @@ export const API_CONTENT = "/user/content";
 export const API = "API";
 
 export const RESOURCES_S = "RESOURCES_S";
+export const SUG_RESOURCES_S = "SUG_RESOURCES_S";
+export const SUG_RESOURCES_F = "SUG_RESOURCES_F";
 
 export const LOG_IN = "LOG_IN";
 export const SIGN_UP = "SIGN_UP";
