@@ -3,3 +3,18 @@
 .dashboard{
     
 }
+
+.title {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.title > img {
+	margin-left: .5em;
+}
+
+.profile-pic {
+	width: 3em;
+	border-radius: 50%;
+}

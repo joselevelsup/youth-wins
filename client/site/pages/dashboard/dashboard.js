@@ -50,16 +50,19 @@ class Dashboard extends React.Component{
     }
 
     render(){
-        console.log(this.props);
-		    const { dashboard } = this.props;
+		const { dashboard, user } = this.props;
         return(
             <div className="container dashboard">
+				<div className="title">
+					<h1 className="welcome">Welcome {user.firstName} {user.lastName}</h1>
+					{user.profile ? <img className="profile-pic" src={user.profile}/> : null}
+				</div>
               <div className="row">
                 <div className="col-12">
                   <h4 className="text-center">Suggested</h4>
 				  {
                       dashboard ?
-					  	dashboard.suggestions.resources && dashboard.suggestions.resources.map(s => (
+					  	dashboard.suggestions && dashboard.suggestions.map(s => (
 							<ResourceItem openResource={this.openResource} resource={s} apply={this.applyResource} />
 						))
                           :
@@ -84,6 +87,7 @@ class Dashboard extends React.Component{
 }
 
 const DashboardPage = connect(state => ({
-    dashboard: state.dashboard
+	dashboard: state.dashboard,
+	user: state.user
 }))(Dashboard);
 export default DashboardPage;
