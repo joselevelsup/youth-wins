@@ -35,7 +35,12 @@ import {
     UPDATE_ABOUT_CONTENT_S,
     UPDATE_ABOUT_CONTENT_F,
     ADDED_MEMBER,
-    FAILED_ADD_MEMBER
+    FAILED_ADD_MEMBER,
+    ADD_CATEGORY_S,
+    ADD_CATEGORY_F,
+    DELETED_CATEGORY_S,
+    DELETED_CATEGORY_F
+
 } from "../constants/constants";
 
 export const adminSuccess = data => ({
@@ -507,5 +512,49 @@ export const addMember = id => ({
         },
         success: addedMember,
         error: failedToAddMember
+    }
+});
+
+export const addedCategory = data => ({
+    type: ADD_CATEGORY_S,
+    payload: data
+});
+
+export const failedToAddCategory = err => ({
+    type: ADD_CATEGORY_F,
+    payload: err
+});
+
+export const createNewCategory = data => ({
+    type: API,
+    payload: {
+        url: API_ADMIN+"/cms/category",
+        method: "POST",
+        data: data,
+        success: addedCategory,
+        error: failedToAddCategory
+    }
+});
+
+export const deletedCategory = data => ({
+    type: DELETED_CATEGORY_S,
+    payload: data
+});
+
+export const failedToDeleteCategory = err => ({
+    type: DELETED_CATEGORY_F,
+    payload: err
+});
+
+export const deleteACategory = data => ({
+    type: API,
+    payload: {
+        url: API_ADMIN+"/cms/category",
+        method: "DELETE",
+        data: {
+            category: data
+        },
+        success: deletedCategory,
+        error: failedToDeleteCategory
     }
 });

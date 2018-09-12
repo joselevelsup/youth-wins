@@ -52,7 +52,7 @@ class BecomeRes extends Component {
     }
 
 	  render(){
-        const { handleSubmit } = this.props;
+        const { handleSubmit, categories } = this.props;
 		    return (
             <React.Fragment>
               {
@@ -85,7 +85,7 @@ class BecomeRes extends Component {
 					        </FormGroup>
 					        <FormGroup className="support-form-items">
 						        <Label>Categories</Label>
-					          <Field className="form-control" name="categories" component="input" type="text"/>
+					          <Field  name="categories" component={SelectField} options={categories.map(c => ({ value: c, label: c}))}/>
 					        </FormGroup>
 					        <FormGroup className="support-form-items">
 						        <Label>Description</Label>
@@ -107,6 +107,8 @@ const BecomeResourceForm = reduxForm({
     form: "becomeResource"
 })(BecomeRes)
 
-const BecomeResource = connect()(BecomeResourceForm);
+const BecomeResource = connect(state => ({
+    categories: (state.cms && state.cms.content) ? state.cms.content[0].categories : []
+}))(BecomeResourceForm);
 
 export default BecomeResource;

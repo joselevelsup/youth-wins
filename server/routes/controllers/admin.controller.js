@@ -2,24 +2,13 @@ import {
     AppliedCase,
     User,
     Resource,
-    Admin
+    Admin,
+    CMS
 } from "../../models";
 
 import { getImage, uploadImage, replaceImage } from "../../helpers/aws";
 import { sendAcceptedEmail, sendDeniedEmail } from "../../helpers/mailer";
 import bcrypt from "bcrypt";
-
-export function getAllCases(req, res){
-  Case.find().then((cases) => {
-    res.json({
-      "success": true,
-      "cases": cases
-    });
-  }).catch((err) => {
-    console.log(err);
-    res.status(500);
-  })
-}
 
 export function getResources(req, res){
     Resource.find().then((r) => {
@@ -33,6 +22,21 @@ export function getResources(req, res){
         res.status(500);
     });
 }
+
+export function getCategories(req, res){
+    CMS.find().then(data => {
+        res.status(200).json({
+            "success": true,
+            "categories": data.categories
+        });
+    }).catch(err => {
+        res.status(500).json({
+            "success": false,
+            "message": "unable to retrieve categories"
+        });
+    });
+}
+
 
 export function deleteResource(req, res){
     if(!req.body.resourceId){

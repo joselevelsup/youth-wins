@@ -63,7 +63,8 @@ const cmsModel = new mongoose.Schema({
             }
         }
     },
-    team: [mongoose.Schema.Types.ObjectId]
+    team: [mongoose.Schema.Types.ObjectId],
+    categories: [mongoose.Schema.Types.String]
 });
 
 
