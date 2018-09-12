@@ -23,7 +23,7 @@ export const ResourceItem = ({ resource, deleteResource, openResource, apply, ad
                            <div className={full ? "offset-1 col-6" : "offset-1 col-7"}>
                                 <div className="row">
                                     <div className="col-12">
-                                        <h5 className="push-words">{resource.organizationName}</h5>
+                                      <h5 className="push-words clickable" onClick={() => openResource(resource)} >{resource.organizationName}</h5>
                                     </div>
                                 </div>
                                 <div className="row">
@@ -70,7 +70,7 @@ export const StaffItem = ({ staff, deleteStaff, openStaff}) => {
                 <div className="media-body">
                     <div className="row">
                         <div className="col-8 align-self-center">
-                            <h5><span className="ml-4 align-center">{staff.firstName} {staff.lastName}</span></h5>
+                          <h5><span className="ml-4 align-center clickable" onClick={() => openStaff(staff)}>{staff.firstName} {staff.lastName}</span></h5>
                         </div>
                         <div className="col-2 align-self-center">
                           <button className="btn btn-remove sm-remove rounded-circle mx-auto" onClick={() => deleteStaff(staff._id)}><Ionicon icon="md-remove" fontSize="40px" color="#fff"/></button>
@@ -97,7 +97,7 @@ export const UserItem = ({ user, deleteUser, openUser }) => {
                 <div className="media-body">
                     <div className="row">
                         <div className="col-8 align-self-center">
-                            <h5><span className="ml-4 align-center">{user.firstName} {user.lastName}</span></h5>
+                            <h5><span className="ml-4 align-center clickable">{user.firstName} {user.lastName}</span></h5>
                         </div>
                         <div className="col-2 align-self-center">
                           <button className="btn btn-remove sm-remove rounded-circle mx-auto" onClick={() => deleteUser(user._id)}><Ionicon icon="md-remove" fontSize="40px" color="#fff"/></button>
@@ -119,7 +119,7 @@ export const AppItem = ({ status, resource, deleteApp, size,  openResource, appI
               <div className="row">
                 <div className="col-8 align-self-center">
                   <div className="align-middle">
-                    <h5><span className="ml-4 align-middle">{resource.organizationName}</span></h5>
+                    <h5><span className="ml-4 align-middle clickable" onClick={() => openResource(resource, status, appId)} >{resource.organizationName}</span></h5>
                   </div>
                 </div>
                 <div className="col-2 align-self-center">

@@ -51,7 +51,10 @@ class StepThree extends Component {
 							</Label>
 						</FormGroup>
 					</FormGroup>
-					<Button color="warning" onClick={this.props.nextStep}>Proceed</Button>
+					<section className="signup-button-container">
+						<Button color="warning" onClick={this.props.prevStep}>Back</Button>
+						<Button color="warning" onClick={this.props.nextStep}>Proceed</Button>
+					</section>
 				</Form>
 			</div>
 		)

@@ -80,3 +80,9 @@ export const FAILED_ADD_MEMBER = "FAILED_ADD_MEMBER";
 
 export const TOGGLE_S = "TOGGLE_S";
 export const TOGGLE_F = "TOGGLE_F";
+
+export const ADD_CATEGORY_S = "ADD_CATEGORY_S";
+export const ADD_CATEGORY_F = "ADD_CATEGORY_F";
+
+export const DELETED_CATEGORY_S = "DELETED_CATEGORY_S";
+export const DELETED_CATEGORY_F = "DELETED_CATEGORY_F";

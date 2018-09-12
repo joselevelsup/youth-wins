@@ -15,7 +15,7 @@ class StepFour extends Component {
 	signup(values){
 		const submission = Object.assign({}, values)
 		this.props.dispatch(signUp(submission))
-		this.props.history.push('/home')
+		this.props.history.push('/dashboard')
 	}
 
 	render(){
@@ -52,7 +52,10 @@ class StepFour extends Component {
 						</Label>
 					</FormGroup>
 					<br/>
-					<Button color="warning" type="submit">Continue</Button>
+					<section className="signup-button-container">
+						<Button color="warning" onClick={this.props.prevStep}>Back</Button>
+						<Button color="warning" onClick={this.props.nextStep}>Proceed</Button>
+					</section>
 				</Form>
 			</div>
 		)

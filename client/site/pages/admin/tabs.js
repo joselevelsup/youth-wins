@@ -33,7 +33,9 @@ import {
     updateHomeContent,
     updateSupportContent,
     updateAboutContent,
-    addMember
+    addMember,
+    createNewCategory,
+    deleteACategory
 } from "../../actions/admin";
 
 import { toggleResponse } from "../../actions/dashboard";
@@ -500,6 +502,9 @@ class SettingsT extends React.Component{
         this.updateSupport = this.updateSupport.bind(this);
         this.updateAbout = this.updateAbout.bind(this);
         this.addToSite = this.addToSite.bind(this);
+        this.toggleCategoryModal = this.toggleCategoryModal.bind(this);
+        this.createCategory = this.createCategory.bind(this);
+        this.deleteCategory = this.deleteCategory.bind(this);
     }
 
     loadContent(){
@@ -562,9 +567,35 @@ class SettingsT extends React.Component{
         });
     }
 
+    toggleCategoryModal(){
+        this.setState({
+            categoryModal: !this.state.categoryModal
+        });
+    }
+
+    createCategory(values, dispatch){
+        const self = this;
+        dispatch(createNewCategory(values)).then(data => {
+            if(data.success){
+                self.loadContent();
+            }
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
+    deleteCategory(category){
+        this.props.dispatch(deleteACategory(category)).then(data => {
+            this.loadContent();
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
     render(){
-        const { homeCms, aboutCms, supportCms, team, staff } = this.props;
+        const { homeCms, aboutCms, supportCms, team, staff, categories } = this.props;
         const { homeUpdate, aboutUpdate, supportUpdate } = this.state;
+
         return (
             <Container>
               <Row>
@@ -573,6 +604,11 @@ class SettingsT extends React.Component{
               <Row>
                 <Col md={12} className="text-center">
                   <h3>Settings</h3>
+                </Col>
+              </Row>
+              <Row>
+                <Col md={{ size: 3, offset: 9}} className="text-center">
+                  <button className="btn btn-secondary" onClick={this.toggleCategoryModal}>Add Category</button>
                 </Col>
               </Row>
               <Row>
@@ -595,6 +631,49 @@ class SettingsT extends React.Component{
               <Row>
                 <br />
               </Row>
+              {
+                  this.state.categoryModal &&
+                      <Modal toggle={this.toggleCategoryModal} isOpen={this.state.categoryModal}>
+                        <div className="modal-header">
+                          <Container fluid={true}>
+                            <Row>
+                              <Col md={{size: 1, offset: 11}}>
+                                <Button color="clear" onClick={this.toggleCategoryModal}>X</Button>
+                              </Col>
+                            </Row>
+                          </Container>
+                        </div>
+                        <ModalBody>
+                          <Container fluid={true}>
+                             <form style={{padding: "5px"}} onSubmit={this.props.handleSubmit(this.createCategory)}>
+                              <Row>
+                               <Col md={9} style={{padding: "0"}}>
+                                  <Field name="category" component="input" type="text" className="form-control" />
+                                </Col>
+                                <Col md={2}>
+                                  <Button color="primary" type="submit">Create</Button>
+                                </Col>
+                              </Row>
+                            </form>
+                              {
+                                  categories &&
+                                      categories.map(c => (
+                                          <React.Fragment>
+                                             <Row style={{padding: "10px"}}>
+                                              <Col md={9} className="align-self-center">
+                                                {c}
+                                              </Col>
+                                              <Col md={2}>
+                                                <Button color="primary" onClick={() => this.deleteCategory(c)}>Delete</Button>
+                                              </Col>
+                                            </Row>
+                                          </React.Fragment>
+                                      ))
+                              }
+                          </Container>
+                        </ModalBody>
+                      </Modal>
+              }
 
               {
                   (this.state.view === 1 && homeCms) &&
@@ -843,5 +922,6 @@ export const SettingsTab = connect(state => ({
     supportCms: (state.cms && state.cms.content) ? state.cms.content[0].supportUs : [],
     aboutCms: (state.cms && state.cms.content) ? state.cms.content[0].aboutUs : [],
     staff: (state.adminUsers && state.adminUsers.staff) ? state.adminUsers.staff : [],
-    team: (state.cms && state.cms.content) ? state.cms.content[0].team : []
+    team: (state.cms && state.cms.content) ? state.cms.content[0].team : [],
+    categories: (state.cms && state.cms.content) ? state.cms.content[0].categories : []
 }))(SettingsForm);

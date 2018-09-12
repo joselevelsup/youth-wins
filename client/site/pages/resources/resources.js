@@ -16,6 +16,7 @@ import { states } from "../../constants/states";
 import { ethnicity } from "../../constants/ethicity";
 import { YouthModal, ResourceModal } from "../../components/modal";
 import { fetchResources, applyResource } from "../../actions/resource";
+import { getContent } from "../../actions/admin";
 import { chunk } from "../../components/helpers";
 import { ResourceItem } from "../../components/items";
 import { Select } from "../../components/forms";
@@ -43,6 +44,7 @@ class Resources extends React.Component {
 
     componentDidMount(){
         this.props.dispatch(fetchResources());
+        this.props.dispatch(getContent());
     }
 
 
@@ -83,11 +85,7 @@ class Resources extends React.Component {
             });
             reset();
         } else {
-            let filteredResources = resources.filter(r => {
-                if(r.stateServed.some(s => s === values.state) || r.ethnicityServed.some(e => e === values.ethnicity) || r.categories.some(c => c === values.categories)){
-                    return r;
-                }
-            });
+            let filteredResources = resources.filter(r => r.categories.some(c => c === values.categories));
 
             this.setState({
                 filtered: true,
@@ -115,7 +113,7 @@ class Resources extends React.Component {
     }
 
     render(){
-        const { resources, user } = this.props;
+        const { resources, user, categories } = this.props;
         const { res, filtered } = this.state;
         return (
             <Container>
@@ -140,32 +138,14 @@ class Resources extends React.Component {
               <br />
               <form>
                 <Row>
-                  <Col md={{size: 2, offset: 1}}>
-                    <Field component={Select} className="form-control filter" name="state">
-                      <option value={null}>Select State</option>
-                      {
-                          states.map(s => (
-                              <option value={s.abbreviation}>{s.name}</option>
-                          ))
-                      }
-                    </Field>
-                  </Col>
-                  <Col md={2}>
-                    <Field component={Select} className="form-control filter" name="ethnicity">
-                      <option value={null}>Select Ethnicity</option>
-                      {
-                          ethnicity.map(e => (
-                              <option value={e}>{e}</option>
-                          ))
-                      }
-                    </Field>
-                  </Col>
-                  <Col md={2}>
+                  <Col md={{size: 4, offset: 2}}>
                     <Field component={Select} className="form-control filter" name="categories">
                       <option value={null}>Select Category</option>
-                      <option value="Healthcare">Healthcare</option>
-                      <option value="Housing">Housing</option>
-                      <option value="Technology">Technology</option>
+                      {
+                          categories.map(s => (
+                              <option value={s}>{s}</option>
+                          ))
+                      }
                     </Field>
                   </Col>
                   <Col md={2}>
@@ -198,7 +178,8 @@ class Resources extends React.Component {
 function mapStateToProps(state){
     return {
         resources: state.resources,
-        user: state.user
+        user: state.user,
+        categories: (state.cms && state.cms.content) ? state.cms.content[0].categories : []
     };
 }
 

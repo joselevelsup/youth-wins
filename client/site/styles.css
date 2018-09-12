@@ -195,3 +195,19 @@ figure {
 .home-logo {
 	width: 20vw;
 }
+
+.signup-button-container {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.first-button {
+	display: flex;
+	align-items: flex-end;
+	justify-content: flex-end;
+}
+
+.button-danger {
+	border-color: #d9534f;
+}

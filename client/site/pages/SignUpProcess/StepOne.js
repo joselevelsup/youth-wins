@@ -1,8 +1,29 @@
 import React, { Component } from 'react'
-import { Field, reduxForm } from 'redux-form'
+import { Field, reduxForm, formValues } from 'redux-form'
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap'
 
 class StepOne extends Component {
+	constructor(){
+		super()
+		this.state = {
+			password: '',
+			different: false
+		}
+		this.confirmPassword = this.confirmPassword.bind(this)
+		this.handleChange = this.handleChange.bind(this)
+	}
+
+	handleChange(e){
+		this.setState({
+			password: e.target.value
+		})
+	}
+
+	confirmPassword(next){	
+		if(this.props.password === this.state.password) next()
+		else this.setState({different: true})
+	}
+
 	render(){
 		return (
 			<div>
@@ -22,14 +43,20 @@ class StepOne extends Component {
 					</FormGroup>
 					<FormGroup>
 						<Label>Password</Label>
-						<Field className="form-control" component="input" type="password" name="password"  placeholder="********" />
+						<Field className="form-control" component="input" type="password" name="password"  placeholder="********" required/>
 					</FormGroup>
-					<Button color="warning" onClick={this.props.nextStep}>Proceed</Button>
+					<FormGroup>
+						<Label>Confirm Password</Label>
+						<Input className={this.state.different ? "button-danger" : null} type="password" placeholder="********" onChange={this.handleChange} required/>
+					</FormGroup>
+					<section className="first-button">
+						<Button color="warning" onClick={() => this.confirmPassword(this.props.nextStep)}>Proceed</Button>
+					</section>
 				</Form>
 			</div>
 		)
 	}
 }
 
-const StepOneForm = reduxForm({form: 'signup', destroyOnUnmount: false, forceUnregisteredOnUnmount: true})(StepOne)
+const StepOneForm = reduxForm({form: 'signup', destroyOnUnmount: false, forceUnregisteredOnUnmount: true})(formValues('password')(StepOne))
 export default StepOneForm
