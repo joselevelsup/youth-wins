@@ -98,6 +98,10 @@ class BecomeRes extends Component {
 						        <Label>Description</Label>
 					          <Field className="form-control description" name="description" component="textarea" rows="8" />
 					        </FormGroup>
+							<FormGroup className="support-form-items">
+						        <Label>Contact Phone Number</Label><br/>
+                    <Field component="input" className="form-control" name="phone" />
+					        </FormGroup>
 					        <FormGroup className="support-form-items">
 						        <Label>Logo</Label><br/>
                     <Field component={DropzoneInput} name="logo" />

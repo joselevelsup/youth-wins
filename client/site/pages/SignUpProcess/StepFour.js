@@ -5,6 +5,26 @@ import { withRouter } from 'react-router-dom'
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap'
 // import { signUp } from './../../../store/reducers/user'
 import { signUp } from '../../actions/auth'
+import SelectField from "../../components/multi-select";
+
+
+const validate = values => {
+    const errors = {};
+
+    if(!values.income){
+        errors.income = "required"; 
+    }
+
+    if(!values.educationLevel){
+        errors.educationLevel = "required";
+    }
+
+    if(!values.categories){
+        errors.categories = "required";
+    }
+
+    return errors;
+}
 
 class StepFour extends Component {
 	constructor(){
@@ -12,14 +32,15 @@ class StepFour extends Component {
 		this.signup = this.signup.bind(this)
 	}
 
-	signup(values){
+	  signup(values){
+        console.log(values);
 		const submission = Object.assign({}, values)
 		this.props.dispatch(signUp(submission))
 		this.props.history.push('/dashboard')
 	}
 
 	render(){
-		const { handleSubmit } = this.props
+		  const { handleSubmit, categories } = this.props
 		return (
 			<div>	
 				<h1>Signup - Step 4</h1>
@@ -40,27 +61,24 @@ class StepFour extends Component {
 						</Field>
 					</FormGroup>
 					<Label>What are you interested in?</Label>
-					<FormGroup check>
-						<Label check>
-							<Field component="input" type="checkbox" name="Category 1" />{' '}
-							Category 1
-						</Label>
-						<br/>
-						<Label check>
-							<Field component="input" type="checkbox" name="Category 2" />{' '}
-							Category 2
-						</Label>
+					<FormGroup>
+            <Field component={SelectField} name="categories" options={categories.map(c => ({ label: c, value: c}))} />
 					</FormGroup>
 					<br/>
 					<section className="signup-button-container">
 						<Button color="warning" onClick={this.props.prevStep}>Back</Button>
-						<Button color="warning" onClick={this.props.nextStep}>Proceed</Button>
+						<Button color="warning" disabled={this.props.invalid} onClick={handleSubmit(this.signup)}>Proceed</Button>
 					</section>
 				</Form>
 			</div>
 		)
 	}
 }
+
+const mapStateToProps = state => ({
+    categories: (state.content && state.content.content) ? state.content.content.categories : []
+});
+
 
 const mapDispatchToProps = dispatch => {
 	return {
@@ -70,5 +88,9 @@ const mapDispatchToProps = dispatch => {
 	}
 }
 
-const StepFourForm = reduxForm({form: 'signup', destroyOnUnmount: false, forceUnregisteredOnUnmount: true})(connect(null, mapDispatchToProps)(withRouter(StepFour)))
+const StepFourForm = reduxForm({
+    form: 'signup',
+    validate,
+    destroyOnUnmount: false,
+    forceUnregisteredOnUnmount: true})(connect(mapStateToProps, mapDispatchToProps)(withRouter(StepFour)))
 export default StepFourForm
