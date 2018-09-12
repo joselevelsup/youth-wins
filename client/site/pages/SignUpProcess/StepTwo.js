@@ -24,7 +24,10 @@ class StepTwo extends Component {
 						<Label>Zip Code</Label>
 						<Field className="form-control" component="input" name="zipCode"  placeholder="11223" />
 					</FormGroup>
-					<Button color="warning" onClick={this.props.nextStep}>Proceed</Button>
+					<section className="signup-button-container">
+						<Button color="warning" onClick={this.props.prevStep}>Back</Button>
+						<Button color="warning" onClick={this.props.nextStep}>Proceed</Button>
+					</section>
 				</Form>
 			</div>
 		)

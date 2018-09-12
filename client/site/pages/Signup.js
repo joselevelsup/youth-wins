@@ -13,6 +13,7 @@ class Signup extends Component {
 			currentStep: 0
 		}
 		this.nextStep = this.nextStep.bind(this)
+		this.prevStep = this.prevStep.bind(this)
 	}
 
 	nextStep(){
@@ -22,9 +23,17 @@ class Signup extends Component {
 			null
 	}
 
+	prevStep(){
+		this.state.currentStep > 0 ? 	
+			this.setState({ currentStep: this.state.currentStep - 1 })
+		: 
+			null
+	}
+
 	render(){
 		const helperFunctions = {
 			nextStep: this.nextStep,
+			prevStep: this.prevStep,
 			handleChange: this.handleChange
 		}
 

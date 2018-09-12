@@ -52,7 +52,10 @@ class StepFour extends Component {
 						</Label>
 					</FormGroup>
 					<br/>
-					<Button color="warning" type="submit">Continue</Button>
+					<section className="signup-button-container">
+						<Button color="warning" onClick={this.props.prevStep}>Back</Button>
+						<Button color="warning" onClick={this.props.nextStep}>Proceed</Button>
+					</section>
 				</Form>
 			</div>
 		)
