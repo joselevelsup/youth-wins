@@ -259,7 +259,7 @@ export const UserModal = connect(state => ({
     apps: state.adminApps
 }))(UserM);
 
-export class CreateResource extends React.Component {
+class CreateRes extends React.Component {
     componentWillUnmount(){
         this.props.reset();
     }
@@ -268,7 +268,7 @@ export class CreateResource extends React.Component {
     }
 
     render(){
-        const { open, toggle, create, createValues } = this.props;
+        const { open, toggle, create, createValues, categories } = this.props;
         return (
             <Modal isOpen={open} toggle={toggle} size="lg">
               <div className="modal-header">
@@ -322,6 +322,12 @@ export class CreateResource extends React.Component {
                   </Row>
                   <Row>
                     <Col md={6}>
+                      <label>Categories</label>
+                      <Field name="categories" component={SelectField} options={categories.map(c => ({ label: c, value: c}))}/>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md={6}>
                       <div className="form-group">
 						            <label>Description</label>
 						            <Field name="description" className="form-control" component="textarea" />
@@ -353,6 +359,10 @@ export class CreateResource extends React.Component {
         );
     }
 }
+
+export const CreateResource = connect(state => ({
+    categories: (state.content && state.content.content) ? state.content.content.categories : []
+}))(CreateRes);
 
 export class EditResource extends React.Component{
     
