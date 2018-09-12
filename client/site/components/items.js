@@ -70,7 +70,7 @@ export const StaffItem = ({ staff, deleteStaff, openStaff}) => {
                 <div className="media-body">
                     <div className="row">
                         <div className="col-8 align-self-center">
-                            <h5><span className="ml-4 align-center">{staff.firstName} {staff.lastName}</span></h5>
+                          <h5><span className="ml-4 align-center clickable" onClick={() => openStaff(staff)}>{staff.firstName} {staff.lastName}</span></h5>
                         </div>
                         <div className="col-2 align-self-center">
                           <button className="btn btn-remove sm-remove rounded-circle mx-auto" onClick={() => deleteStaff(staff._id)}><Ionicon icon="md-remove" fontSize="40px" color="#fff"/></button>
