@@ -18,7 +18,11 @@ export function login(req, res){
                         message: "error has occurred"
                     });
                 } else {
-                    res.status(200).json(getImage(req.user));
+                    if(!req.user.profile){
+                        res.status(200).json(req.user);
+                    } else {
+                        res.status(200).json(getImage(req.user));
+                    }
                 }
             });
         }
@@ -45,7 +49,7 @@ export function signup(req, res){
         ethnicity,
         inMilitary,
         educationLevel,
-        categoriesOfInterest
+        categories
 	} = req.body;
 	
     User.findOne({ "email": email}).then((user) => {
@@ -69,7 +73,7 @@ export function signup(req, res){
                 ethnicity: ethnicity,
                 inMilitary: inMilitary,
                 educationLevel: educationLevel,
-                categoriesOfInterest: categoriesOfInterest
+                categoriesOfInterest: categories.includes(" ---- ") ? categories.split(" ---- ") : categories
             }).save();
         } else {
             res.status(200).json({
@@ -77,7 +81,13 @@ export function signup(req, res){
             });
         }
     }).then((user) => {
-        res.status(200).json(user);
+        req.logIn(user, function(err){
+            if(err){
+                console.log(err);
+            } else {
+                res.status(200).json(user);
+            }
+        });
     }).catch((err) => {
         console.log(err);
         res.status(500).json({

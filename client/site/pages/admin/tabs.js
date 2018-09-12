@@ -512,6 +512,7 @@ class SettingsT extends React.Component{
 
     loadContent(){
         this.props.dispatch(getEditableContent());
+        this.props.dispatch(getAllUsers());
     }
 
     componentDidMount(){
@@ -612,7 +613,7 @@ class SettingsT extends React.Component{
     }
 
     render(){
-        const { homeCms, aboutCms, supportCms, team, staff, categories } = this.props;
+        const { handleSubmit, homeCms, aboutCms, supportCms, team, staff, categories } = this.props;
         const { homeUpdate, aboutUpdate, supportUpdate } = this.state;
 
         return (
@@ -629,7 +630,7 @@ class SettingsT extends React.Component{
                 <Col md={3} className="text-center">
                   <button className="btn btn-secondary" onClick={this.toggleCategoryModal}>Add Category</button>
                 </Col>
-                <Col md={{size: 4, offset: 5}}>
+                <Col md={{size: 3, offset: 6}} className="text-center">
                   <button className="btn btn-secondary" onClick={this.toggleCreateModal}>Add Staff Memeber</button>
                 </Col>
               </Row>

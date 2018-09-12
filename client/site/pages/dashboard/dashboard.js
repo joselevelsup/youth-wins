@@ -30,7 +30,6 @@ class Dashboard extends React.Component{
 	applyResource(resourceId){
 		const self = this;
       this.props.dispatch(applyResource(resourceId)).then(data => {
-          console.log(data);
           self.toggleAppModal();
         }).catch(err => {
             console.log(err);
@@ -94,12 +93,14 @@ class Dashboard extends React.Component{
               </div>
               <div className="row">
 				  {
-                      suggestions ?
+              (suggestions && suggestions.length >= 1) ?
 					  	suggestions && suggestions.map(s => (
 							    <ResourceItem full={true} openResource={this.openResource} resource={s} apply={this.applyResource} />
 						))
-                          :
-                          <React.Fragment/>
+                  :
+                  <div className="col-12 text-center" style={{height: "200px"}}>
+                    <h1>There are no Suggested Resources for you</h1>
+                  </div>
                   }
               </div>
               <div className="row">
@@ -125,7 +126,9 @@ class Dashboard extends React.Component{
                               <AppItem size={4} appId={d._id} openResource={this.openResource} resource={d.resource} status={d.status} />
                           ))
                           :
-                          <React.Fragment/>
+                          <div className="col-12 text-center">
+                            <h1>You have no applications open</h1>
+                          </div>
                   }
               </div>
               {this.state.appModal && <YouthModal open={this.state.appModal} applying={true} toggle={this.toggleAppModal}/>}
@@ -137,7 +140,7 @@ class Dashboard extends React.Component{
 
 const DashboardPage = connect(state => ({
 	  suggestions: state.dashboard && state.dashboard.suggestions,
-    applications: state.dashboard && (state.dashboard.user.success ? state.dashboard.user.applications : []),
+    applications: (state.dashboard && state.dashboard.user) ? state.dashboard.user.applications : [],
 	user: state.user
 }))(Dashboard);
 export default DashboardPage;
