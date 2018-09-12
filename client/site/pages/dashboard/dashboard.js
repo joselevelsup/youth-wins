@@ -82,7 +82,7 @@ class Dashboard extends React.Component{
                 <div className="col-2">
 					        {user.profile ? <img className="img-fluid rounded-circle border-color" src={user.profile}/> : null}
                 </div>
-                <div className="col-8 align-self-center">
+                <div className="col-8 align-self-center"> 
 					        <h3 className="welcome">Welcome {user.firstName} {user.lastName}</h3>
                 </div>
 				      </div>
