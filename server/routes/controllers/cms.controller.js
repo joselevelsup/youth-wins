@@ -3,6 +3,7 @@ import { uploadImage, replaceImage } from "../../helpers/aws";
 
 export function getAllContent(req, res){
     CMS.find().then(data => {
+        console.log(data);
         res.status(200).json({
             "success": true,
             "content": data
@@ -206,6 +207,58 @@ export function addMember(req, res){
             res.status(500).json({
                 "success": false,
                 "message": "unable to add or remove member"
+            });
+        });
+    }
+}
+
+
+export function createCategory(req, res){
+    if(!req.body.category){
+        res.status(500).json({
+            "success": false,
+            "message": "no new category supplied"
+        });
+    } else {
+        CMS.findOneAndUpdate({}, {
+            $push: {
+                "categories": req.body.category
+            }
+        }, { new: true }).then(data => {
+            res.status(200).json({
+                "success": true,
+                "categories": data.categories
+            });
+        }).catch(err => {
+            console.log(err);
+            res.status(500).json({
+                "success": false,
+                "message": "unable to make a category"
+            });
+        });
+    }
+}
+
+export function deleteCategory(req, res){
+    if(!req.body.category){
+        res.status(500).json({
+            "success": false,
+            "message": "no category was supplied"
+        });
+    } else {
+        CMS.findOneAndUpdate({}, {
+            $pull: {
+                "categories": req.body.category
+            }
+        }, { new: true }).then(data => {
+            res.status(200).json({
+                "success": true,
+                "categories": data.categories
+            });
+        }).catch(err => {
+            res.status(500).json({
+                "success": false,
+                "message": "unable to delete the category"
             });
         });
     }

@@ -24,16 +24,22 @@ import {
     updateHomeContent,
     updateSupportContent,
     updateAboutContent,
-    addMember
+    addMember,
+    createCategory,
+    deleteCategory
 } from "../controllers/cms.controller";
 const adminRouter = Router();
 
+adminRouter.get("/cms", getAllContent);
 adminRouter.get("/cms/e", getAllContent);
 adminRouter.put("/cms/home", updateHomeContent);
 adminRouter.put("/cms/support", updateSupportContent);
 adminRouter.put("/cms/about", updateAboutContent);
 
 adminRouter.post("/cms/add-member", addMember);
+
+adminRouter.post("/cms/category", createCategory);
+adminRouter.delete("/cms/category", deleteCategory);
 
 adminRouter.get("/resources", getResources);
 adminRouter.post("/resources", createResource);
