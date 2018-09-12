@@ -37,7 +37,7 @@ class Root extends Component {
                   <Route exact path="/dashboard" component={Dashboard}/>
 				          <Route exact path="/resources" component={Resources}/>
                   <Route exact path="/admin" component={CheckAdmin(AdminPanel)} />
-				          <Route component={Landing}/>
+				          <Route component={Home}/>
 			          </Switch>
               </Container>
             </React.Fragment>
