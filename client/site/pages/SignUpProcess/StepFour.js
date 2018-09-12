@@ -15,7 +15,7 @@ class StepFour extends Component {
 	signup(values){
 		const submission = Object.assign({}, values)
 		this.props.dispatch(signUp(submission))
-		this.props.history.push('/home')
+		this.props.history.push('/dashboard')
 	}
 
 	render(){
