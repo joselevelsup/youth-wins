@@ -2,6 +2,28 @@ import React, { Component } from 'react'
 import { Field, reduxForm, formValues } from 'redux-form'
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap'
 
+const validate = values => {
+    const errors = {};
+
+    if(!values.firstName){
+        errors.firstName = "required";
+    }
+
+    if(!values.lastName){
+        errors.lastName = "required";
+    }
+
+    if(!values.email){
+        errors.email = "required";
+    }
+
+    if(!values.password){
+        errors.password = "required";
+    }
+
+    return errors;
+}
+
 class StepOne extends Component {
 	constructor(){
 		super()
@@ -50,7 +72,7 @@ class StepOne extends Component {
 						<Input className={this.state.different ? "button-danger" : null} type="password" placeholder="********" onChange={this.handleChange} required/>
 					</FormGroup>
 					<section className="first-button">
-						<Button color="warning" onClick={() => this.confirmPassword(this.props.nextStep)}>Proceed</Button>
+						<Button color="warning" disabled={this.props.invalid} onClick={() => this.confirmPassword(this.props.nextStep)}>Proceed</Button>
 					</section>
 				</Form>
 			</div>
@@ -58,5 +80,10 @@ class StepOne extends Component {
 	}
 }
 
-const StepOneForm = reduxForm({form: 'signup', destroyOnUnmount: false, forceUnregisteredOnUnmount: true})(formValues('password')(StepOne))
+const StepOneForm = reduxForm({
+    form: 'signup',
+    validate,
+    destroyOnUnmount: false,
+    forceUnregisteredOnUnmount: true
+})(formValues('password')(StepOne))
 export default StepOneForm

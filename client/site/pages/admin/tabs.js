@@ -492,6 +492,7 @@ class SettingsT extends React.Component{
 
         this.state = {
             view: 1,
+            createModal: false,
             homeUpdate: false,
             supportUpdate: false,
             aboutUpdate: false
@@ -503,8 +504,10 @@ class SettingsT extends React.Component{
         this.updateAbout = this.updateAbout.bind(this);
         this.addToSite = this.addToSite.bind(this);
         this.toggleCategoryModal = this.toggleCategoryModal.bind(this);
+        this.toggleCreateModal = this.toggleCreateModal.bind(this);
         this.createCategory = this.createCategory.bind(this);
         this.deleteCategory = this.deleteCategory.bind(this);
+        this.createStaffMember = this.createStaffMember.bind(this);
     }
 
     loadContent(){
@@ -517,7 +520,7 @@ class SettingsT extends React.Component{
 
     updateHome(values, dispatch){
         const { home } = values;
-
+    
         dispatch(updateHomeContent(home)).then(data => {
             if(data.success){
                 this.setState({
@@ -592,6 +595,22 @@ class SettingsT extends React.Component{
         });
     }
 
+    toggleCreateModal(){
+        this.setState({
+            createModal: !this.state.createModal
+        });
+    }
+
+    createStaffMember(values, dispatch){
+        const self = this;
+        dispatch(createStaff(values)).then(data => {
+            self.toggleCreateModal();
+            self.loadContent();
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
     render(){
         const { homeCms, aboutCms, supportCms, team, staff, categories } = this.props;
         const { homeUpdate, aboutUpdate, supportUpdate } = this.state;
@@ -607,8 +626,11 @@ class SettingsT extends React.Component{
                 </Col>
               </Row>
               <Row>
-                <Col md={{ size: 3, offset: 9}} className="text-center">
+                <Col md={3} className="text-center">
                   <button className="btn btn-secondary" onClick={this.toggleCategoryModal}>Add Category</button>
+                </Col>
+                <Col md={{size: 4, offset: 5}}>
+                  <button className="btn btn-secondary" onClick={this.toggleCreateModal}>Add Staff Memeber</button>
                 </Col>
               </Row>
               <Row>
@@ -908,7 +930,9 @@ class SettingsT extends React.Component{
                         </Row>
                       </Container>
               }
-            </Container>
+
+              {this.state.createModal && <CreateStaff open={this.state.createModal} toggle={this.toggleCreateModal} create={handleSubmit(this.createStaffMember)} />
+}            </Container>
         );
     }
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap'
+import { ethnicity } from "../../constants/ethnicity";
 
 class StepThree extends Component {
 	render(){
@@ -16,26 +17,12 @@ class StepThree extends Component {
 						<Label>Ethnicity</Label>
 						<Field className="form-control" component="select" name="ethnicity"  id="exampleSelect">
 							<option>- Select Ethnicity -</option>
-							<option>Ethnicity 1</option>
-							<option>Ethnicity 2</option>
-							<option>Ethnicity 3</option>
-							<option>Ethnicity 4</option>
-							<option>Ethnicity 5</option>
+              {
+                  ethnicity.map(e => (
+                      <option value={e}>{e}</option>
+                  ))
+              }
 						</Field>
-					</FormGroup>
-					<FormGroup tag="fieldset">
-						<Label>Are you latino/a?</Label>
-						<FormGroup check>
-							<Label check>
-							<Field component="input" type="radio" value="true" name="isLatino" />{' '}
-								Yes
-							</Label>
-							<br/>
-							<Label check>
-							<Field component="input" type="radio" value="false" name="isLatino"  />{' '}
-								No
-							</Label>
-						</FormGroup>
 					</FormGroup>
 					<FormGroup tag="fieldset">
 						<Label>Are you in the military?</Label>
