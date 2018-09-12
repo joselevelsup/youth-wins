@@ -296,3 +296,10 @@
 .label{
     margin-left: 5px;
 }
+
+.clickable{
+    cursor: pointer;
+    &:hover{
+        text-decoration: underline;
+    }
+}

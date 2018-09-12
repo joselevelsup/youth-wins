@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { getUserInfo, getUserSuggested, toggleResponse } from "../../actions/dashboard";
 import { applyResource } from "../../actions/resource";
-import { ResourceModal } from "../../components/modal";
+import { YouthModal, ResourceModal } from "../../components/modal";
 import { AppItem, ResourceItem } from "../../components/items";
 import "./dashboard.scss";
 
@@ -12,6 +12,7 @@ class Dashboard extends React.Component{
 
         this.state = {
             resourceModal: false,
+            appModal: false,
             resource: null,
             status: null
         };
@@ -19,16 +20,18 @@ class Dashboard extends React.Component{
         this.loadUserInfo = this.loadUserInfo.bind(this);
         this.openResource = this.openResource.bind(this);
 
+        this.toggleAppModal = this.toggleAppModal.bind(this);
         this.toggleResource = this.toggleResource.bind(this);
         this.toggleResponse = this.toggleResponse.bind(this);
 
-		this.applyResource = this.applyResource.bind(this);
+		    this.applyResource = this.applyResource.bind(this);
 	}
 	
 	applyResource(resourceId){
 		const self = this;
-        this.props.dispatch(applyResource(resourceId)).then(data => {
-           self.toggleResource();
+      this.props.dispatch(applyResource(resourceId)).then(data => {
+          console.log(data);
+          self.toggleAppModal();
         }).catch(err => {
             console.log(err);
         });
@@ -61,6 +64,12 @@ class Dashboard extends React.Component{
     toggleResponse(status){
         this.props.dispatch(toggleResponse(status, this.state.appId));
         this.loadUserInfo();
+    }
+
+    toggleAppModal(){
+        this.setState({
+            appModal: !this.state.appModal
+        });
     }
 
     render(){
@@ -118,7 +127,8 @@ class Dashboard extends React.Component{
                           :
                           <React.Fragment/>
                   }
-                </div>
+              </div>
+              {this.state.appModal && <YouthModal open={this.state.appModal} applying={true} toggle={this.toggleAppModal}/>}
               {this.state.resource && <ResourceModal open={this.state.resourceModal} toggle={this.toggleResource} resource={this.state.resource} status={this.state.status} toggleResponse={this.toggleResponse} /> }
               </div>
         );
