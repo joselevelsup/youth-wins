@@ -24,9 +24,9 @@ class Support extends Component {
                             {content.supportUs.section2.body}
 					                </p><br />
 				                </section>
-				                <BecomeResource />
                       </React.Fragment>
               }
+			  <BecomeResource />
 			</div>
 		)
 	}

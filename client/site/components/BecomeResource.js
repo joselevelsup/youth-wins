@@ -24,7 +24,7 @@ class BecomeRes extends Component {
 		this.uploader = createRef()
 		this.handleChange = this.handleChange.bind(this)
 		this.fileUpload = this.fileUpload.bind(this)
-      this.createRes = this.createRes.bind(this);
+    	this.createRes = this.createRes.bind(this);
 	}
 
 	handleChange(e){
@@ -75,6 +75,13 @@ class BecomeRes extends Component {
 						        <Label>Website</Label>
 					          <Field className="form-control" name="website" component="input" type="text"/>
 					        </FormGroup>
+							<FormGroup className="support-form-items">
+						        <Label>Income</Label>
+								<div className="min-max-container">
+									<Field className="form-control min-max" placeholder="min"  name="minIncome" component="input" type="text"/>
+							 		<Field className="form-control min-max" placeholder="max"  name="maxIncome" component="input" type="text"/>
+								</div>
+					        </FormGroup>
 					        <FormGroup className="support-form-items">
 						        <Label>Ethnicities Served</Label>
                     <Field component={SelectField} name="ethnicityServed" options={ethnicity.map(e => ({ value: e, label: e}))} />
@@ -89,12 +96,31 @@ class BecomeRes extends Component {
 					        </FormGroup>
 					        <FormGroup className="support-form-items">
 						        <Label>Description</Label>
-					          <Field className="form-control" name="description" component="textarea" rows="8" />
+					          <Field className="form-control description" name="description" component="textarea" rows="8" />
 					        </FormGroup>
 					        <FormGroup className="support-form-items">
 						        <Label>Logo</Label><br/>
                     <Field component={DropzoneInput} name="logo" />
 					        </FormGroup>
+							<FormGroup>
+								<Label>Veterans only?</Label>
+								<div className="inline-radio">
+									<div>
+										<Label check>
+											<Field component="input" type="radio" value="true" name="inMilitary" />{' '}
+											Yes
+										</Label>
+									</div>
+									
+									<br/>
+									<div>
+										<Label check>
+											<Field component="input" type="radio" value="false" name="inMilitary" />{' '}
+											No
+										</Label>
+									</div>
+								</div>
+							</FormGroup>
 					        <Button color="warning" type="submit">Proceed to Intake</Button>
 				        </Form>
 			        </main>
