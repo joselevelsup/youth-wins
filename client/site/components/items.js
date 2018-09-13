@@ -110,7 +110,7 @@ export const UserItem = ({ user, deleteUser, openUser }) => {
 }
 
 
-export const AppItem = ({ status, resource, deleteApp, size,  openResource, appId }) => {
+export const AppItem = ({ status, resource, deleteApp, size,  openResource, appId, user }) => {
     return (
         <Col md={size} className="appItem">
           <div className="media">
@@ -119,7 +119,7 @@ export const AppItem = ({ status, resource, deleteApp, size,  openResource, appI
               <div className="row">
                 <div className="col-8 align-self-center">
                   <div className="align-middle">
-                    <h5><span className="ml-4 align-middle clickable" onClick={() => openResource(resource, status, appId)} >{resource.organizationName}</span></h5>
+                     <h5><span className="ml-4 align-middle clickable" onClick={() => openResource(resource, status, appId, user)} >{resource.organizationName}</span></h5>
                   </div>
                 </div>
                 <div className="col-2 align-self-center">

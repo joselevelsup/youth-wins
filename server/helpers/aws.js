@@ -52,7 +52,7 @@ export function replaceImage(file, d, type){
 
 export function getImage(arr){
     var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
-    if(arr.length > 1){
+    if(arr.length >= 1){
         arr.map(a => {
             if(a.profile){
                 a.profile = `https://${bucket}.s3.amazonaws.com/${a.profile}`;
@@ -69,6 +69,7 @@ export function getImage(arr){
 
             return a;
         });
+
 
         return arr;
     } else {

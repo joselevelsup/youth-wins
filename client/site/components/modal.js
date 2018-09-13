@@ -53,9 +53,9 @@ export class ResourceModal extends React.Component{
     }
 
     render(){
-        const { open, toggle, resource, apply, admin, edit, remove, approve, deny, status } = this.props;
+        const { open, toggle, resource, apply, admin, edit, remove, approve, deny, status, user } = this.props;
         return (
-            <Modal isOpen={open} toggle={toggle}>
+            <Modal size="lg" isOpen={open} toggle={toggle}>
               <div className="modal-header">
                 <Container fluid={true}>
                   <Row>
@@ -73,9 +73,23 @@ export class ResourceModal extends React.Component{
                             <Col md={4}>
                               <img className="img-fluid rounded-circle" src={resource.logo} />
                             </Col>
-                            <Col>
+                            <Col md={8}>
+                              {
+                                  user &&
+                                      <React.Fragment>
+                                        <Row>
+                                          <h4>{user.firstName} {user.lastName}</h4>
+                                        </Row>
+                                      </React.Fragment>
+                              }
                               <Row>
-                                <h3> {resource.organizationName}</h3>
+                                <h4> {resource.organizationName}</h4>
+                              </Row>
+                              <Row>
+                                <br />
+                              </Row>
+                              <Row>
+                                <h4>{resource.contactEmail}</h4>
                               </Row>
                               <Row>
                                 <p>{resource.description}</p>
@@ -85,19 +99,25 @@ export class ResourceModal extends React.Component{
                           <React.Fragment>
                             {
                                 (typeof status !== "undefined") &&
-                                    <Row>
-                                      <Col md={{size: 2, offset: 4}} className="text-center">
-                                        <label className="custom-check">
-                                          <input type="checkbox" checked={this.state.checked} onChange={this.toggleResponse}  />
-                                          <span className="checkmark"></span>
-                                        </label>
-                                      </Col>
-                                      <Col className="align-self-center">
-                                        <div className="align-middle">
-                                          <h5>Responded</h5>
-                                        </div>
-                                      </Col>
-                                    </Row>
+                                    <React.Fragment>
+                                      <Row>
+                                        <br />
+                                      </Row>
+                                      <Row>
+                                        <Col md={{size: 2, offset: 4}} className="text-center">
+                                          <label className="custom-check">
+                                            <input type="checkbox" checked={this.state.checked} onChange={this.toggleResponse}  />
+                                            <span className="checkmark"></span>
+                                          </label>
+                                        </Col>
+                                        <Col className="align-self-center">
+                                          <div className="align-middle">
+                                            <h5>Responded</h5>
+                                          </div>
+                                        </Col>
+                                      </Row>
+
+                                    </React.Fragment>
                             }
                           </React.Fragment>
                         </React.Fragment>
@@ -142,7 +162,7 @@ export class ResourceModal extends React.Component{
 
 
 export const StaffModal = ({ open, toggle, staff, deleteStaff }) => (
-    <Modal isOpen={open} toggle={toggle}>
+    <Modal size="lg" isOpen={open} toggle={toggle}>
         <div className="modal-header">
             <Container fluid={true}>
                 <Row>
@@ -215,40 +235,40 @@ class UserM extends React.Component {
         const userApps = (apps.applications && user !== null) ? apps.applications.filter(a => a.user === user._id) : apps;
         return (
             <React.Fragment>
-            <Modal isOpen={open} toggle={toggle} size="lg">
-              <ModalBody>
-                {
-                    user !== null &&
-                        <React.Fragment>
-                          <Row>
-                            <Col md={4}>
-                              <img className="img-fluid rounded-circle" src={user.profile} />
-                            </Col>
-                            <Col md={7}>
-                              <h4>{user.firstName} {user.lastName}</h4>
-                            </Col>
-                            <Col md={1}>
-                              <Button color="clear" onClick={toggle}>X</Button>
-                            </Col>
-                          </Row>
-                          <Row>
-                            {
-                                userApps.length > 1 ?
-                                    userApps.map(ua => (
-                                    <AppItem size={6} openResource={this.openResource} deleteApp={this.deleteApp} resource={ua.resource} status={ua.status} />
-                                    ))
-                                    :
-                                    <Col md={12}>
-                                      <div className="show-warning">
-                                        <h3>User has not applied to any resources</h3>
-                                      </div>
-                                    </Col>
-                            }
-                          </Row>
-                        </React.Fragment>
-                }
-              </ModalBody>
-            </Modal>
+              <Modal size="lg" isOpen={open} toggle={toggle} size="lg">
+                <ModalBody>
+                  {
+                      user !== null &&
+                          <React.Fragment>
+                            <Row>
+                              <Col md={4}>
+                                <img className="img-fluid rounded-circle" src={user.profile} />
+                              </Col>
+                              <Col md={7}>
+                                <h4>{user.firstName} {user.lastName}</h4>
+                              </Col>
+                              <Col md={1}>
+                                <Button color="clear" onClick={toggle}>X</Button>
+                              </Col>
+                            </Row>
+                            <Row>
+                              {
+                                  userApps.length > 1 ?
+                                      userApps.map(ua => (
+                                          <AppItem size={6} openResource={this.openResource} deleteApp={this.deleteApp} resource={ua.resource} status={ua.status} />
+                                      ))
+                                      :
+                                      <Col md={12}>
+                                        <div className="show-warning">
+                                          <h3>User has not applied to any resources</h3>
+                                        </div>
+                                      </Col>
+                              }
+                            </Row>
+                          </React.Fragment>
+                  }
+                </ModalBody>
+              </Modal>
               <ResourceModal open={this.state.resourceModal} resource={this.state.resource} toggle={this.toggleModal} />
             </React.Fragment>
         )

@@ -252,10 +252,6 @@ class UsersT extends React.Component{
         this.props.dispatch(getAllUsers());
     }
 
-    componentDidMount(){
-        this.getUsers();
-    }
-
     openStaffMember(staff){
         this.setState({
             staff: staff,
@@ -308,7 +304,7 @@ class UsersT extends React.Component{
 
     deleteApplicant(userId){
         this.props.dispatch(deleteUser(userId)).then(data => {
-            console.log(data);
+            this.getUsers();
         }).catch(err => {
             console.log(err);
         });
@@ -421,10 +417,11 @@ class AppsT extends React.Component {
         });
     }
 
-    openResource(r, status, appId){
+    openResource(r, status, appId, user){
         this.setState({
             resource: r,
             appId: appId,
+            user: user,
             status: status,
             resourceModal: true
         });
@@ -471,11 +468,11 @@ class AppsT extends React.Component {
                 {
                     apps &&
                        apps.applications && apps.applications.map(a => (
-                           <AppItem size={4}  appId={a._id} deleteApp={this.deleteApplication} resource={a.resource} openResource={this.openResource} status={a.status}/>
+                           <AppItem size={4}  appId={a._id} deleteApp={this.deleteApplication} resource={a.resource} openResource={this.openResource} user={a.user} status={a.status}/>
                         ))
                 }
               </Row>
-              {this.state.resource && <ResourceModal open={this.state.resourceModal} resource={this.state.resource} toggle={this.toggleResource} status={this.state.status} toggleResponse={this.toggleResponse} />}
+              {this.state.resource && <ResourceModal open={this.state.resourceModal} resource={this.state.resource} toggle={this.toggleResource} status={this.state.status} user={this.state.user} toggleResponse={this.toggleResponse} />}
             </Container>
         );
     }

@@ -3,7 +3,6 @@ import { uploadImage, replaceImage } from "../../helpers/aws";
 
 export function getAllContent(req, res){
     CMS.find().then(data => {
-        console.log(data);
         res.status(200).json({
             "success": true,
             "content": data

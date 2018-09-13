@@ -42,7 +42,16 @@ export function userSuggestedResources(req, res){
 }
 
 export function userAppliedResources(req, res){
-    AppliedCase.find({ "user": req.user._id}).populate("resource").then(a => {
+    AppliedCase.find({ "user": req.user._id}).populate([
+        {
+            path: "resource",
+            model: "resources"
+        },
+        {
+            path: "user",
+            model: "user"
+        }
+    ]).then(a => {
         let apps = getImage(a);
         res.status(200).json({
             "success": true,
@@ -58,7 +67,6 @@ export function userAppliedResources(req, res){
 
 export function appendContent(req, res){
     CMS.findOne().then(data => {
-        console.log(data);
         Admin.find().then(a => {
             let admins = getImage(a);
             let teamMap = admins.filter(a => data.team.filter(t => a._id.toString() === t.toString()));
