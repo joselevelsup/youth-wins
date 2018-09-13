@@ -6,7 +6,9 @@ const resourceModel = new mongoose.Schema({
     email: String,
     logo: String,
     description: String,
-    website: String,
+	website: String,
+	phone: String,
+	inMilitary: Boolean,
     pending: {
         type: Boolean,
         default: true
