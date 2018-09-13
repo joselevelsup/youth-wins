@@ -21,6 +21,13 @@ import {
     SettingsTab
 } from "./tabs";
 
+import {
+    getAllApplications,
+    getAllUsers,
+    getAllResources,
+    getEditableContent
+} from "../../actions/admin";
+
 
 class AdminPanel extends React.Component {
 
@@ -40,8 +47,6 @@ class AdminPanel extends React.Component {
             });
         }
     }
-
-   
 
     render(){
         const { user } = this.props;

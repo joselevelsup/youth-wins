@@ -319,6 +319,7 @@ export function deleteStaff(req, res){
 }
 
 export function deleteUser(req, res){
+    console.log(req.body.userId);
     if(!req.body.userId){
         res.status(500).json({
             "success": false,
@@ -326,6 +327,7 @@ export function deleteUser(req, res){
         });
     } else {
         User.findOneAndRemove({ "_id": req.body.userId }).then((data) => {
+            console.log(data);
             res.status(200).json({
                 "success": true,
                 "message": "Deleted user"
@@ -341,7 +343,16 @@ export function deleteUser(req, res){
 
 
 export function getAllApplications(req, res){
-    AppliedCase.find().populate("resource").then(apps => {
+    AppliedCase.find().populate([
+        {
+            path: "resource",
+            model: "resources"
+        },
+        {
+            path: "user",
+            select: ["firstName", "lastName"]
+        }
+    ]).then(apps => {
         let applications = getImage(apps);
         res.status(200).json({
             "success": true,
