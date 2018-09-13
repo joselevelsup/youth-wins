@@ -54,7 +54,7 @@ export const userReducer = (state = initialState, action) => {
 	switch(action.type){
 	case LOG_IN:
       action.payload.password = null;
-      return action.payload;
+      return {...action.payload, loggedIn: true};
   case "LOG_IN_F":
       return action.payload;
   case SIGN_UP:
