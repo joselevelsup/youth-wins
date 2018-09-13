@@ -63,7 +63,7 @@ export function deleteResource(req, res){
 
 export function createResource(req, res){
     let data = JSON.parse(req.body.data);
-     
+
     new Resource({
         organizationName: data.organizationName,
         email: data.email,
@@ -202,7 +202,6 @@ export function denyResource(req, res){
             });
         });
     }
-    
 }
 
 export function getUsers(req, res){
