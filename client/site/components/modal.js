@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import { Field } from "redux-form";
 import DropzoneInput from "../components/dropzone";
 import SelectField from "../components/multi-select";
@@ -16,6 +17,26 @@ import {
     Col
 } from "reactstrap";
 import { AppItem } from "../components/items";
+import { websiteValid } from "./helpers";
+
+export const DeleteUserModal = ({ open, toggle, deleteUser }) => (
+    <Modal isOpen={open} toggle={toggle}>
+      <ModalHeader toggle={toggle}>
+        Delete User?
+      </ModalHeader>
+      <ModalBody>
+         <p>Deleting this user will result in the user not being able to log into this platform.</p>
+      </ModalBody>
+      <ModalFooter>
+        <Col>
+          <Button block color="secondary" onClick={toggle}>{`No, Do not remove the user`}</Button>
+        </Col>
+        <Col>
+          <Button block color="warning" onClick={deleteUser}>{`Yes, Remove the user`}</Button>
+        </Col>
+      </ModalFooter>
+    </Modal>
+)
 
 export const YouthModal = ({ open, toggle, applying, push }) => (
     <Modal isOpen={open} toggle={toggle}>
@@ -89,7 +110,10 @@ export class ResourceModal extends React.Component{
                                 <br />
                               </Row>
                               <Row>
-                                <h4>{resource.contactEmail}</h4>
+                                <h5>{resource.contactEmail}</h5>
+                              </Row>
+                              <Row>
+                                <h5><a target="_blank" href={websiteValid(resource.website) ? resource.website : `http://${resource.website}`}>{resource.website}</a></h5>
                               </Row>
                               <Row>
                                 <p>{resource.description}</p>
@@ -161,7 +185,7 @@ export class ResourceModal extends React.Component{
 }
 
 
-export const StaffModal = ({ open, toggle, staff, deleteStaff }) => (
+export const StaffModal = ({ open, toggle, staff, editStaff, deleteStaff }) => (
     <Modal size="lg" isOpen={open} toggle={toggle}>
         <div className="modal-header">
             <Container fluid={true}>
@@ -184,10 +208,10 @@ export const StaffModal = ({ open, toggle, staff, deleteStaff }) => (
                            <h3> {staff.firstName} {staff.lastName}</h3>
                         </Row>
                         <Row>
-                            <h3>{staff.position}</h3>
+                            <h4>{staff.position}</h4>
                         </Row>
                         <Row>
-                            <h3>{staff.email}</h3>
+                            <h4>{staff.email}</h4>
                         </Row>
                         <Row>
                             <p>{staff.description}</p>
@@ -196,11 +220,14 @@ export const StaffModal = ({ open, toggle, staff, deleteStaff }) => (
                 </Row>
             }
         </ModalBody>
-        <ModalFooter>
-            <Col md={{size: 3, offset: 9}}>
-                <Button color="primary" onClick={() => deleteStaff(staff._id)}>Remove</Button>
-            </Col>
-        </ModalFooter>
+      <ModalFooter>
+        <Col md={{ size: 3, offset: 6 }}>
+          <Button block color="primary" onClick={editStaff}>Edit</Button>
+        </Col>
+        <Col md={3}>
+          <Button block color="secondary" onClick={() => deleteStaff(staff._id)}>Remove</Button>
+        </Col>
+      </ModalFooter>
     </Modal>
 )
 
@@ -245,7 +272,24 @@ class UserM extends React.Component {
                                 <img className="img-fluid rounded-circle" src={user.profile} />
                               </Col>
                               <Col md={7}>
-                                <h4>{user.firstName} {user.lastName}</h4>
+                                <Row>
+                                  <h4>{`Name: ${user.firstName} ${user.lastName}`}</h4>
+                                </Row>
+                                <Row>
+                                  {`Address: ${user.streetAddress} ${user.city}, ${user.state} ${user.zipCode}`}
+                                </Row>
+                                <Row>
+                                  {`Age: ${user.age}`}
+                                </Row>
+                                <Row>
+                                 {`Ethnicity: ${user.ethnicity}`}
+                                </Row>
+                                <Row>
+                                  {`Email: ${user.email}`}
+                                </Row>
+                                <Row>
+                                  {`Education: ${user.educationLevel}`}
+                                </Row>
                               </Col>
                               <Col md={1}>
                                 <Button color="clear" onClick={toggle}>X</Button>
@@ -478,84 +522,196 @@ export class EditResource extends React.Component{
     }
 }
 
+export class CreateStaff extends React.Component {
 
-export const CreateStaff = ({ open, toggle, create }) => (
-    <Modal isOpen={open} toggle={toggle} size="lg">
-      <div className="modal-header">
-        <Container fluid={true}>
-          <Row>
-            <Col md={{size: 1, offset: 11}}>
-              <Button color="clear" onClick={toggle}>X</Button>
-            </Col>
-          </Row>
-        </Container>
-      </div>
-      <ModalBody>
-          <form onSubmit={create}>
-            <div className="row">
-              <div className="col-4">
-                <Field name="profile" component={DropzoneInput} className="picture-upload" />
+    componentWillUnmount(){
+        this.props.reset();
+    }
+
+    componentDidMount(){
+        this.props.reset();
+    }
+
+    render(){
+
+        const { open, toggle, create } = this.props;
+
+        return (
+            <Modal isOpen={open} toggle={toggle} size="lg">
+              <div className="modal-header">
+                <Container fluid={true}>
+                  <Row>
+                    <Col md={{size: 1, offset: 11}}>
+                      <Button color="clear" onClick={toggle}>X</Button>
+                    </Col>
+                  </Row>
+                </Container>
               </div>
-              <div className="col-8">
-                <div className="row">
-                  <div className="col-6">
-					          <div className="form-group">
-						          <label>First Name</label>
-						          <Field name="firstName" className="form-control" component="input" type="text" />
-					          </div>
+              <ModalBody>
+                <form onSubmit={create}>
+                  <div className="row">
+                    <div className="col-4">
+                      <Field name="profile" component={DropzoneInput} className="picture-upload" />
+                    </div>
+                    <div className="col-8">
+                      <div className="row">
+                        <div className="col-6">
+					                <div className="form-group">
+						                <label>First Name</label>
+						                <Field name="firstName" className="form-control" component="input" type="text" />
+					                </div>
+                        </div>
+                        <div className="col-6">
+					                <div className="form-group">
+						                <label>Position</label>
+						                <Field name="position" className="form-control" component="input" type="text" />
+					                </div>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-6">
+					                <div className="form-group">
+						                <label>Last Name</label>
+						                <Field name="lastName" className="form-control" component="input" type="text" />
+					                </div>
+                        </div>
+                        <div className="col-6">
+					                <div className="form-group">
+						                <label>Password</label>
+						                <Field name="password" className="form-control" component="input" type="password" />
+					                </div>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-6">
+					                <div className="form-group">
+						                <label>Email</label>
+						                <Field name="email" className="form-control" component="input" type="text" />
+					                </div>
+                        </div>
+                        <div className="col-6">
+					                <div className="form-group">
+						                <label>Confirm Password</label>
+						                <Field name="cpassword" className="form-control" component="input" type="password" />
+					                </div>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-12">
+                          <label>Bio</label>
+                          <Field name="description" className="form-control" component="textarea" />
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="col-6">
-					          <div className="form-group">
-						          <label>Position</label>
-						          <Field name="position" className="form-control" component="input" type="text" />
-					          </div>
+                  <div className="row">
+                    <br />
                   </div>
-                </div>
-                <div className="row">
-                  <div className="col-6">
-					          <div className="form-group">
-						          <label>Last Name</label>
-						          <Field name="lastName" className="form-control" component="input" type="text" />
-					          </div>
+                  <div className="row">
+                    <div className="offset-4 col-4">
+					            <Button color="warning" className="btn-swerve" block type="submit">Create</Button>
+                    </div>
                   </div>
-                  <div className="col-6">
-					          <div className="form-group">
-						          <label>Password</label>
-						          <Field name="password" className="form-control" component="input" type="password" />
-					          </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-6">
-					          <div className="form-group">
-						          <label>Email</label>
-						          <Field name="email" className="form-control" component="input" type="text" />
-					          </div>
-                  </div>
-                  <div className="col-6">
-					          <div className="form-group">
-						          <label>Confirm Password</label>
-						          <Field name="cpassword" className="form-control" component="input" type="password" />
-					          </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-12">
-                    <label>Bio</label>
-                    <Field name="description" className="form-control" component="textarea" />
-                  </div>
-                </div>
+                </form>
+              </ModalBody>
+            </Modal>
+        )
+    }
+}
+
+
+export class EditStaff extends React.Component{
+    componentDidMount(){
+        this.props.init(this.props.staff);
+    }
+
+    componentWillUnmount(){
+        this.props.reset();
+    }
+
+    render(){
+
+        const { open, toggle, edit } = this.props;
+
+        return (
+            <Modal isOpen={open} toggle={toggle} size="lg">
+              <div className="modal-header">
+                <Container fluid={true}>
+                  <Row>
+                    <Col md={{size: 1, offset: 11}}>
+                      <Button color="clear" onClick={toggle}>X</Button>
+                    </Col>
+                  </Row>
+                </Container>
               </div>
-            </div>
-            <div className="row">
-              <br />
-            </div>
-            <div className="row">
-              <div className="offset-4 col-4">
-					      <Button color="warning" className="btn-swerve" block type="submit">Create</Button>
-              </div>
-            </div>
-          </form>
-      </ModalBody>
-    </Modal>
-)
+              <ModalBody>
+                <form onSubmit={edit}>
+                  <div className="row">
+                    <div className="col-4">
+                      <Field name="profile" component={DropzoneInput} className="picture-upload" />
+                    </div>
+                    <div className="col-8">
+                      <div className="row">
+                        <div className="col-6">
+					                <div className="form-group">
+						                <label>First Name</label>
+						                <Field name="firstName" className="form-control" component="input" type="text" />
+					                </div>
+                        </div>
+                        <div className="col-6">
+					                <div className="form-group">
+						                <label>Position</label>
+						                <Field name="position" className="form-control" component="input" type="text" />
+					                </div>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-6">
+					                <div className="form-group">
+						                <label>Last Name</label>
+						                <Field name="lastName" className="form-control" component="input" type="text" />
+					                </div>
+                        </div>
+                        <div className="col-6">
+					                <div className="form-group">
+						                <label>Password</label>
+						                <Field name="password" className="form-control" component="input" type="password" />
+					                </div>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-6">
+					                <div className="form-group">
+						                <label>Email</label>
+						                <Field name="email" className="form-control" component="input" type="text" />
+					                </div>
+                        </div>
+                        <div className="col-6">
+					                <div className="form-group">
+						                <label>Confirm Password</label>
+						                <Field name="cpassword" className="form-control" component="input" type="password" />
+					                </div>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-12">
+                          <label>Bio</label>
+                          <Field name="description" className="form-control" component="textarea" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <br />
+                  </div>
+                  <div className="row">
+                    <div className="offset-4 col-4">
+					            <Button color="warning" className="btn-swerve" block type="submit">Create</Button>
+                    </div>
+                  </div>
+                </form>
+              </ModalBody>
+            </Modal>
+        )
+    }
+}

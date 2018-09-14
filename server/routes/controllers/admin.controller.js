@@ -66,6 +66,8 @@ export function createResource(req, res){
 
     new Resource({
         organizationName: data.organizationName,
+        pending: false,
+        approved: true,
         email: data.email,
         contactEmail: data.contactEmail,
         description: data.description,
@@ -234,6 +236,7 @@ export function createStaff(req, res){
         email: user.email,
         password: bcrypt.hashSync(user.password, 10),
         firstName: user.firstName,
+        position: user.position,
         lastName: user.lastName,
         description: user.description,
         isAdmin: user.isAdmin ? user.isAdmin : false,
@@ -264,26 +267,63 @@ export function createStaff(req, res){
 }
 
 export function updateStaff(req, res){
-    if(!req.body.staffId){
+    let staff = JSON.parse(req.body.data);
+    let update;
+    if(!staff.id){
         res.status(500).json({
             "success": false,
             "message": "No staff id provided"
         });
     } else {
-        Admin.findOneAndUpdate({ "_id": req.body.staffId }, {
-            $set: {
-                email: req.body.email,
-                password: bcrypt.hashSync(req.body.password, 10),
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                bio: req.body.bio,
-                isAdmin: req.body.isAdmin,
+        if(staff.password){
+            update = {
+                $set: {
+                    email: staff.email,
+                    password: bcrypt.hashSync(staff.password, 10),
+                    firstName: staff.firstName,
+                    lastName: staff.lastName,
+                    position: staff.position,
+                    description: staff.description,
+                }
+            };
+        } else {
+            update = {
+                $set: {
+                    email: staff.email,
+                    firstName: staff.firstName,
+                    lastName: staff.lastName,
+                    position: staff.position,
+                    description: staff.description,
+                }
+            };
+        }
+
+
+        Admin.findOneAndUpdate({ "_id": staff.id }, update).then((data) => {
+            if(!req.files){
+                res.status(200).json({
+                    "success": true,
+                    "message": "Updated staff"
+                });
+            } else {
+                replaceImage(req.files.file, data, "admin").then(d => {
+                    return Admin.findOneAndUpdate({ "_id": staff.id }, {
+                        $set: {
+                            profile: d
+                        }
+                    });
+                }).then(() => {
+                    res.status(200).json({
+                        "success": true,
+                        "message": "Updated staff"
+                    });
+                }).catch(err => {
+                    res.status(500).json({
+                        "success": false,
+                        "message": "unable to update staff"
+                    });
+                });
             }
-        }).then((data) => {
-            res.status(200).json({
-                "success": true,
-                "message": "Updated staff"
-            });
         }).catch((err) => {
             res.status(500).json({
                 "success": false,
@@ -326,7 +366,6 @@ export function deleteUser(req, res){
         });
     } else {
         User.findOneAndRemove({ "_id": req.body.userId }).then((data) => {
-            console.log(data);
             res.status(200).json({
                 "success": true,
                 "message": "Deleted user"

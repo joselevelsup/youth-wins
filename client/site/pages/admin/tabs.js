@@ -39,7 +39,16 @@ import {
 } from "../../actions/admin";
 
 import { toggleResponse } from "../../actions/dashboard";
-import { ResourceModal, StaffModal, CreateResource,  UserModal, EditResource, CreateStaff } from "../../components/modal";
+import {
+    ResourceModal,
+    StaffModal,
+    CreateResource,
+    UserModal,
+    EditResource,
+    CreateStaff,
+    EditStaff,
+    DeleteUserModal
+} from "../../components/modal";
 import { StaffItem, UserItem, ResourceItem, AppItem, TeamItem } from "../../components/items";
 import DropzoneInput from "../../components/dropzone";
 import { shorten } from "../../util/helpers";
@@ -230,13 +239,17 @@ class UsersT extends React.Component{
             createModal: false,
             staffModal: false,
             userModal: false,
+            editStaffModal: false,
             staff: null,
-            user: null
-        }
+            user: null,
+            userPrompt: false,
+            userType: false
+        };
 
         this.createStaffMember = this.createStaffMember.bind(this);
         this.openStaffMember = this.openStaffMember.bind(this);
         this.deleteStaffMember = this.deleteStaffMember.bind(this);
+        this.editStaffMember = this.editStaffMember.bind(this);
 
         this.openApplicant = this.openApplicant.bind(this);
         this.deleteApplicant = this.deleteApplicant.bind(this);
@@ -244,7 +257,10 @@ class UsersT extends React.Component{
         this.toggleUserModal = this.toggleUserModal.bind(this);
         this.toggleStaffModal = this.toggleStaffModal.bind(this);
         this.toggleCreateModal = this.toggleCreateModal.bind(this);
+        this.toggleEditStaff = this.toggleEditStaff.bind(this);
         this.getUsers = this.getUsers.bind(this);
+
+        this.offModals = this.offModals.bind(this);
     }
 
 
@@ -284,6 +300,31 @@ class UsersT extends React.Component{
         });
     }
 
+    toggleEditStaff(){
+        this.setState({
+            staffModal: false,
+            editStaffModal: !this.state.editStaffModal
+        });
+    }
+
+    deleteUserPrompt(id, type){
+        this.setState({
+            userType: type,
+            userPrompt: !this.state.userPrompt,
+            user: id
+        });
+    }
+
+    offModals(){
+        this.setState({
+            staffModal: false,
+            createModal: false,
+            userModal: false,
+            editStaffModal: false,
+            userPrompt: false
+        });
+    }
+
     createStaffMember(values, dispatch){
         const self = this;
         dispatch(createStaff(values)).then(data => {
@@ -296,6 +337,7 @@ class UsersT extends React.Component{
 
     deleteStaffMember(staffId){
         this.props.dispatch(deleteStaff(staffId)).then(data => {
+            this.offModals();
             this.getUsers();
         }).catch(err => {
             console.log(err);
@@ -304,11 +346,31 @@ class UsersT extends React.Component{
 
     deleteApplicant(userId){
         this.props.dispatch(deleteUser(userId)).then(data => {
+            this.offModals();
             this.getUsers();
         }).catch(err => {
             console.log(err);
         });
     }
+
+    editStaffMember(values, dispatch){
+        dispatch(updateStaff(values)).then(data => {
+            if(data.success){
+                this.getUsers();
+                this.toggleEditStaff();
+            }
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
+    // editApplicant(values, dispatch){
+    //     dispatch(updateApplicant(values)).then(data => {
+    //         console.log(data);
+    //     }).catch(err => {
+    //         console.log(err);
+    //     });
+    // }
 
     render(){
         const { users: { applicants, staff }, handleSubmit } = this.props;
@@ -355,19 +417,21 @@ class UsersT extends React.Component{
                     {
                         (this.state.view && applicants) &&
                         applicants.map(a => (
-                            <UserItem user={a} deleteUser={this.deleteApplicant} openUser={this.openApplicant} />
+                            <UserItem user={a} deleteUser={() => this.deleteUserPrompt(a._id, true)} openUser={this.openApplicant} />
                         ))
                     }
                     {
                         (!this.state.view && staff) &&
                         staff.map(s => (
-                            <StaffItem staff={s} openStaff={this.openStaffMember} deleteStaff={this.deleteStaffMember} />
+                            <StaffItem staff={s} openStaff={this.openStaffMember} deleteStaff={() => this.deleteUserPrompt(s._id, false)} />
                         ))
                     }
                 </Row>
-              <StaffModal open={this.state.staffModal} toggle={this.toggleStaffModal} staff={this.state.staff} deleteStaff={this.deleteStaffMember} />
+              <StaffModal open={this.state.staffModal} toggle={this.toggleStaffModal} staff={this.state.staff} deleteStaff={this.deleteStaffMember} editStaff={this.toggleEditStaff} />
               <UserModal open={this.state.userModal} toggle={this.toggleUserModal} user={this.state.user} deleteUser={this.deleteApplicant}  />
-              <CreateStaff open={this.state.createModal} toggle={this.toggleCreateModal} create={handleSubmit(this.createStaffMember)} />
+              {this.state.createModal && <CreateStaff open={this.state.createModal} toggle={this.toggleCreateModal} create={handleSubmit(this.createStaffMember)} reset={this.props.destroy} />}
+              {this.state.editStaffModal && <EditStaff open={this.state.editStaffModal} toggle={this.toggleEditStaff} staff={this.state.staff} init={this.props.initialize} reset={this.props.destroy} edit={handleSubmit(this.editStaffMember)}/>}
+              {this.state.userPrompt && <DeleteUserModal open={this.state.userPrompt} toggle={this.offModals} deleteUser={this.state.userType ? () => this.deleteApplicant(this.state.user) : () => this.deleteStaffMember(this.state.user)}/>}
             </Container>
         )
     }
@@ -468,7 +532,7 @@ class AppsT extends React.Component {
                 {
                     apps &&
                        apps.applications && apps.applications.map(a => (
-                           <AppItem size={4}  appId={a._id} deleteApp={this.deleteApplication} resource={a.resource} openResource={this.openResource} user={a.user} status={a.status}/>
+                           <AppItem size={4} created={a.dateCreated} appId={a._id} deleteApp={this.deleteApplication} resource={a.resource} openResource={this.openResource} user={a.user} status={a.status}/>
                         ))
                 }
               </Row>
