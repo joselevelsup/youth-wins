@@ -61,13 +61,16 @@ export function applyResource(req, res){
 }
 
 export function createResource(req, res){
-    let data = JSON.parse(req.body.data);
+	let data = JSON.parse(req.body.data);
+	console.log(data)
     new Resource({
         organizationName: data.organizationName,
-        email: data.email,
+		email: data.email,
+		phone: data.phone,
         contactEmail: data.contactEmail,
         description: data.description,
-        website: data.website,
+		website: data.website,
+		inMilitary: data.inMilitary === "true" ? true : false,
         ethnicityServed: typeof data.ethnicityServed != "object" ? data.ethnicityServed.split(" ---- ") : data.ethnicityServed,
         stateServed: typeof data.stateServed != "object" ? data.stateServed.split(" ---- ") : data.stateServed,
     }).save().then((d) => {

@@ -62,7 +62,7 @@ export const failedCreateResource = err => ({
 	payload: err
 })
 
-export const createResource = ({ organizationName, contactEmail, website, ethnicityServed,  description, logo, categories, stateServed }) => {
+export const createResource = ({ organizationName, contactEmail, website, ethnicityServed,  description, logo, categories, stateServed, phone, inMilitary }) => {
 	const file = new FormData()
 	logo && file.append('file', logo[0])
 	file.append('data', JSON.stringify({
@@ -73,7 +73,9 @@ export const createResource = ({ organizationName, contactEmail, website, ethnic
 		description, 
 		logo, 
 		categories, 
-		stateServed
+		stateServed,
+		phone,
+		inMilitary
 	}))
 
 	return {

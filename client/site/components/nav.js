@@ -22,11 +22,12 @@ class MainNav extends React.Component {
     }
 
     render(){
-        const { user } = this.props;
+		const { user } = this.props;
+		console.log(user)
         return (
             <nav className="navbar navbar-expand-lg bg-youth">
               <div className="navbar-collapse collapse"></div>
-              <Link to="/" className="navbar-brand text-center mx-auto"><h3>Youth Wins</h3></Link>
+              <Link to={user && user.loggedIn ? "/dashboard" :  "/"} className="navbar-brand text-center mx-auto"><h3>Youth Wins</h3></Link>
               <div className="navbar-collapse collapse">
                 <ul className="nav navbar-nav ml-auto">
                   {

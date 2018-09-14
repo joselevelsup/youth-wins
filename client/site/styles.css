@@ -211,3 +211,24 @@ figure {
 .button-danger {
 	border-color: #d9534f;
 }
+
+
+.min-max {
+	width: 49%;
+}
+
+.min-max-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.inline-radio {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.description {
+	height: 36px !important;
+}
