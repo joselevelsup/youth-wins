@@ -179,7 +179,7 @@ function mapStateToProps(state){
     return {
         resources: state.resources,
         user: state.user,
-        categories: (state.cms && state.cms.content) ? state.cms.content[0].categories : []
+        categories: state.content && state.content.content.categories
     };
 }
 

@@ -141,6 +141,6 @@ class Dashboard extends React.Component{
 const DashboardPage = connect(state => ({
 	  suggestions: state.dashboard && state.dashboard.suggestions,
     applications: (state.dashboard && state.dashboard.user) ? state.dashboard.user.applications : [],
-	user: state.user
+	  user: state.user
 }))(Dashboard);
 export default DashboardPage;
