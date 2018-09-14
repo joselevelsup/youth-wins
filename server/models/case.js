@@ -14,7 +14,7 @@ const caseModel = new mongoose.Schema({
         ref: "admin"
     },
     dateCreated: {
-        type: mongoose.Schema.Types.String,
+        type: mongoose.Schema.Types.Date,
         default: Date.now()
     },
     status: {

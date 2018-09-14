@@ -97,10 +97,10 @@ export const UserItem = ({ user, deleteUser, openUser }) => {
                 <div className="media-body">
                     <div className="row">
                         <div className="col-8 align-self-center">
-                            <h5><span className="ml-4 align-center clickable">{user.firstName} {user.lastName}</span></h5>
+                          <h5><span className="ml-4 align-center clickable" onClick={() => openUser(user)}>{user.firstName} {user.lastName}</span></h5>
                         </div>
                         <div className="col-2 align-self-center">
-                          <button className="btn btn-remove sm-remove rounded-circle mx-auto" onClick={() => deleteUser(user._id)}><Ionicon icon="md-remove" fontSize="40px" color="#fff"/></button>
+                          <button className="btn btn-remove sm-remove rounded-circle mx-auto" onClick={deleteUser}><Ionicon icon="md-remove" fontSize="40px" color="#fff"/></button>
                         </div>
                     </div>
                 </div>
@@ -110,16 +110,16 @@ export const UserItem = ({ user, deleteUser, openUser }) => {
 }
 
 
-export const AppItem = ({ status, resource, deleteApp, size,  openResource, appId, user }) => {
+export const AppItem = ({ created, status, resource, deleteApp, size,  openResource, appId, user }) => {
     return (
         <Col md={size} className="appItem">
           <div className="media">
              <div className="col-2 align-self-center" onClick={() => openResource(resource, status, appId)}> <div className={status ?"rounded-circle profile filled": "rounded-circle profile unfilled"}></div></div>
             <div className="media-body">
               <div className="row">
-                <div className="col-8 align-self-center">
-                  <div className="align-middle">
-                     <h5><span className="ml-4 align-middle clickable" onClick={() => openResource(resource, status, appId, user)} >{resource.organizationName}</span></h5>
+                <div className="col-9 align-self-center">
+                  <div className="text-center">
+                    <h6><span className="ml-4 align-middle clickable" onClick={() => openResource(resource, status, appId, user)} >{resource.organizationName} - {user.firstName} {user.lastName} - {new Date(created).toLocaleDateString()}</span></h6>
                   </div>
                 </div>
                 <div className="col-2 align-self-center">

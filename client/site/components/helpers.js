@@ -9,3 +9,8 @@ export function chunk(arr, group) {
 
     return sets;
 }
+
+export function websiteValid(str){
+    var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+    return regexp.test(str);
+}
