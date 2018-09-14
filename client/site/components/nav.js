@@ -23,7 +23,6 @@ class MainNav extends React.Component {
 
     render(){
 		const { user } = this.props;
-		console.log(user)
         return (
             <nav className="navbar navbar-expand-lg bg-youth">
               <div className="navbar-collapse collapse"></div>

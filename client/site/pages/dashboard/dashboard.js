@@ -123,7 +123,7 @@ class Dashboard extends React.Component{
                   {
                       applications ?
                           applications && applications.map(d => (
-                              <AppItem size={4} appId={d._id} openResource={this.openResource} resource={d.resource} status={d.status} />
+                              <AppItem size={4} user={d.user} appId={d._id} openResource={this.openResource} resource={d.resource} status={d.status} />
                           ))
                           :
                           <div className="col-12 text-center">
