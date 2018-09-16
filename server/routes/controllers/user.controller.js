@@ -1,7 +1,8 @@
-
 import { User, AppliedCase, CMS, Admin, Resource } from "../../models";
 import * as _ from 'lodash';
+import bcrypt from "bcrypt";
 import { getImage } from "../../helpers/aws";
+import { sendForgotEmail } from "../../helpers/mailer";
 
 export function currentUser(req, res){
     if(req.user){
@@ -107,4 +108,52 @@ export function toggleResponse(req, res){
             "success": false
         });
     });
+}
+
+
+export function sendForgotPass(req, res){
+    User.findOne({ "email": req.body.email }).then(data => {
+        if(data != null){
+            sendForgotEmail({id: data._id, email: data.email }).then(d => {
+                res.status(200).json({
+                    "success": true,
+                    "message": "Mail successfully sent"
+                });
+            }).catch(err => {
+                res.status(500).json({
+                    "success": false,
+                    "message": "mail unable to send"
+                });
+            });
+        } else {
+            res.status(500).json({
+                "success": false,
+                "message": "mail unable to send"
+            });
+        }
+    }).catch(err => {
+        res.status(500).json({
+            "success": false,
+            "message": "mail unable to send"
+        });
+    });
+}
+
+export function changePassword(req, res){
+    console.log(req.body);
+    // User.findOneAndUpdate({ "_id": req.body.id }, {
+    //     $set: {
+    //         "password": bcrypt.hashSync(req.body.newpass, 10),
+    //     }
+    // }).then(data => {
+    //     res.status(200).json({
+    //         "success": true,
+    //         "message": "successfully updated password"
+    //     });
+    // }).catch(err => {
+    //     res.status(500).json({
+    //         "success": false,
+    //         "message": "unable to update password"
+    //     });
+    // });
 }
