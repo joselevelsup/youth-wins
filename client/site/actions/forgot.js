@@ -17,12 +17,13 @@ export const changePassFailed = err => ({
     payload: err
 });
 
-export const changePass = newpass => ({
+export const changePass = (user, newpass) => ({
     type: API,
     payload: {
         url: API_USERS+"/forgot/pass",
         method: "POST",
         data: {
+            id: user,
             password: newpass
         },
         success: changePassSuccess,

@@ -33,7 +33,7 @@ class Home extends Component {
 					<img className="support-img home-image" src='https://www.quirkybyte.com/wp-content/uploads/2017/08/FRIENDSHIP.jpg'/>
 					<div className="home-login">
 						<img className="home-logo" src="https://cdn1.cloudcanvas.website/media/sites/26/2017/09/28175958/stitcher-logo-transparent.png"/>
-						<form onSubmit={handleSubmit(this.loginUser)}>
+						<form>
 							<FormGroup>
 								<Label>Email</Label>
 								<Field className="form-control" component="input" name="email" type="email" placeholder="jodydoe@mail.com" />
@@ -41,14 +41,11 @@ class Home extends Component {
 							<FormGroup>
 								<Label>Password</Label>
 								<Field className="form-control" component="input" type="password" name="password" placeholder="********"/>
-                <Link to="/forgot">Forgot your password?</Link>
 							</FormGroup>
-
 						</form>
 					</div>
-
 					<div className="button-container">
-						<Button color="warning" size="lg" type="submit">Login</Button>
+						<Button color="warning" size="lg" onClick={handleSubmit(this.loginUser)}>Login</Button>
 						<Link to="/signup"><Button color="warning" size="lg">Signup</Button></Link>
 					</div>
 				</figure>

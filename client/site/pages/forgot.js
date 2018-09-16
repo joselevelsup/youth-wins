@@ -8,10 +8,12 @@ class Forgot extends React.Component{
     constructor(){
         super();
         this.state = {
+            user: null,
             sending: true,
             passmatch: false,
             emailexists: false,
-            sentEmail: false
+            sentEmail: false,
+            changed: false
         };
 
         this.sendForgotPassword = this.sendForgotPassword.bind(this);
@@ -37,10 +39,13 @@ class Forgot extends React.Component{
                 passmatch: true
             });
         } else {
-            dispatch(changePass(newpass)).then(data => {
-                this.setState({
-                    passmatch: false
-                });
+            dispatch(changePass(this.state.user, newpass)).then(data => {
+                if(data.success){
+                    this.setState({
+                        passmatch: false,
+                        changed: true
+                    });
+                }
             }).catch(err => {
                 console.log(err);
             });
@@ -49,6 +54,9 @@ class Forgot extends React.Component{
 
     componentDidMount(){
         const params = new URLSearchParams(this.props.location.search).get("u");
+        this.setState({
+            user: params
+        });
         if(!params){
             this.setState({
                 sending: false
@@ -57,7 +65,7 @@ class Forgot extends React.Component{
     }
 
     render(){
-        const { sending, passmatch, emailexists, sentEmail } = this.state;
+        const { sending, passmatch, emailexists, sentEmail, changed } = this.state;
         const { handleSubmit } = this.props;
         return(
             <React.Fragment>
@@ -71,6 +79,14 @@ class Forgot extends React.Component{
                                 <Alert color="danger">The passwords do not match.</Alert>
                               </Col>
                             </Row>
+                    }
+                    {
+                        changed &&
+                        <Row className="pt-2">
+                          <Col md={12}>
+                            <Alert color="success">Password successfully reset.</Alert>
+                          </Col>
+                        </Row>
                     }
                     <form onSubmit={handleSubmit(this.changePassword)}>
                       <FormGroup>

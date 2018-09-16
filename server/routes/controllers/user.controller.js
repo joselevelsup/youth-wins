@@ -140,20 +140,19 @@ export function sendForgotPass(req, res){
 }
 
 export function changePassword(req, res){
-    console.log(req.body);
-    // User.findOneAndUpdate({ "_id": req.body.id }, {
-    //     $set: {
-    //         "password": bcrypt.hashSync(req.body.newpass, 10),
-    //     }
-    // }).then(data => {
-    //     res.status(200).json({
-    //         "success": true,
-    //         "message": "successfully updated password"
-    //     });
-    // }).catch(err => {
-    //     res.status(500).json({
-    //         "success": false,
-    //         "message": "unable to update password"
-    //     });
-    // });
+    User.findOneAndUpdate({ "_id": req.body.id }, {
+        $set: {
+            "password": bcrypt.hashSync(req.body.password, 10),
+        }
+    }).then(data => {
+        res.status(200).json({
+            "success": true,
+            "message": "successfully updated password"
+        });
+    }).catch(err => {
+        res.status(500).json({
+            "success": false,
+            "message": "unable to update password"
+        });
+    });
 }
