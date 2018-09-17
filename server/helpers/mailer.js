@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import { applying, accepted, denied } from "./mail-templates";
+import { applying, accepted, denied, forgotPass } from "./mail-templates";
 
 const mailHelper = nodemailer.createTransport({
     service: "gmail",
@@ -14,6 +14,25 @@ const mailHelper = nodemailer.createTransport({
         refreshToken: process.env.MAIL_REFRESH_TOKEN // Refresh Token from https://developers.google.com/oauthplayground/
     }
 });
+
+export const sendForgotEmail = ({ id, email}) => {
+    return new Promise((resolve, reject) => {
+        var mailOpts = {
+            from: process.env.MAILUSER,
+            to: email,
+            subject: "Reset Password for Youth Wins Login",
+            html: forgotPass(id)
+        };
+
+        mailHelper.sendMail(mailOpts, function(err, info){
+            if(err){
+                reject(err);
+            } else {
+                resolve(info);
+            }
+        });
+    });
+}
 
 export const sendUserInfo = (to, resource, user) => {
     return new Promise((resolve, reject) => {

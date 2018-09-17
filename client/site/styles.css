@@ -192,6 +192,11 @@ figure {
 	flex-direction: column;
 }
 
+.home-login a {
+    float: left;
+    color: #2AABE3;
+}
+
 .home-logo {
 	width: 20vw;
 }
