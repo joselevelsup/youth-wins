@@ -116,6 +116,9 @@ export class ResourceModal extends React.Component{
                                 <h5>{resource.contactEmail}</h5>
                               </Row>
                               <Row>
+                                <h5>{resource.phone}</h5>
+                              </Row>
+                              <Row>
                                 <h5><a target="_blank" href={websiteValid(resource.website) ? resource.website : `http://${resource.website}`}>{resource.website}</a></h5>
                               </Row>
                               <Row>
