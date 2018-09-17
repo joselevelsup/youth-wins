@@ -30,16 +30,19 @@ export function getOneUser(req, res){
 export function userSuggestedResources(req, res){
 	  Resource.find({"approved": true}).then(resources => {
         let r = getImage(resources);
-		let suggestions = r.filter(resource => (
-				resource.stateServed.includes(req.user.state) && 
-				resource.ethnicityServed.includes(req.user.ethnicity) &&
-				!!_.intersection(resource.categories, req.user.categoriesOfInterest).length
-		));
+		    let suggestions = r.filter(resource => (
+				    !!_.intersection(resource.categories, req.user.categoriesOfInterest).length
+		    ));
 
-		res.status(200).json({
-			  resources: suggestions
-		})
-	})
+		    res.status(200).json({
+			      resources: suggestions
+		    });
+	  }).catch(err => {
+        res.status(500).json({
+            "success": false,
+            "message": "unable to get suggested resources"
+        });
+    });
 }
 
 export function userAppliedResources(req, res){
@@ -110,7 +113,6 @@ export function toggleResponse(req, res){
     });
 }
 
-
 export function sendForgotPass(req, res){
     User.findOne({ "email": req.body.email }).then(data => {
         if(data != null){
@@ -155,4 +157,24 @@ export function changePassword(req, res){
             "message": "unable to update password"
         });
     });
+  
+export function deleteUserApplication(req, res){
+    if(!req.body.appId){
+        res.status(500).json({
+            "success": false,
+            "message": "no application id provided"
+        });
+    } else {
+        AppliedCase.deleteOne({"_id": req.body.appId}).then(data => {
+            res.status(200).json({
+                "success": true,
+                "message": "application deleted"
+            });
+        }).catch(err => {
+            res.status(500).json({
+                "success": false,
+                "message": "failed to delete application"
+            });
+        });
+    }
 }

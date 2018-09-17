@@ -25,8 +25,7 @@ class MainNav extends React.Component {
 		const { user } = this.props;
         return (
             <nav className="navbar navbar-expand-lg bg-youth">
-              <div className="navbar-collapse collapse"></div>
-              <Link to={user && user.loggedIn ? "/dashboard" :  "/"} className="navbar-brand text-center mx-auto"><h3>Youth Wins</h3></Link>
+              <Link to={user && user.loggedIn ? "/dashboard" :  "/"} className="navbar-brand"><h3>Youth Wins</h3></Link>
               <div className="navbar-collapse collapse">
                 <ul className="nav navbar-nav ml-auto">
                   {

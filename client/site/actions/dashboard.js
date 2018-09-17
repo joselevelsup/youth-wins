@@ -5,8 +5,10 @@ import {
     USER_INFO_F,
     TOGGLE_S,
     TOGGLE_F,
-	SUG_RESOURCES_S,
-	SUG_RESOURCES_F
+	  SUG_RESOURCES_S,
+	  SUG_RESOURCES_F,
+    USERS_APPS_D_S,
+    USERS_APPS_D_F
 } from "../constants/constants";
 
 export const userInfo = data => ({
@@ -70,3 +72,26 @@ export const getUserSuggested = () => ({
 		error: failedGetSuggestions
 	}
 })
+
+export const deletedApp = data => ({
+    type: USERS_APPS_D_S,
+    payload: data
+});
+
+export const failedToDeleteApp = err => ({
+    type: USERS_APPS_D_F,
+    payload: err
+});
+
+export const deleteApp = (appId) => ({
+    type: API,
+    payload: {
+        url: API_USERS+"/apps",
+        method: "DELETE",
+        data: {
+            appId
+        },
+        success: deletedApp,
+        error: failedToDeleteApp
+    }
+});

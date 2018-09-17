@@ -7,7 +7,8 @@ import {
     appendContent,
     toggleResponse,
     sendForgotPass,
-    changePassword
+    changePassword,
+    deleteUserApplication
 } from "../controllers/user.controller";
 
 const userRouter = Router();
@@ -25,5 +26,7 @@ userRouter.post("/apps/toggle", toggleResponse);
 userRouter.post("/forgot", sendForgotPass);
 
 userRouter.post("/forgot/pass", changePassword);
+
+userRouter.delete("/apps", deleteUserApplication);
 
 export default userRouter;
