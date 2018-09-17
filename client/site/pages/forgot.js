@@ -29,6 +29,9 @@ class Forgot extends React.Component{
                 });
             }
         }).catch(err => {
+            this.setState({
+                emailexists: true
+            });
             console.log(err);
         });
     }
