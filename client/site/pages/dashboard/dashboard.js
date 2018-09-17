@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { getUserInfo, getUserSuggested, toggleResponse } from "../../actions/dashboard";
+import { getUserInfo, getUserSuggested, toggleResponse, deleteApp } from "../../actions/dashboard";
 import { applyResource } from "../../actions/resource";
 import { YouthModal, ResourceModal } from "../../components/modal";
 import { AppItem, ResourceItem } from "../../components/items";
@@ -25,31 +25,37 @@ class Dashboard extends React.Component{
         this.toggleResponse = this.toggleResponse.bind(this);
 
 		    this.applyResource = this.applyResource.bind(this);
-	}
-	
+
+        this.deleteApplication = this.deleteApplication.bind(this)
+    }
+
+
 	applyResource(resourceId){
-		const self = this;
+		  const self = this;
       this.props.dispatch(applyResource(resourceId)).then(data => {
           self.toggleAppModal();
-        }).catch(err => {
-            console.log(err);
-        });
+          self.loadUserInfo();
+      }).catch(err => {
+          console.log(err);
+      });
     }
 
     loadUserInfo(){
         this.props.dispatch(getUserInfo());
-      this.props.dispatch(getUserSuggested());
+        this.props.dispatch(getUserSuggested());
     }
 
     componentDidMount(){
         this.loadUserInfo();
     }
 
-    openResource(r, stat, id){
+    openResource(r, stat, id, user, created){
         this.setState({
             resource: r,
             appId: id,
             status: stat,
+            user: user,
+            created: created,
             resourceModal: true
         });
     }
@@ -61,13 +67,27 @@ class Dashboard extends React.Component{
     }
 
     toggleResponse(status){
-        this.props.dispatch(toggleResponse(status, this.state.appId));
-        this.loadUserInfo();
+        this.props.dispatch(toggleResponse(status, this.state.appId)).then(data => {
+            if(data.success){
+                this.loadUserInfo();
+            }
+        }).catch(err => {
+            console.log(err)
+        });
     }
 
     toggleAppModal(){
         this.setState({
             appModal: !this.state.appModal
+        });
+    }
+
+    deleteApplication(appId){
+        const self = this;
+        this.props.dispatch(deleteApp(appId)).then(data => {
+            self.loadUserInfo();
+        }).catch(err => {
+            console.log(err);
         });
     }
 
@@ -123,7 +143,7 @@ class Dashboard extends React.Component{
                   {
                       applications ?
                           applications && applications.map(d => (
-                              <AppItem size={4} user={d.user} appId={d._id} openResource={this.openResource} resource={d.resource} status={d.status} />
+                              <AppItem size={4} created={d.dateCreated} user={d.user} appId={d._id} openResource={this.openResource} resource={d.resource} deleteApp={this.deleteApplication} status={d.status} />
                           ))
                           :
                           <div className="col-12 text-center">
@@ -132,7 +152,7 @@ class Dashboard extends React.Component{
                   }
               </div>
               {this.state.appModal && <YouthModal open={this.state.appModal} applying={true} toggle={this.toggleAppModal}/>}
-              {this.state.resource && <ResourceModal open={this.state.resourceModal} toggle={this.toggleResource} resource={this.state.resource} status={this.state.status} toggleResponse={this.toggleResponse} /> }
+              {this.state.resource && <ResourceModal open={this.state.resourceModal} toggle={this.toggleResource} resource={this.state.resource} user={this.state.user} created={this.state.created} status={this.state.status} toggleResponse={this.toggleResponse} /> }
               </div>
         );
     }

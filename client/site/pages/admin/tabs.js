@@ -481,12 +481,13 @@ class AppsT extends React.Component {
         });
     }
 
-    openResource(r, status, appId, user){
+    openResource(r, status, appId, user, created){
         this.setState({
             resource: r,
             appId: appId,
             user: user,
             status: status,
+            created: created,
             resourceModal: true
         });
     }
@@ -536,7 +537,7 @@ class AppsT extends React.Component {
                         ))
                 }
               </Row>
-              {this.state.resource && <ResourceModal open={this.state.resourceModal} resource={this.state.resource} toggle={this.toggleResource} status={this.state.status} user={this.state.user} toggleResponse={this.toggleResponse} />}
+              {this.state.resource && <ResourceModal open={this.state.resourceModal} resource={this.state.resource} toggle={this.toggleResource} status={this.state.status} user={this.state.user} created={this.state.created} toggleResponse={this.toggleResponse} />}
             </Container>
         );
     }

@@ -5,7 +5,8 @@ import {
     userAppliedResources,
     currentUser,
     appendContent,
-    toggleResponse
+    toggleResponse,
+    deleteUserApplication
 } from "../controllers/user.controller";
 
 const userRouter = Router();
@@ -18,4 +19,6 @@ userRouter
 userRouter.get("/content", appendContent);
 
 userRouter.post("/apps/toggle", toggleResponse);
+
+userRouter.delete("/apps", deleteUserApplication);
 export default userRouter;
