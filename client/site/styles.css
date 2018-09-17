@@ -1,5 +1,14 @@
 .support-img {
 	width: 100vw;
+	z-index: -5;
+}
+
+.support-img-container {
+	position: absolute;
+	width: 100vw;
+	height: 100%;
+	background-color: rgba(255, 255, 255, 0.3);
+	z-index: 2;
 }
 
 .support-text {
@@ -178,6 +187,7 @@ h1 {
 	display: flex;
 	justify-content: space-evenly;
 	top: 96.5%;
+	z-index: 3;
 }
 
 figure {
@@ -192,6 +202,7 @@ figure {
 	position: absolute;
 	display: flex;
 	flex-direction: column;
+	z-index: 5;
 }
 
 .home-logo {
