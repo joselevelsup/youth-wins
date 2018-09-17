@@ -157,7 +157,8 @@ export function changePassword(req, res){
             "message": "unable to update password"
         });
     });
-  
+}
+
 export function deleteUserApplication(req, res){
     if(!req.body.appId){
         res.status(500).json({
