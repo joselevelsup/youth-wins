@@ -74,7 +74,7 @@ export class ResourceModal extends React.Component{
     }
 
     render(){
-        const { open, toggle, resource, apply, admin, edit, remove, approve, deny, status, user } = this.props;
+        const { open, toggle, resource, apply, admin, edit, remove, approve, deny, status, user, created } = this.props;
         return (
             <Modal size="lg" isOpen={open} toggle={toggle}>
               <div className="modal-header">
@@ -100,6 +100,9 @@ export class ResourceModal extends React.Component{
                                       <React.Fragment>
                                         <Row>
                                           <h4>{user.firstName} {user.lastName}</h4>
+                                        </Row>
+                                        <Row>
+                                          {created && <h4>{new Date(created).toLocaleDateString()}</h4>}
                                         </Row>
                                       </React.Fragment>
                               }
