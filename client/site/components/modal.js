@@ -346,7 +346,118 @@ class CreateRes extends React.Component {
                 </Container>
               </div>
               <ModalBody>
-                <BecomeResource/>
+			  <form onSubmit={create}>
+                  <Row>
+                    <Col md={6}>
+					            <div className="form-group">
+						            <label>Name</label>
+						            <Field name="organizationName" className="form-control" component="input" type="text" />
+					            </div>
+                    </Col>
+                    <Col md={6}>
+					            <div className="form-group">
+						            <label>Email</label>
+						            <Field name="email" className="form-control" component="input" type="email" />
+					            </div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md={6}>
+                      <div className="form-group">
+						            <label>Website</label>
+						            <Field name="website" className="form-control" component="input" type="text" />
+					            </div>
+                    </Col>
+                    <Col md={6}>
+                      <div className="form-group">
+						            <label>Contact Email</label>
+						            <Field name="contactEmail" className="form-control" component="input" type="text" />
+					            </div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md={6}>
+                      <label>Ethnicity Served</label>
+                      <Field component={SelectField} name="ethnicityServed" options={ethnicity.map(e => ({ value: e, label: e}))} />
+                    </Col>
+                    <Col md={6}>
+                      <label>State Served</label>
+                      <Field component={SelectField} name="stateServed" options={states.map(s => ({ value: s.abbreviation, label: s.name}))} />
+                    </Col>
+                  </Row>
+				  <Row>
+					  <Col md={6}>
+					  	<div className="form-group">
+					  	  <label>Income</label>							
+						  <div className="min-max-container">
+							<Field className="form-control min-max" placeholder="min"  name="minIncome" component="input" type="text"/>
+							<Field className="form-control min-max" placeholder="max"  name="maxIncome" component="input" type="text"/>
+							</div>
+						</div>					
+					  </Col>
+					  <Col md={6}>
+					  	<label>Contact Phone Number</label>
+						<Field component="input" className="form-control" name="phone" />
+					  </Col>
+				  </Row>
+                  <Row>
+                    <Col md={6}>
+						<div className="form-group">
+                      		<label>Categories</label>
+                      		<Field name="categories" component={SelectField} options={categories.map(c => ({ label: c, value: c}))}/>
+						</div>
+                    </Col>
+					<Col md={6}>
+						<div className="form-group">
+							<label>Veterans only?</label>
+							<div className="inline-radio">
+								<div>
+									<label check>
+										<Field component="input" type="radio" value="true" name="inMilitary" />{' '}
+										Yes
+									</label>
+								</div>
+								
+								<br/>
+								<div>
+									<label check>
+										<Field component="input" type="radio" value="false" name="inMilitary" />{' '}
+										No
+									</label>
+								</div>
+							</div>
+						</div>
+					</Col>
+                  </Row>
+                  <Row>
+                    <Col md={6}>
+                      <div className="form-group">
+						            <label>Description</label>
+						            <Field name="description" className="form-control" component="textarea" />
+					            </div>
+                    </Col>
+                    <Col md={6}>
+                      <label>Logo</label>
+                      <Row>
+                        {
+                            (createValues && createValues.logo) &&
+                                <Col md={{size: 8, offset: 2}}>
+                                  <img src={createValues.logo && createValues.logo[0].preview} className="img-fluid"/>
+                                </Col>
+                        }
+                        <Col md={2} className="align-self-center">
+                          <Field className="picture-upload align-middle" component={DropzoneInput} name="logo"/>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md={{size: 4, offset: 4}}>
+					            <Button color="warning" className="btn-swerve" block type="submit">Create</Button>
+                    </Col>
+                  </Row>
+                </form>
+
               </ModalBody>
             </Modal>
         );
