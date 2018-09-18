@@ -75,7 +75,9 @@ export const createResource = ({ organizationName, contactEmail, website, ethnic
 		categories, 
 		stateServed,
 		phone,
-		inMilitary
+		inMilitary,
+		minIncome, 
+		maxIncome
 	}))
 
 	return {
