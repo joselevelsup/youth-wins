@@ -1,7 +1,7 @@
 import { User, AppliedCase, CMS, Admin, Resource } from "../../models";
 import * as _ from 'lodash';
 import bcrypt from "bcrypt";
-import { getImage } from "../../helpers/aws";
+import { getImage, replaceImage } from "../../helpers/aws";
 import { sendForgotEmail } from "../../helpers/mailer";
 
 export function currentUser(req, res){
@@ -25,6 +25,87 @@ export function getOneUser(req, res){
     console.log(err);
     res.status(500);
   });
+}
+
+export function updateSelf(req, res){
+    let self = JSON.parse(req.body.data);
+    let update;
+
+    if(self.password){
+        update = {
+            $set: {
+                email: self.email,
+                password: bcrypt.hashSync(self.password, 10),
+                firstName: self.firstName,
+                lastName: self.lastName,
+                phone: self.phone,
+                streetAddress: self.streetAddress,
+                zipCode: self.zipCode,
+                city: self.city,
+                state: self.state,
+                income: self.income,
+                age: self.age,
+                gender: self.gender,
+                ethnicity: self.ethnicity,
+                inMilitary: self.inMilitary,
+                educationLevel: self.educationLevel,
+                categoriesOfInterest: typeof self.categoriesOfInterest !== "object" ? self.categoriesOfInterest.split(" ---- ") : self.categoriesOfInterest
+            }
+        };
+    } else {
+        update = {
+            $set: {
+                email: self.email,
+                firstName: self.firstName,
+                lastName: self.lastName,
+                phone: self.phone,
+                streetAddress: self.streetAddress,
+                city: self.city,
+                state: self.state,
+                zipCode: self.zipCode,
+                income: self.income,
+                age: self.age,
+                gender: self.gender,
+                ethnicity: self.ethnicity,
+                inMilitary: self.inMilitary,
+                educationLevel: self.educationLevel,
+                categoriesOfInterest: typeof self.categoriesOfInterest !== "object" ? self.categoriesOfInterest.split(" ---- ") : self.categoriesOfInterest
+            }
+        };
+    }
+
+
+    User.findOneAndUpdate({ "_id": req.user._id }, update).then((data) => {
+        if(!req.files){
+            res.status(200).json({
+                "success": true,
+                "message": "Updated"
+            });
+        } else {
+            replaceImage(req.files.file, data, "user").then(d => {
+                return User.findOneAndUpdate({ "_id": req.user._id }, {
+                    $set: {
+                        profile: d
+                    }
+                });
+            }).then(() => {
+                res.status(200).json({
+                    "success": true,
+                    "message": "Updated"
+                });
+            }).catch(err => {
+                res.status(500).json({
+                    "success": false,
+                    "message": "unable to update profile"
+                });
+            });
+        }
+    }).catch((err) => {
+        res.status(500).json({
+            "success": false,
+            "message": "unable to update profile"
+        });
+    });
 }
 
 export function userSuggestedResources(req, res){

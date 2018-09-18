@@ -15,7 +15,8 @@ import {
     updateUser,
     deleteUser,
     getAllApplications,
-    deleteApplication
+    deleteApplication,
+    updateSelf
 } from "../controllers/admin.controller";
 
 
@@ -59,5 +60,7 @@ adminRouter.delete("/users/s", deleteStaff);
 
 adminRouter.get("/apps", getAllApplications);
 adminRouter.delete("/apps", deleteApplication);
+
+adminRouter.put("/profile", updateSelf);
 
 export default adminRouter;

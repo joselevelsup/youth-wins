@@ -334,8 +334,67 @@ export function updateStaff(req, res){
         });
     }
 }
-export function updateUser(req, res){
-    
+
+
+export function updateSelf(req, res){
+    let staff = JSON.parse(req.body.data);
+    let update;
+
+    if(staff.password){
+        update = {
+            $set: {
+                email: staff.email,
+                password: bcrypt.hashSync(staff.password, 10),
+                firstName: staff.firstName,
+                lastName: staff.lastName,
+                position: staff.position,
+                description: staff.description,
+            }
+        };
+    } else {
+        update = {
+            $set: {
+                email: staff.email,
+                firstName: staff.firstName,
+                lastName: staff.lastName,
+                position: staff.position,
+                description: staff.description,
+            }
+        };
+    }
+
+
+    Admin.findOneAndUpdate({ "_id": req.user._id }, update).then((data) => {
+        if(!req.files){
+            res.status(200).json({
+                "success": true,
+                "message": "Updated"
+            });
+        } else {
+            replaceImage(req.files.file, data, "admin").then(d => {
+                return Admin.findOneAndUpdate({ "_id": req.user._id }, {
+                    $set: {
+                        profile: d
+                    }
+                });
+            }).then(() => {
+                res.status(200).json({
+                    "success": true,
+                    "message": "Updated"
+                });
+            }).catch(err => {
+                res.status(500).json({
+                    "success": false,
+                    "message": "unable to update profile"
+                });
+            });
+        }
+    }).catch((err) => {
+        res.status(500).json({
+            "success": false,
+            "message": "unable to update profile"
+        });
+    });
 }
 
 export function deleteStaff(req, res){

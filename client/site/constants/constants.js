@@ -95,3 +95,6 @@ export const CHANGED_PASS_F = "CHANGED_PASSWORD_F";
 
 export const USERS_APPS_D_S = "USER_DELETED_APP_S";
 export const USERS_APPS_D_F = "USER_DELETED_APP_F";
+
+export const UPDATE_PROFILE_S = "UPDATE_PROFILE_S";
+export const UPDATE_PROFILE_F = "UPDATE_PROFILE_F";

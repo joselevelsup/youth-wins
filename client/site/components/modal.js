@@ -1,10 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { Field } from "redux-form";
+import { reduxForm, Field } from "redux-form";
 import DropzoneInput from "../components/dropzone";
 import SelectField from "../components/multi-select";
 import { ethnicity } from "../constants/ethnicity";
+import { education } from "../constants/educationlevels";
 import { states } from "../constants/states";
 import {
     Button,
@@ -721,3 +722,156 @@ export class EditStaff extends React.Component{
         )
     }
 }
+
+
+class UserEditModal extends React.Component{
+    componentDidMount(){
+        this.props.initialize(this.props.user);
+    }
+
+    componentWillUnmount(){
+        this.props.destroy();
+    }
+
+    render(){
+        const { open, toggle, categories, edit, handleSubmit } = this.props;
+        return (
+            <Modal isOpen={open} toggle={toggle} size="lg">
+              <ModalBody>
+                <form onSubmit={handleSubmit(edit)}>
+                <div className="container-fluid">
+                  <div className="row">
+                    <div className="col-6">
+                      <label>Email</label>
+                      <Field name="email" component="input" className="form-control" type="email" />
+                    </div>
+                    <div className="col-6">
+                      <label>First Name</label>
+                      <Field name="firstName" component="input" className="form-control" type="text" />
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-6">
+                      <label>Last Name</label>
+                      <Field name="lastName" component="input" className="form-control" type="text" />
+                    </div>
+                    <div className="col-6">
+                      <label>Phone Number </label>
+                      <Field name="phone" component="input" className="form-control" type="text" />
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-6">
+                      <label>Street Address</label>
+                      <Field name="streetAddress" component="input" className="form-control" type="text" />
+                    </div>
+                    <div className="col-6">
+                      <label>City</label>
+                      <Field name="city" component="input" className="form-control" type="text" />
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-6">
+                      <label>State</label>
+                      <Field name="state" component="input" className="form-control" type="text" />
+                    </div>
+                    <div className="col-6">
+                      <label>Zip Code</label>
+                      <Field name="zipCode" component="input" className="form-control" type="number" />
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-6">
+                      <label>Income</label>
+                      <Field name="income" component="input" className="form-control" type="number" />
+                    </div>
+                    <div className="col-6">
+                      <label>Age</label>
+                      <Field name="age" component="input" className="form-control" type="number" />
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-6">
+                      <label>Gender</label>
+                      <Field name="gender" component="input" className="form-control" type="text" />
+                    </div>
+                    <div className="col-6">
+                      <label>Ethnicity</label>
+                      <Field className="form-control" component="select" name="ethnicity"  id="exampleSelect">
+							          <option>- Select Ethnicity -</option>
+                        {
+                            ethnicity.map(e => (
+                                <option value={e}>{e}</option>
+                            ))
+                        }
+						          </Field>
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-6">
+                      <label>Are you in the Military?</label>
+                      <br />
+                      <label className="pr-2">
+							          <Field component="input" type="radio" value="true" name="inMilitary" />{' '}
+								        Yes
+							        </label>
+							        <label>
+							          <Field component="input" type="radio" value="false" name="inMilitary" />{' '}
+								        No
+							        </label>
+                    </div>
+                    <div className="col-6">
+                      <label>Education Level</label>
+                      <Field className="form-control" name="educationLevel" component="select" >
+                        <option>Select Education Level</option>
+                        {
+                            education.map(e => (
+                                <option value={e}>{e}</option>
+                            ))
+                        }
+                      </Field>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-12">
+                      <label>Categories you are interested in</label>
+                      <Field component={SelectField} name="categoriesOfInterest" options={categories.map(c => ({ label: c, value: c}))} /> 
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-6">
+                      <label>New Password</label>
+                      <Field name="password" className="form-control" component="input" type="password" />
+                    </div>
+                    <div className="col-6">
+                      <label>Confirm New Password</label>
+                      <Field name="newpassword" className="form-control" component="input" type="password" />
+                    </div>
+                  </div>
+                  <div className="row">
+                    <br />
+                  </div>
+                  <div className="row">
+                    <div className="offset-4 col-4">
+                      <button className="btn btn-block btn-swerve btn-primary" type="submit">Update</button>
+                    </div>
+                  </div>
+                </div>
+                </form>
+              </ModalBody>
+            </Modal>
+        );
+    }
+}
+
+export const UserEditFormModal = connect(state => ({
+    categories: state.content && state.content.content.categories
+}))(reduxForm({
+    form: "editUser"
+})(UserEditModal));
