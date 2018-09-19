@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Alert } from "reactstrap";
+import * as _ from "lodash";
 import {
     getUserInfo,
     getUserSuggested,
@@ -9,7 +10,7 @@ import {
     editUser,
 } from "../../actions/dashboard";
 import { getCurrentUser } from "../../actions/auth";
-import { applyResource } from "../../actions/resource";
+import { fetchResources, applyResource } from "../../actions/resource";
 import { YouthModal, ResourceModal, UserEditFormModal } from "../../components/modal";
 import { AppItem, ResourceItem } from "../../components/items";
 import "./dashboard.scss";
@@ -54,6 +55,7 @@ class Dashboard extends React.Component{
     }
 
     loadUserInfo(){
+        this.props.dispatch(fetchResources());
         this.props.dispatch(getUserInfo());
         this.props.dispatch(getUserSuggested());
     }
@@ -126,7 +128,9 @@ class Dashboard extends React.Component{
     }
 
     render(){
-		    const { suggestions, applications, user } = this.props;
+		    const { resources, applications, user } = this.props;
+        let suggestions = resources.filter(r => !!_.intersection(r.categories, user.categoriesOfInterest).length);
+
         return(
             <div className="container dashboard">
               <div className="row">
@@ -186,7 +190,7 @@ class Dashboard extends React.Component{
               </div>
               <div className="row">
                   {
-                      applications ?
+                      (applications && applications.length >= 1) ?
                           applications && applications.map(d => (
                               <AppItem size={4} created={d.dateCreated} user={d.user} appId={d._id} openResource={this.openResource} resource={d.resource} deleteApp={this.deleteApplication} status={d.status} />
                           ))
@@ -205,6 +209,7 @@ class Dashboard extends React.Component{
 }
 
 const DashboardPage = connect(state => ({
+    resources: state.resources,
 	  suggestions: state.dashboard && state.dashboard.suggestions,
     applications: (state.dashboard && state.dashboard.user) ? state.dashboard.user.applications : [],
 	  user: state.user

@@ -12,11 +12,8 @@ export const ResourceItem = ({ resource, deleteResource, openResource, apply, ad
                   <React.Fragment>
                     {
                         resource.logo ?
-                            <div className="col-4 align-self-center p-0">
-                              <div className="image-thumb">
-                                <img className="img-fluid logo" onClick={() => openResource(resource)} src={resource.logo} />
-                              </div>
-                            </div>
+
+                        <img className="align-self-center img-fluid rounded-circle logo" onClick={() => openResource(resource)} width="128" height="128" src={resource.logo} />
                         :
                         <div className="align-self-center rounded-circle logo " onClick={() => openResource(resource)}></div>
                     }

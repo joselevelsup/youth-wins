@@ -10,11 +10,12 @@ import {
     InputGroupAddon,
     Input
 } from "reactstrap";
+import * as _ from "lodash";
 import Ionicon from "react-ionicons";
 import { reduxForm, Field } from "redux-form";
 import { states } from "../../constants/states";
 import { ethnicity } from "../../constants/ethicity";
-import { YouthModal, ResourceModal } from "../../components/modal";
+import { YouthModal, ResourceModal, DeclineModal } from "../../components/modal";
 import { fetchResources, applyResource } from "../../actions/resource";
 import { getContent } from "../../actions/admin";
 import { chunk } from "../../components/helpers";
@@ -38,6 +39,7 @@ class Resources extends React.Component {
         this.toggleModal = this.toggleModal.bind(this);
         this.openInfoModal = this.openInfoModal.bind(this);
         this.toggleInfoModal = this.toggleInfoModal.bind(this);
+        this.toggleDeclineModal = this.toggleDeclineModal.bind(this);
         this.filter = this.filter.bind(this);
         this.searchText = this.searchText.bind(this);
     }
@@ -50,10 +52,31 @@ class Resources extends React.Component {
 
     applyResource(resourceId){
         const self = this;
-        this.props.dispatch(applyResource(resourceId)).then(data => {
-            self.toggleModal();
-        }).catch(err => {
-            console.log(err);
+        const { resources, user } = this.props;
+        const resource = resources.filter(r => r._id === resourceId)[0];
+        if(resource.minIncome < user.income && resource.maxIncome > user.income){
+            if(resource.ethnicityServed.includes(user.ethnicity)){
+                if((resource.inMilitary && !user.inMilitary) || (!resource.inMilitary && user.inMilitary)){
+                    self.toggleDeclineModal();
+                } else {
+                    this.props.dispatch(applyResource(resourceId)).then(data => {
+                        self.toggleModal();
+                    }).catch(err => {
+                        console.log(err);
+                    });
+                }
+            } else {
+                self.toggleDeclineModal();
+            }
+        } else {
+            self.toggleDeclineModal();
+        }
+
+    }
+
+    toggleDeclineModal(){
+        this.setState({
+            declineModal: !this.state.declineModal
         });
     }
 
@@ -115,6 +138,8 @@ class Resources extends React.Component {
     render(){
         const { resources, user, categories } = this.props;
         const { res, filtered } = this.state;
+
+        let suggestions = resources.filter(r => !!_.intersection(r.categories, user.categoriesOfInterest).length);
         return (
             <Container>
                 <Row>
@@ -168,6 +193,7 @@ class Resources extends React.Component {
                       ))
                   }
                 </Row>
+              {this.state.declineModal && <DeclineModal open={this.state.declineModal} toggle={this.toggleDeclineModal} suggestedResources={suggestions} openResourceModal={this.openInfoModal} applyResource={this.applyResource}/>}
                 <ResourceModal open={this.state.infoModal} toggle={this.toggleInfoModal} apply={this.applyResource} resource={this.state.resource} />
               <YouthModal open={this.state.modal} push={this.props.history.push} applying={(user && user.loggedIn == false) ? false : true} toggle={this.toggleModal} />
             </Container>

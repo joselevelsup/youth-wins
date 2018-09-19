@@ -17,7 +17,7 @@ import {
     Row,
     Col
 } from "reactstrap";
-import { AppItem } from "../components/items";
+import { AppItem, ResourceItem } from "../components/items";
 import { websiteValid } from "./helpers";
 
 export const DeleteUserModal = ({ open, toggle, deleteUser }) => (
@@ -56,6 +56,29 @@ export const YouthModal = ({ open, toggle, applying, push }) => (
       </ModalFooter>
     </Modal>
 );
+
+export class DeclineModal extends React.Component{
+    render(){
+        const { open, toggle, suggestedResources, openResourceModal, applyResource } = this.props;
+
+        return (
+            <Modal size="lg" isOpen={open} toggle={toggle}>
+              <ModalHeader toggle={toggle} className="text-center info-header">
+                The Resource you tried to apply for, you are not qualified for. Please look at these suggested resources. 
+              </ModalHeader>
+              <ModalBody>
+                <Row>
+                  {
+                      suggestedResources.map(r => (
+                          <ResourceItem resource={r} full={false} openResource={openResourceModal} />
+                      ))
+                  }
+                </Row>
+              </ModalBody>
+            </Modal>
+        )
+    }
+}
 
 export class ResourceModal extends React.Component{
     constructor(props){
