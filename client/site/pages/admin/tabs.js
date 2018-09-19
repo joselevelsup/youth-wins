@@ -130,6 +130,7 @@ class ResourcesT extends React.Component{
     updateRes(values, dispatch){
         const self = this;
         dispatch(updateResource(this.state.resource._id, values)).then(data => {
+			self.editToggle();
             self.loadResources();
         }).catch(err => {
             console.log(err);
@@ -155,8 +156,8 @@ class ResourcesT extends React.Component{
     editToggle(){
         this.setState({
             editModal: !this.state.editModal,
-            modal: !this.state.modal
-        });
+            modal: false
+		});
     }
 
 

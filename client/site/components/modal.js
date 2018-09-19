@@ -531,6 +531,21 @@ export class EditResource extends React.Component{
                       <Field component={SelectField} name="stateServed" options={states.map(s => ({ value: s.abbreviation, label: s.name}))} />
                     </Col>
                   </Row>
+				  <Row>
+					  <Col md={6}>
+					  	<div className="form-group">
+					  	  <label>Income</label>							
+						  <div className="min-max-container">
+							<Field className="form-control min-max" placeholder="min"  name="minIncome" component="input" type="text"/>
+							<Field className="form-control min-max" placeholder="max"  name="maxIncome" component="input" type="text"/>
+							</div>
+						</div>					
+					  </Col>
+					  <Col md={6}>
+					  	<label>Contact Phone Number</label>
+						<Field component="input" className="form-control" name="phone" />
+					  </Col>
+				  </Row>
                   <Row>
                     <Col md={6}>
                       <div className="form-group">
@@ -541,7 +556,7 @@ export class EditResource extends React.Component{
                     <Col md={6}>
                       <label>Logo</label>
                       <Row>
-                        <Col md={{size: 8, offset: 2}}>
+                        <Col md={{size: 6, offset: 2}}>
                           <img src={resource ? resource.logo : null} className="img-fluid"/>
                         </Col>
                         <Col md={2} className="align-self-center">
@@ -549,6 +564,29 @@ export class EditResource extends React.Component{
                         </Col>
                       </Row>
                     </Col>
+                  </Row>
+				  <Row>
+					<Col md={6}>
+						<div className="form-group">
+							<label>Veterans only?</label>
+							<div className="inline-radio">
+								<div>
+									<label check>
+										<Field component="input" type="radio" value="true" name="inMilitary" />{' '}
+										Yes
+									</label>
+								</div>
+								
+								<br/>
+								<div>
+									<label check>
+										<Field component="input" type="radio" value="false" name="inMilitary" />{' '}
+										No
+									</label>
+								</div>
+							</div>
+						</div>
+					</Col>
                   </Row>
                   <Row>
                     <Col md={{size: 4, offset: 4}}>
