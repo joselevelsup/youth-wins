@@ -94,11 +94,20 @@
         width: 128px;
         height: 128px;
     }
-    img.logo{
+    .image-thumb{
         border: 5px solid $b-color;
-        cursor: pointer;
-        z-index: 100;
-        margin-right: -30px;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        border-radius: 50%;
+        width: 139px;
+        height: 140px;
+
+        img.logo{
+            cursor: pointer;
+            height: 128px;
+            width: auto;
+        }
     }
 
     .media-body{

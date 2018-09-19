@@ -340,6 +340,7 @@ export function updateSelf(req, res){
     let staff = JSON.parse(req.body.data);
     let update;
 
+
     if(staff.password){
         update = {
             $set: {
@@ -364,11 +365,20 @@ export function updateSelf(req, res){
     }
 
 
-    Admin.findOneAndUpdate({ "_id": req.user._id }, update).then((data) => {
+    Admin.findOneAndUpdate({ "_id": req.user._id }, update, { new: true }).then((data) => {
         if(!req.files){
-            res.status(200).json({
-                "success": true,
-                "message": "Updated"
+            req.logIn(data, (err) => {
+                if(err){
+                    res.status(500).json({
+                        "success": false,
+                        "message": "unable to update profile"
+                    });
+                } else {
+                    res.status(200).json({
+                        "success": true,
+                        "message": "Updated"
+                    });
+                }
             });
         } else {
             replaceImage(req.files.file, data, "admin").then(d => {
@@ -378,9 +388,18 @@ export function updateSelf(req, res){
                     }
                 });
             }).then(() => {
-                res.status(200).json({
-                    "success": true,
-                    "message": "Updated"
+                req.logIn(data, (err) => {
+                    if(err){
+                        res.status(500).json({
+                            "success": false,
+                            "message": "unable to update profile"
+                        });
+                    } else {
+                        res.status(200).json({
+                            "success": true,
+                            "message": "Updated"
+                        });
+                    }
                 });
             }).catch(err => {
                 res.status(500).json({

@@ -76,6 +76,7 @@ export class ResourceModal extends React.Component{
 
     render(){
         const { open, toggle, resource, apply, admin, edit, remove, approve, deny, status, user, created } = this.props;
+        console.log(resource);
         return (
             <Modal size="lg" isOpen={open} toggle={toggle}>
               <div className="modal-header">
@@ -629,7 +630,7 @@ export class CreateStaff extends React.Component {
 
 export class EditStaff extends React.Component{
     componentDidMount(){
-        this.props.init(this.props.staff);
+        this.props.init(this.props.user);
     }
 
     componentWillUnmount(){
@@ -713,7 +714,7 @@ export class EditStaff extends React.Component{
                   </div>
                   <div className="row">
                     <div className="offset-4 col-4">
-					            <Button color="warning" className="btn-swerve" block type="submit">Create</Button>
+					            <Button color="warning" className="btn-swerve" block type="submit">Update</Button>
                     </div>
                   </div>
                 </form>

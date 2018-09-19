@@ -1,7 +1,7 @@
 import { User, AppliedCase, CMS, Admin, Resource } from "../../models";
 import * as _ from 'lodash';
 import bcrypt from "bcrypt";
-import { getImage, replaceImage } from "../../helpers/aws";
+import { getCmsImages, getImage, replaceImage } from "../../helpers/aws";
 import { sendForgotEmail } from "../../helpers/mailer";
 
 export function currentUser(req, res){
@@ -75,11 +75,20 @@ export function updateSelf(req, res){
     }
 
 
-    User.findOneAndUpdate({ "_id": req.user._id }, update).then((data) => {
+    User.findOneAndUpdate({ "_id": req.user._id }, update, { new: true }).then((data) => {
         if(!req.files){
-            res.status(200).json({
-                "success": true,
-                "message": "Updated"
+            req.logIn(data, (err) => {
+                if(err){
+                    res.status(500).json({
+                        "success": false,
+                        "message": "unable to update profile"
+                    });
+                } else {
+                    res.status(200).json({
+                        "success": true,
+                        "message": "Updated"
+                    });
+                }
             });
         } else {
             replaceImage(req.files.file, data, "user").then(d => {
@@ -89,9 +98,18 @@ export function updateSelf(req, res){
                     }
                 });
             }).then(() => {
-                res.status(200).json({
-                    "success": true,
-                    "message": "Updated"
+                req.logIn(data, (err) => {
+                    if(err){
+                        res.status(500).json({
+                            "success": false,
+                            "message": "unable to update profile"
+                        });
+                    } else {
+                        res.status(200).json({
+                            "success": true,
+                            "message": "Updated"
+                        });
+                    }
                 });
             }).catch(err => {
                 res.status(500).json({
@@ -156,6 +174,7 @@ export function appendContent(req, res){
             let admins = getImage(a);
             let teamMap = admins.filter(a => data.team.filter(t => a._id.toString() === t.toString()));
             let content = Object.assign({team: teamMap}, { home: data.home, aboutUs: data.aboutUs, supportUs: data.supportUs, categories: data.categories });
+            content = getCmsImages(content);
             res.status(200).json({
                 "success": true,
                 "content": content

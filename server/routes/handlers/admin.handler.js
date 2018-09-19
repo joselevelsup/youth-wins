@@ -32,7 +32,6 @@ import {
 const adminRouter = Router();
 
 adminRouter.get("/cms", getAllContent);
-adminRouter.get("/cms/e", getAllContent);
 adminRouter.put("/cms/home", updateHomeContent);
 adminRouter.put("/cms/support", updateSupportContent);
 adminRouter.put("/cms/about", updateAboutContent);

@@ -6,8 +6,9 @@ import {
     getUserSuggested,
     toggleResponse,
     deleteApp,
-    editUser
+    editUser,
 } from "../../actions/dashboard";
+import { getCurrentUser } from "../../actions/auth";
 import { applyResource } from "../../actions/resource";
 import { YouthModal, ResourceModal, UserEditFormModal } from "../../components/modal";
 import { AppItem, ResourceItem } from "../../components/items";
@@ -112,6 +113,8 @@ class Dashboard extends React.Component{
     editUserInfo(values, dispatch){
         dispatch(editUser(values)).then(data => {
             if(data.success){
+                this.props.dispatch(getCurrentUser());
+                this.loadUserInfo();
                 this.toggleUserModal();
                 this.setState({
                     updated: true
@@ -145,7 +148,7 @@ class Dashboard extends React.Component{
 					        <h3 className="welcome">Welcome {user.firstName} {user.lastName}</h3>
                 </div>
                 <div className="col-2">
-                  <button onClick={this.toggleUserModal}>Edit</button>
+                  <button className="btn btn-secondary btn-block" onClick={this.toggleUserModal}>Edit</button>
                 </div>
 				      </div>
               <div className="row">

@@ -1,29 +1,35 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux";
+import { getContent } from "../actions/admin";
 import TeamCarousel from '../components/TeamCarousel'
 
 class About extends Component {
+
+    componentDidMount(){
+        this.props.dispatch(getContent());
+    }
+
 	  render(){
-        const { ab: { content } } = this.props;
+        const { about, team } = this.props;
 		return (
 			  <div>
           {
-              (content && content.aboutUs) &&
+              about &&
                   <React.Fragment>
 				            <header>
-					            <img className="support-img" src='https://www.quirkybyte.com/wp-content/uploads/2017/08/FRIENDSHIP.jpg'/>
+					            <img className="support-img" src={about.bannerImage}/>
 				            </header><br />
 				            <section className="support-text">
-					            <h1>{content.aboutUs.section1.titleText}</h1>
+					            <h1>{about.section1.titleText}</h1>
 					            <p className="support-text-items">
-                        {content.aboutUs.section1.body}
+                        {about.section1.body}
 					            </p><br />
-					            <h1>{content.aboutUs.section2.titleText}</h1>
+					            <h1>{about.section2.titleText}</h1>
 					            <p className="support-text-items">
-                        {content.aboutUs.section2.body}
+                        {about.section2.body}
 					            </p><br />
 				            </section>
-				            <TeamCarousel team={content.team} />
+				            <TeamCarousel team={team} />
                   </React.Fragment>
           }
 			</div>
@@ -32,7 +38,8 @@ class About extends Component {
 }
 
 const AboutUs = connect(state => ({
-    ab: state.content
+    team: (state.content && state.content.content) ? state.content.content.team : [],
+    about: (state.content && state.content.content) ? state.content.content.aboutUs : []
 }))(About)
 
 export default AboutUs;
