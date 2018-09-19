@@ -209,6 +209,11 @@ figure {
 	z-index: 5;
 }
 
+.home-login a {
+    float: left;
+    color: #2AABE3;
+}
+
 .home-logo {
 	width: 20vw;
 }

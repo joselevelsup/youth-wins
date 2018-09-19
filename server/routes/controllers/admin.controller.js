@@ -63,6 +63,7 @@ export function deleteResource(req, res){
 
 export function createResource(req, res){
     let data = JSON.parse(req.body.data);
+    console.log(data);
 
     new Resource({
         organizationName: data.organizationName,
@@ -71,12 +72,13 @@ export function createResource(req, res){
         email: data.email,
         contactEmail: data.contactEmail,
         description: data.description,
-		website: data.website,
 		minIncome: data.minIncome,
 		maxIncome: data.maxIncome,
 		inMilitary: data.inMilitary === "true" ? true : false,
+        website: data.website,
+        categories: typeof data.categories != "object" ? data.categories.split(" ---- ") : data.categories,
         ethnicityServed: typeof data.ethnicityServed != "object" ? data.ethnicityServed.split(" ---- ") : data.ethnicityServed,
-        stateServed: typeof data.stateServed != "object" ? data.stateServed.split(" ---- ") : data.stateServed,
+        stateServed: typeof data.stateServed != "object" ? data.stateServed.split(" ---- ") : data.stateServed
     }).save().then((data) => {
         if(req.files == null){
             res.status(200).json({
@@ -86,7 +88,6 @@ export function createResource(req, res){
         } else {
             uploadImage(req.files.file, data._id, "resource").then(key => {
                 data.logo = key;
-
                 return data.save();
             }).then(data => {
                 res.status(200).json({
@@ -101,6 +102,7 @@ export function createResource(req, res){
             "message": "Unable to create Resource"
         });
     });
+
 }
 
 export function updateResource(req, res){

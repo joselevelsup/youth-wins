@@ -45,6 +45,8 @@ class Home extends Component {
 								<Label>Password</Label>
 								<Field className="form-control" component="input" type="password" name="password" placeholder="********"/>
 							</FormGroup>
+
+              <Link className="forgot-link" to="/forgot">Forgot your Password?</Link>
 						</form>
 					</div>
 					<div className="button-container">

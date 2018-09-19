@@ -119,7 +119,7 @@ export const AppItem = ({ created, status, resource, deleteApp, size,  openResou
               <div className="row">
                 <div className="col-9 align-self-center">
                   <div className="text-center">
-                    {user ? <h6><span className="ml-4 align-middle clickable" onClick={() => openResource(resource, status, appId, user)} >{resource.organizationName} - {user.firstName} {user.lastName} - {new Date(created).toLocaleDateString()}</span></h6> : <h6><span className="ml-4 align-middle clickable" onClick={() => openResource(resource, status, appId, user)} >{resource.organizationName}</span></h6> }
+                     {user ? <h6><span className="ml-4 align-middle clickable" onClick={() => openResource(resource, status, appId, user, created)} >{resource.organizationName} - {user.firstName} {user.lastName} - {new Date(created).toLocaleDateString()}</span></h6> : <h6><span className="ml-4 align-middle clickable" onClick={() => openResource(resource, status, appId, user)} >{resource.organizationName}</span></h6> }
                   </div>
                 </div>
                 <div className="col-2 align-self-center">
