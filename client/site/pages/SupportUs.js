@@ -13,7 +13,6 @@ class Support extends Component {
                       <React.Fragment>
 				                <header>
 									<div>
-										<div className="support-img-container"/>
 					                	<img className="support-img" src='https://www.quirkybyte.com/wp-content/uploads/2017/08/FRIENDSHIP.jpg'/>
 									</div>
 				                </header><br />
