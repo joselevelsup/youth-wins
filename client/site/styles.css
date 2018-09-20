@@ -1,5 +1,14 @@
 .support-img {
 	width: 100vw;
+	z-index: -5;
+}
+
+.support-img-container {
+	position: absolute;
+	width: 100vw;
+	height: 100%;
+	background-color: rgba(255, 255, 255, 0.3);
+	z-index: 2;
 }
 
 .support-text {
@@ -10,7 +19,8 @@
 }
 
 .support-text-items {
-	width: 80%;
+	text-align: center;
+	width: 70%;
 }
 
 .support-form {
@@ -19,12 +29,16 @@
 	align-items: center;
 	flex-flow: wrap;
 	width: 60%;
+	margin-top: 4em;
 }
 
 .form-wrap {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	background-color: #235dbe;
+	color: white;
+	width: 100%;
 }
 
 .support-form-items {
@@ -153,6 +167,7 @@ h1 {
 .home-text {
 	color: #FFF;
 	width: 60%;
+	text-align: center;
 }
 
 .social-icons {
@@ -181,6 +196,7 @@ h1 {
 	display: flex;
 	justify-content: space-evenly;
 	top: 96.5%;
+	z-index: 3;
 }
 
 figure {
@@ -195,6 +211,7 @@ figure {
 	position: absolute;
 	display: flex;
 	flex-direction: column;
+	z-index: 5;
 }
 
 .home-login a {
@@ -236,7 +253,7 @@ figure {
 .inline-radio {
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
+	justify-content: space-evenly;
 }
 
 .description {

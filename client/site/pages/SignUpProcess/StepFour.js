@@ -6,7 +6,7 @@ import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap'
 // import { signUp } from './../../../store/reducers/user'
 import { signUp } from '../../actions/auth'
 import SelectField from "../../components/multi-select";
-
+import { education } from '../../constants/education'
 
 const validate = values => {
     const errors = {};
@@ -58,11 +58,7 @@ class StepFour extends Component {
 						<Label>Education Level</Label>
 						<Field className="form-control" component="select" name="educationLevel" >
 							<option>- Select Education Level -</option>
-							<option>Level 1</option>
-							<option>Level 2</option>
-							<option>Level 3</option>
-							<option>Level 4</option>
-							<option>Level 5</option>
+							{education.map(lvl => <option>{lvl}</option>)}
 						</Field>
 					</FormGroup>
 					<Label>What are you interested in?</Label>

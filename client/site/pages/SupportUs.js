@@ -17,7 +17,9 @@ class Support extends Component {
                   support &&
                       <React.Fragment>
 				                <header>
-					                <img className="support-img" src={support.bannerImage}/>
+									<div>
+					                	<img className="support-img" src={support.bannerImage}/>
+									</div>
 				                </header><br />
 				                <section className="support-text">
 					                <h1>{support.section1.titleText}</h1>

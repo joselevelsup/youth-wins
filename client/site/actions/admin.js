@@ -85,7 +85,7 @@ export const failedResource = err => ({
     payload: err
 });
 
-export const createResource = ({organizationName, email, website, contactEmail, description, logo, ethnicityServed, categories, stateServed }) => {
+export const createResource = ({organizationName, email, website, contactEmail, description, logo, ethnicityServed, categoriest, stateServed, phone, inMilitary, minIncome, maxIncome }) => {
 
     const data = new FormData();
 
@@ -98,7 +98,11 @@ export const createResource = ({organizationName, email, website, contactEmail, 
         description,
         ethnicityServed,
         stateServed,
-        categories
+		categories,
+		phone, 
+		inMilitary, 
+		minIncome, 
+		maxIncome
     }));
 
     return {
@@ -135,7 +139,7 @@ export const updateResource = (id, {organizationName, email, website, contactEma
         description,
         ethnicityServed,
         stateServed,
-        categoriesOfInterest
+        categories
     }));
     return{
         type: API,

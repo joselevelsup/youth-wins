@@ -36,29 +36,33 @@ class Home extends Component {
 			<div>
 				{
             home &&
+              	
                 <React.Fragment>
-				          <figure>
-					          <img className="support-img home-image" src={home.bannerImage}/>
-					          <div className="home-login">
-						          <img className="home-logo" src={home.logoImage}/>
-						          <form>
-							          <FormGroup>
-								          <Label>Email</Label>
-								          <Field className="form-control" component="input" name="email" type="email" placeholder="jodydoe@mail.com" />
-							          </FormGroup>
-							          <FormGroup>
-								          <Label>Password</Label>
-								          <Field className="form-control" component="input" type="password" name="password" placeholder="********"/>
-							          </FormGroup>
+                <figure>
+            <div>
+              <div className="support-img-container"/>
+              <img className="support-img home-image" src='https://www.quirkybyte.com/wp-content/uploads/2017/08/FRIENDSHIP.jpg'/>
+            </div>
+            <div className="home-login">
+              <img className="home-logo" src="https://cdn1.cloudcanvas.website/media/sites/26/2017/09/28175958/stitcher-logo-transparent.png"/>
+              <form>
+                <FormGroup>
+                  <Label>Email</Label>
+                  <Field className="form-control" component="input" name="email" type="email" placeholder="jodydoe@mail.com" />
+                </FormGroup>
+                <FormGroup>
+                  <Label>Password</Label>
+                  <Field className="form-control" component="input" type="password" name="password" placeholder="********"/>
+                </FormGroup>
 
-                        <Link className="forgot-link" to="/forgot">Forgot your Password?</Link>
-						          </form>
-					          </div>
-					          <div className="button-container">
-						          <Button color="warning" size="lg" onClick={handleSubmit(this.loginUser)}>Login</Button>
-						          <Link to="/signup"><Button color="warning" size="lg">Signup</Button></Link>
-					          </div>
-				          </figure>
+                <Link className="forgot-link" to="/forgot">Forgot your Password?</Link>
+              </form>
+            </div>
+            <div className="button-container">
+              <Button color="warning" size="lg" onClick={handleSubmit(this.loginUser)}>Login</Button>
+              <Link to="/signup"><Button color="warning" size="lg">Signup</Button></Link>
+            </div>
+          </figure>
 				          <section className="foot-container home-footer">
 					          <br/><br/>
 					          <h1>{home.titleText}</h1>

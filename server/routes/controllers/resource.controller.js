@@ -70,6 +70,8 @@ export function createResource(req, res){
         contactEmail: data.contactEmail,
         description: data.description,
 		website: data.website,
+		minIncome: data.minIncome,
+		maxIncome: data.maxIncome,
 		inMilitary: data.inMilitary === "true" ? true : false,
         ethnicityServed: typeof data.ethnicityServed != "object" ? data.ethnicityServed.split(" ---- ") : data.ethnicityServed,
         stateServed: typeof data.stateServed != "object" ? data.stateServed.split(" ---- ") : data.stateServed,
