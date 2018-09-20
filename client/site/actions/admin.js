@@ -393,14 +393,6 @@ export const failedContent = err => ({
     payload: err
 });
 
-export const getEditableContent = () => ({
-    type: API,
-    payload: {
-        url: API_ADMIN+`/cms/e`,
-        success: gotContent,
-        failure: failedContent
-    }
-})
 
 export const getContent = () => ({
     type: API,

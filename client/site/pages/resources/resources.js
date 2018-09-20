@@ -153,7 +153,7 @@ class Resources extends React.Component {
     }
 
     filter(values){
-        const { reset } = this.props;
+        const { reset, user, resources } = this.props;
 
         if(values.reset){
             this.setState({
@@ -161,7 +161,7 @@ class Resources extends React.Component {
             });
             reset();
         } else {
-            let filteredResources = this.showQualifiedResources().filter(r => r.categories.some(c => c === values.categories));
+            let filteredResources = (user && user.loggedIn == false) ? resources.filter(r => r.categories.some(c => c === values.categories)) : this.showQualifiedResources().filter(r => r.categories.some(c => c === values.categories));
 
             this.setState({
                 filtered: true,
@@ -172,14 +172,14 @@ class Resources extends React.Component {
     }
 
     searchText(e){
-        const { resources } = this.props;
+        const { resources, user } = this.props;
 
         if(e.target.value == ""){
             this.setState({
                 filtered: false
             });
         } else {
-            let filtered = this.showQualifiedResources().filter(r => r.organizationName.toLowerCase() === e.target.value.toLowerCase());
+            let filtered = (user && user.loggedIn == false) ? resources.filter(r => r.organizationName.toLowerCase() === e.target.value.toLowerCase()) : this.showQualifiedResources().filter(r => r.organizationName.toLowerCase() === e.target.value.toLowerCase());
 
             this.setState({
                 filtered: true,

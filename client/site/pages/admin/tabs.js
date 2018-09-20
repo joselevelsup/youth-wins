@@ -30,7 +30,7 @@ import {
     deleteUser,
     getAllApplications,
     deleteApp,
-    getEditableContent,
+    getContent,
     updateHomeContent,
     updateSupportContent,
     updateAboutContent,
@@ -80,6 +80,7 @@ class ResourcesT extends React.Component{
     }
 
     loadResources(){
+        this.props.dispatch(getContent());
         this.props.dispatch(getAllResources());
     }
 
@@ -148,12 +149,14 @@ class ResourcesT extends React.Component{
     }
 
     createToggle(){
+        this.loadResources();
         this.setState({
             createModal: !this.state.createModal
         });
     }
 
     editToggle(){
+        this.loadResources();
         this.setState({
             editModal: !this.state.editModal,
             modal: !this.state.modal
@@ -556,7 +559,7 @@ class SettingsT extends React.Component{
     }
 
     loadContent(){
-        this.props.dispatch(getEditableContent());
+        this.props.dispatch(getContent());
         this.props.dispatch(getAllUsers());
     }
 
@@ -642,6 +645,7 @@ class SettingsT extends React.Component{
 
     createCategory(values, dispatch){
         const self = this;
+        console.log(values);
         dispatch(createNewCategory(values)).then(data => {
             if(data.success){
                 self.loadContent();
@@ -1037,7 +1041,7 @@ class SettingsT extends React.Component{
                       </Container>
               }
 
-              {this.state.createModal && <CreateStaff open={this.state.createModal} toggle={this.toggleCreateModal} create={handleSubmit(this.createStaffMember)} /> }
+              {this.state.createModal && <CreateStaff open={this.state.createModal} toggle={this.toggleCreateModal} create={handleSubmit(this.createStaffMember)} reset={this.props.reset} /> }
               {this.state.editStaffModal && <EditStaff open={this.state.editStaffModal} toggle={this.toggleEditStaff} user={user} init={this.props.initialize} reset={this.props.destroy} edit={handleSubmit(this.editStaffMember)}/>}
             </Container>
         );

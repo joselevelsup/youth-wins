@@ -20,6 +20,8 @@ import {
 import { AppItem, ResourceItem } from "../components/items";
 import { websiteValid } from "./helpers";
 
+import { getContent } from "../actions/admin";
+
 export const DeleteUserModal = ({ open, toggle, deleteUser }) => (
     <Modal isOpen={open} toggle={toggle}>
       <ModalHeader toggle={toggle}>
@@ -457,7 +459,7 @@ class CreateRes extends React.Component {
 }
 
 export const CreateResource = connect(state => ({
-    categories: (state.content && state.content.content) ? state.content.content.categories : []
+    categories: (state.cms && state.cms.content) ? state.cms.content.categories : []
 }))(CreateRes);
 
 export class EditResource extends React.Component{
