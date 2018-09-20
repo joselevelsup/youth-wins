@@ -32,7 +32,8 @@ class Resources extends React.Component {
             infoModal: false,
             resource: null,
             res: null,
-            filtered: false
+            filtered: false,
+            rid: null
         };
 
         this.applyResource = this.applyResource.bind(this);
@@ -42,35 +43,86 @@ class Resources extends React.Component {
         this.toggleDeclineModal = this.toggleDeclineModal.bind(this);
         this.filter = this.filter.bind(this);
         this.searchText = this.searchText.bind(this);
+        this.showQualifiedResources = this.showQualifiedResources.bind(this);
     }
 
     componentDidMount(){
         this.props.dispatch(fetchResources());
         this.props.dispatch(getContent());
+
+        let params = new URLSearchParams(this.props.location.search).get("r");
+
+        if(params){
+            this.openResourceFromSearch(params);
+        }
+    }
+
+
+    openResourceFromSearch(param){
+        const { resources } = this.props;
+
+        console.log(this.showQualifiedResources());
+
+        let resource = this.showQualifiedResources().filter(r => r._id === param)[0];
+
+        console.log(resource);
+
+        if(resource == null){
+            this.toggleDeclineModal();
+        } else {
+            this.setState({
+                resource: resource,
+                infoModal: true
+            });
+        }
     }
 
 
     applyResource(resourceId){
         const self = this;
-        const { resources, user } = this.props;
-        const resource = resources.filter(r => r._id === resourceId)[0];
-        if(resource.minIncome < user.income && resource.maxIncome > user.income){
-            if(resource.ethnicityServed.includes(user.ethnicity)){
-                if((resource.inMilitary && !user.inMilitary) || (!resource.inMilitary && user.inMilitary)){
-                    self.toggleDeclineModal();
-                } else {
-                    this.props.dispatch(applyResource(resourceId)).then(data => {
-                        self.toggleModal();
-                    }).catch(err => {
-                        console.log(err);
-                    });
-                }
-            } else {
-                self.toggleDeclineModal();
-            }
-        } else {
-            self.toggleDeclineModal();
-        }
+        self.props.dispatch(applyResource(resourceId)).then(data => {
+            self.toggleModal();
+        }).catch(err => {
+            console.log(err);
+        });
+
+        // if((resource.minIncome && resource.maxIncome) && resource.minIncome < user.income && resource.maxIncome > user.income){
+        //     if(resource.ethnicityServed && resource.ethnicityServed.includes(user.ethnicity)){
+        //         if(resource.inMilitary && (resource.inMilitary && !user.inMilitary) || (!resource.inMilitary && user.inMilitary)){
+        //             self.toggleDeclineModal();
+        //         } else {
+        //             self.props.dispatch(applyResource(resourceId)).then(data => {
+        //                 self.toggleModal();
+        //             }).catch(err => {
+        //                 console.log(err);
+        //             });
+        //         }
+        //     } else {
+        //         self.toggleDeclineModal();
+        //     }
+        // } else {
+        //     if(resource.ethnicity && resource.ethnicityServed.includes(user.ethnicity)){
+        //         if(resource.inMilitary && (resource.inMilitary && !user.inMilitary) || (!resource.inMilitary && user.inMilitary)){
+        //             self.toggleDeclineModal();
+        //         } else {
+        //             self.props.dispatch(applyResource(resourceId)).then(data => {
+        //                 self.toggleModal();
+        //             }).catch(err => {
+        //                 console.log(err);
+        //             });
+        //         }
+        //     } else {
+        //         if(resource.inMilitary && (resource.inMilitary && !user.inMilitary) || (!resource.inMilitary && user.inMilitary)){
+        //             self.toggleDeclineModal();
+        //         } else {
+        //             self.props.dispatch(applyResource(resourceId)).then(data => {
+        //                 self.toggleModal();
+        //             }).catch(err => {
+        //                 console.log(err);
+        //             });
+        //         }
+        //     }
+        // }
 
     }
 
@@ -87,9 +139,10 @@ class Resources extends React.Component {
         });
     }
 
-    toggleModal(){
+    toggleModal(id){
         this.setState({
             modal: !this.state.modal,
+            rid: id
         });
     }
 
@@ -100,7 +153,7 @@ class Resources extends React.Component {
     }
 
     filter(values){
-        const { resources, reset } = this.props;
+        const { reset } = this.props;
 
         if(values.reset){
             this.setState({
@@ -108,7 +161,7 @@ class Resources extends React.Component {
             });
             reset();
         } else {
-            let filteredResources = resources.filter(r => r.categories.some(c => c === values.categories));
+            let filteredResources = this.showQualifiedResources().filter(r => r.categories.some(c => c === values.categories));
 
             this.setState({
                 filtered: true,
@@ -126,7 +179,7 @@ class Resources extends React.Component {
                 filtered: false
             });
         } else {
-            let filtered = resources.filter(r => r.organizationName.toLowerCase() === e.target.value.toLowerCase());
+            let filtered = this.showQualifiedResources().filter(r => r.organizationName.toLowerCase() === e.target.value.toLowerCase());
 
             this.setState({
                 filtered: true,
@@ -135,11 +188,83 @@ class Resources extends React.Component {
         }
     }
 
+    showQualifiedResources(){
+        const { resources, user } = this.props;
+
+        const qualifiedRes = resources.filter(r => {
+            if(r.minIncome || r.maxIncome){
+                if(r.minIncome && r.maxIncome){
+                    if((user.income >= r.minIncome && user.income <= r.maxIncome)){
+                        return r;
+                    }
+                }
+
+                if(r.minIncome && !r.maxIncome){
+                    if(user.income > r.minIncome){
+                        return r;
+                    }
+                }
+
+                if(r.maxIncome && !r.minIncome){
+                    if(user.income < r.maxIncome){
+                        return r;
+                    }
+                }
+            } else {
+                return r;
+            }
+        }).filter(r => {
+            if(r.maxAge || r.minAge){
+                if(r.maxAge && r.minAge){
+                    if(user.age <= r.maxAge && user.age >= r.minAge){
+                        return r;
+                    }
+                }
+
+                if(r.maxAge && !r.minAge){
+                    if(user.age <= r.maxAge){
+                        return r;
+                    }
+                }
+
+                if(r.minAge && !r.maxAge){
+                    if(user.age >= r.minAge){
+                        return r;
+                    }
+                }
+            } else {
+                return r;
+            }
+        }).filter(r => {
+            if(r.inMilitary){
+                if(user.inMilitary == true && r.inMilitary == true){
+                    return r;
+                }
+
+                if(user.inMilitary == false && r.inMilitary == false){
+                    return r;
+                }
+            } else {
+                return r;
+            }
+        }).filter(r => {
+            if(r.ethnicityServed && r.ethnicityServed.length >= 1){
+                if(r.ethnicityServed.includes(user.ethnicity)){
+                    return r;
+                }
+            } else {
+                return r;
+            }
+        });
+
+        return qualifiedRes;
+    }
+
     render(){
         const { resources, user, categories } = this.props;
         const { res, filtered } = this.state;
 
-        let suggestions = resources.filter(r => !!_.intersection(r.categories, user.categoriesOfInterest).length);
+        let userResources = user.loggedIn == false ? resources : this.showQualifiedResources();
         return (
             <Container>
                 <Row>
@@ -183,19 +308,19 @@ class Resources extends React.Component {
               </form>
                 <Row>
                     {
-                        (resources && !filtered) && resources.map(r => (
-                            <ResourceItem full={true} resource={r} openResource={this.openInfoModal} apply={(user && user.loggedIn == false) ? this.toggleModal : this.applyResource} />
+                        (userResources && !filtered) && userResources.map(r => (
+                            <ResourceItem full={true} resource={r} openResource={this.openInfoModal} apply={(user && user.loggedIn == false) ? () => this.toggleModal(r._id) : this.applyResource} />
                         ))
                     }
                   {
                       (res && filtered) && res.map(r => (
-                          <ResourceItem full={true} resource={r} openResource={this.openInfoModal} apply={(user && user.loggedIn == false) ? this.toggleModal : this.applyResource} />
+                          <ResourceItem full={true} resource={r} openResource={this.openInfoModal} apply={(user && user.loggedIn == false) ? () => this.toggleModal(r._id) : this.applyResource} />
                       ))
                   }
                 </Row>
-              {this.state.declineModal && <DeclineModal open={this.state.declineModal} toggle={this.toggleDeclineModal} suggestedResources={suggestions} openResourceModal={this.openInfoModal} applyResource={this.applyResource}/>}
+              {this.state.declineModal && <DeclineModal open={this.state.declineModal} toggle={this.toggleDeclineModal} suggestedResources={this.showQualifiedResources().filter(r => r.categories.some(c => user.categories.some(uc => c === uc)))} openResourceModal={this.openInfoModal} applyResource={this.applyResource}/>}
                 <ResourceModal open={this.state.infoModal} toggle={this.toggleInfoModal} apply={this.applyResource} resource={this.state.resource} />
-              <YouthModal open={this.state.modal} push={this.props.history.push} applying={(user && user.loggedIn == false) ? false : true} toggle={this.toggleModal} />
+              <YouthModal open={this.state.modal} resourceid={this.state.rid !== null ? this.state.rid : null}  push={this.props.history.push} applying={(user && user.loggedIn == false) ? false : true} toggle={this.toggleModal} />
             </Container>
         );
     }

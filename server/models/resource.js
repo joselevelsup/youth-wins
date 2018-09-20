@@ -23,11 +23,9 @@ const resourceModel = new mongoose.Schema({
     },
     stateServed: {
         type: [String],
-        default: []
     },
     ethnicityServed: {
         type: [String],
-        default: []
     },
     categories: {
         type: [String],

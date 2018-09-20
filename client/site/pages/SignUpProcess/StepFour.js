@@ -33,11 +33,16 @@ class StepFour extends Component {
 	}
 
 	  signup(values){
-        console.log(values);
-		const submission = Object.assign({}, values)
-		this.props.dispatch(signUp(submission))
-		this.props.history.push('/dashboard')
-	}
+		    const submission = Object.assign({}, values)
+		    this.props.dispatch(signUp(submission))
+        let params = new URLSearchParams(this.props.location.search).get("r");
+        if(params){
+            this.props.history.push(`/resources/?r=${params}`);
+        } else {
+		        this.props.history.push('/dashboard');
+        }
+	  }
+
 
 	render(){
 		  const { handleSubmit, categories } = this.props

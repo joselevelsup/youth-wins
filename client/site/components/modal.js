@@ -39,23 +39,25 @@ export const DeleteUserModal = ({ open, toggle, deleteUser }) => (
     </Modal>
 )
 
-export const YouthModal = ({ open, toggle, applying, push }) => (
-    <Modal isOpen={open} toggle={toggle}>
-      <ModalHeader toggle={toggle} className="text-center info-header">
-        {
-            applying ?
-                `Thank you for applying`
-                :
-                `You are currently not logged in. Please Sign up in order to apply for this resource`
-        }
-      </ModalHeader>
-      <ModalFooter>
-        <div className="ml-auto mr-auto">
-         <Button color="primary" style={{width: 200}} block  className="btn-swerve" onClick={applying ? () => toggle() : () => push("/signup")}>Continue</Button>
-        </div>
-      </ModalFooter>
-    </Modal>
-);
+export const YouthModal = ({ open, toggle, applying, push, resourceid }) =>{
+    return (
+        <Modal isOpen={open} toggle={toggle}>
+          <ModalHeader toggle={toggle} className="text-center info-header">
+            {
+                applying ?
+                    `Thank you for applying`
+                    :
+                    `You are currently not logged in. Please Sign up in order to apply for this resource`
+            }
+          </ModalHeader>
+          <ModalFooter>
+            <div className="ml-auto mr-auto">
+              <Button color="primary" style={{width: 200}} block  className="btn-swerve" onClick={applying ? () => toggle() : () => push(`/signup/?r=${resourceid}`)}>Continue</Button>
+            </div>
+          </ModalFooter>
+        </Modal>
+    );
+}
 
 export class DeclineModal extends React.Component{
     render(){
@@ -99,7 +101,6 @@ export class ResourceModal extends React.Component{
 
     render(){
         const { open, toggle, resource, apply, admin, edit, remove, approve, deny, status, user, created } = this.props;
-        console.log(resource);
         return (
             <Modal size="lg" isOpen={open} toggle={toggle}>
               <div className="modal-header">
@@ -183,7 +184,7 @@ export class ResourceModal extends React.Component{
                     apply &&
                         <ModalFooter>
                           <Col md={{size: 3, offset: 9}}>
-                            <Button className="primary" onClick={() => apply(resource._id)}>Apply</Button>
+                            <Button block className="primary" onClick={() => apply(resource._id)}>Apply</Button>
                           </Col>
                         </ModalFooter>
                 }
