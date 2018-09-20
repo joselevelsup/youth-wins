@@ -1,8 +1,17 @@
 import React from "react";
 import { connect } from "react-redux";
-import { getUserInfo, getUserSuggested, toggleResponse, deleteApp } from "../../actions/dashboard";
-import { applyResource } from "../../actions/resource";
-import { YouthModal, ResourceModal } from "../../components/modal";
+import { Alert } from "reactstrap";
+import * as _ from "lodash";
+import {
+    getUserInfo,
+    getUserSuggested,
+    toggleResponse,
+    deleteApp,
+    editUser,
+} from "../../actions/dashboard";
+import { getCurrentUser } from "../../actions/auth";
+import { fetchResources, applyResource } from "../../actions/resource";
+import { YouthModal, ResourceModal, UserEditFormModal } from "../../components/modal";
 import { AppItem, ResourceItem } from "../../components/items";
 import "./dashboard.scss";
 
@@ -13,8 +22,10 @@ class Dashboard extends React.Component{
         this.state = {
             resourceModal: false,
             appModal: false,
+            userModal: false,
             resource: null,
-            status: null
+            status: null,
+            updated: false
         };
 
         this.loadUserInfo = this.loadUserInfo.bind(this);
@@ -23,10 +34,13 @@ class Dashboard extends React.Component{
         this.toggleAppModal = this.toggleAppModal.bind(this);
         this.toggleResource = this.toggleResource.bind(this);
         this.toggleResponse = this.toggleResponse.bind(this);
+        this.toggleUserModal = this.toggleUserModal.bind(this);
 
 		    this.applyResource = this.applyResource.bind(this);
 
-        this.deleteApplication = this.deleteApplication.bind(this)
+        this.deleteApplication = this.deleteApplication.bind(this);
+
+        this.editUserInfo = this.editUserInfo.bind(this);
     }
 
 
@@ -41,6 +55,7 @@ class Dashboard extends React.Component{
     }
 
     loadUserInfo(){
+        this.props.dispatch(fetchResources());
         this.props.dispatch(getUserInfo());
         this.props.dispatch(getUserSuggested());
     }
@@ -82,6 +97,12 @@ class Dashboard extends React.Component{
         });
     }
 
+    toggleUserModal(){
+        this.setState({
+            userModal: !this.state.userModal
+        });
+    }
+
     deleteApplication(appId){
         const self = this;
         this.props.dispatch(deleteApp(appId)).then(data => {
@@ -91,19 +112,47 @@ class Dashboard extends React.Component{
         });
     }
 
+    editUserInfo(values, dispatch){
+        dispatch(editUser(values)).then(data => {
+            if(data.success){
+                this.props.dispatch(getCurrentUser());
+                this.loadUserInfo();
+                this.toggleUserModal();
+                this.setState({
+                    updated: true
+                });
+            }
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
     render(){
-		    const { suggestions, applications, user } = this.props;
+		    const { resources, applications, user } = this.props;
+        let suggestions = resources.filter(r => !!_.intersection(r.categories, user.categoriesOfInterest).length);
+
         return(
             <div className="container dashboard">
               <div className="row">
                 <br />
               </div>
+              {
+                  this.state.updated &&
+                      <div className="row">
+                        <div className="col-12">
+                          <Alert color="success">Successfully updated profile</Alert>
+                        </div>
+                      </div>
+              }
 				      <div className="row">
                 <div className="col-2">
 					        {user.profile ? <img className="img-fluid rounded-circle border-color" src={user.profile}/> : null}
                 </div>
                 <div className="col-8 align-self-center"> 
 					        <h3 className="welcome">Welcome {user.firstName} {user.lastName}</h3>
+                </div>
+                <div className="col-2">
+                  <button className="btn btn-secondary btn-block" onClick={this.toggleUserModal}>Edit</button>
                 </div>
 				      </div>
               <div className="row">
@@ -141,7 +190,7 @@ class Dashboard extends React.Component{
               </div>
               <div className="row">
                   {
-                      applications ?
+                      (applications && applications.length >= 1) ?
                           applications && applications.map(d => (
                               <AppItem size={4} created={d.dateCreated} user={d.user} appId={d._id} openResource={this.openResource} resource={d.resource} deleteApp={this.deleteApplication} status={d.status} />
                           ))
@@ -153,12 +202,14 @@ class Dashboard extends React.Component{
               </div>
               {this.state.appModal && <YouthModal open={this.state.appModal} applying={true} toggle={this.toggleAppModal}/>}
               {this.state.resource && <ResourceModal open={this.state.resourceModal} toggle={this.toggleResource} resource={this.state.resource} user={this.state.user} created={this.state.created} status={this.state.status} toggleResponse={this.toggleResponse} /> }
+              {this.state.userModal && <UserEditFormModal open={this.state.userModal} toggle={this.toggleUserModal} edit={this.editUserInfo} user={user} />}
               </div>
         );
     }
 }
 
 const DashboardPage = connect(state => ({
+    resources: state.resources,
 	  suggestions: state.dashboard && state.dashboard.suggestions,
     applications: (state.dashboard && state.dashboard.user) ? state.dashboard.user.applications : [],
 	  user: state.user

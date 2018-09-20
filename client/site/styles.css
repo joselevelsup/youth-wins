@@ -177,12 +177,17 @@ h1 {
 	width: 30%;
 }
 
-.social-icons > button {
+.social-icons > a {
 	background-color: transparent;
 	border: 2px solid #E89E00;
 	width: 3.5em;
 	height: 3.5em;
 	border-radius: 1.75em;
+}
+
+.social-icons > a > svg{
+    margin: 10px 12px;
+    color: black;
 }
 
 .button-container {

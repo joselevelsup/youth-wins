@@ -274,11 +274,10 @@ export const failedUpdateStaff = err => ({
     payload: err
 });
 
-export const updateStaff = ({ _id, firstName, lastName, password, cpassword, position, email, profile, description }) => {
+export const updateStaff = ({ firstName, lastName, password, cpassword, position, email, profile, description }) => {
     const data = new FormData();
     profile && data.append("file", profile[0]);
     data.append("data", JSON.stringify({
-        id: _id,
         firstName,
         lastName,
         password,
@@ -292,7 +291,7 @@ export const updateStaff = ({ _id, firstName, lastName, password, cpassword, pos
     return {
         type: API,
         payload: {
-            url: API_ADMIN+"/users/s",
+            url: API_ADMIN+"/profile",
             method: "PUT",
             data: data,
             success: updatedStaff,
@@ -398,14 +397,6 @@ export const failedContent = err => ({
     payload: err
 });
 
-export const getEditableContent = () => ({
-    type: API,
-    payload: {
-        url: API_ADMIN+`/cms/e`,
-        success: gotContent,
-        failure: failedContent
-    }
-})
 
 export const getContent = () => ({
     type: API,
@@ -426,14 +417,18 @@ export const failedToUpdateHome = err => ({
     payload: err
 });
 
-export const updateHomeContent = ({bannerText, bannerImage, titleText, body}) => {
+export const updateHomeContent = ({bannerText, logoImage, bannerImage, titleText, body, facebook, twitter, linkedin}) => {
 
     const content = new FormData();
-    bannerImage && content.append("file", bannerImage[0]);
+    logoImage && content.append("logo", logoImage[0]);
+    bannerImage && content.append("banner", bannerImage[0]);
     content.append("data", JSON.stringify({
         bannerText,
         titleText,
-        body
+        body,
+        facebook,
+        twitter,
+        linkedin
     }));
 
     return {
