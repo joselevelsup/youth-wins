@@ -84,3 +84,12 @@ export function getImage(arr){
         }
     }
 }
+
+export function getCmsImages(cms){
+    cms.home.logoImage = `https://${bucket}.s3.amazonaws.com/${cms.home.logoImage}`;
+    cms.home.bannerImage = `https://${bucket}.s3.amazonaws.com/${cms.home.bannerImage}`;
+    cms.supportUs.bannerImage = `https://${bucket}.s3.amazonaws.com/${cms.supportUs.bannerImage}`;
+    cms.aboutUs.bannerImage = `https://${bucket}.s3.amazonaws.com/${cms.supportUs.bannerImage}`;
+
+    return cms;
+}

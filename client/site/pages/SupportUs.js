@@ -1,27 +1,32 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux";
+import { getContent } from "../actions/admin";
 import BecomeResource from '../components/BecomeResource';
 
 class Support extends Component {
+
+    componentDidMount(){
+        this.props.dispatch(getContent());
+    }
+
 	  render(){
-        console.log(this.props);
-        const { co: { content } } = this.props;
+        const { support } = this.props;
 		    return (
             <div>
               {
-                  (content && content.supportUs) &&
+                  support &&
                       <React.Fragment>
 				                <header>
-					                <img className="support-img" src='https://www.quirkybyte.com/wp-content/uploads/2017/08/FRIENDSHIP.jpg'/>
+					                <img className="support-img" src={support.bannerImage}/>
 				                </header><br />
 				                <section className="support-text">
-					                <h1>{content.supportUs.section1.titleText}</h1>
+					                <h1>{support.section1.titleText}</h1>
 					                <p className="support-text-items">
-                            {content.supportUs.section1.body}
+                            {support.section1.body}
 					                </p><br />
-					                <h1>{content.supportUs.section2.titleText}</h1>
+					                <h1>{support.section2.titleText}</h1>
 					                <p className="support-text-items">
-                            {content.supportUs.section2.body}
+                            {support.section2.body}
 					                </p><br />
 				                </section>
                       </React.Fragment>
@@ -33,7 +38,7 @@ class Support extends Component {
 }
 
 const SupportUs = connect(state => ({
-    co: state.content
+    support: (state.content && state.content.content) ? state.content.content.supportUs : []
 }))(Support)
 
 export default SupportUs;

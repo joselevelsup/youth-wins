@@ -2,6 +2,9 @@ import mongoose from "mongoose";
 
 const cmsModel = new mongoose.Schema({
     home: {
+        logoImage: {
+            type: String
+        },
         bannerText: {
             type: String
         },
@@ -12,6 +15,15 @@ const cmsModel = new mongoose.Schema({
             type: String
         },
         body: {
+            type: String
+        },
+        facebook: {
+            type: String
+        },
+        twitter: {
+            type: String
+        },
+        linkedin: {
             type: String
         }
     },

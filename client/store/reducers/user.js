@@ -62,20 +62,13 @@ export const userReducer = (state = initialState, action) => {
 		return action.payload
   case LOGOUT_S:
       return initialState;
-      
+
+  case USER_S:
+      action.payload.password = (action.payload && action.payload.password) && null;
+      return action.payload;
 		default:
-			return state
+			return state;
 	}
-}
-
-export const currentReducer = (state = initialUser, action) => {
-    switch(action.type){
-    case USER_S:
-        return action.payload;
-
-    default:
-        return state || initialUser;
-    }
 }
 
 export const contentReducer = (state = initialState, action) => {

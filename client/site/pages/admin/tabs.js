@@ -15,6 +15,7 @@ import {
 } from "reactstrap";
 import Ionicon from "react-ionicons";
 import { Field, reduxForm, getFormValues } from "redux-form";
+import { getCurrentUser } from "../../actions/auth";
 import {
     getAllResources,
     deleteResource,
@@ -239,7 +240,6 @@ class UsersT extends React.Component{
             createModal: false,
             staffModal: false,
             userModal: false,
-            editStaffModal: false,
             staff: null,
             user: null,
             userPrompt: false,
@@ -249,7 +249,6 @@ class UsersT extends React.Component{
         this.createStaffMember = this.createStaffMember.bind(this);
         this.openStaffMember = this.openStaffMember.bind(this);
         this.deleteStaffMember = this.deleteStaffMember.bind(this);
-        this.editStaffMember = this.editStaffMember.bind(this);
 
         this.openApplicant = this.openApplicant.bind(this);
         this.deleteApplicant = this.deleteApplicant.bind(this);
@@ -257,7 +256,6 @@ class UsersT extends React.Component{
         this.toggleUserModal = this.toggleUserModal.bind(this);
         this.toggleStaffModal = this.toggleStaffModal.bind(this);
         this.toggleCreateModal = this.toggleCreateModal.bind(this);
-        this.toggleEditStaff = this.toggleEditStaff.bind(this);
         this.getUsers = this.getUsers.bind(this);
 
         this.offModals = this.offModals.bind(this);
@@ -300,12 +298,6 @@ class UsersT extends React.Component{
         });
     }
 
-    toggleEditStaff(){
-        this.setState({
-            staffModal: false,
-            editStaffModal: !this.state.editStaffModal
-        });
-    }
 
     deleteUserPrompt(id, type){
         this.setState({
@@ -320,7 +312,6 @@ class UsersT extends React.Component{
             staffModal: false,
             createModal: false,
             userModal: false,
-            editStaffModal: false,
             userPrompt: false
         });
     }
@@ -353,16 +344,6 @@ class UsersT extends React.Component{
         });
     }
 
-    editStaffMember(values, dispatch){
-        dispatch(updateStaff(values)).then(data => {
-            if(data.success){
-                this.getUsers();
-                this.toggleEditStaff();
-            }
-        }).catch(err => {
-            console.log(err);
-        });
-    }
 
     // editApplicant(values, dispatch){
     //     dispatch(updateApplicant(values)).then(data => {
@@ -430,7 +411,6 @@ class UsersT extends React.Component{
               <StaffModal open={this.state.staffModal} toggle={this.toggleStaffModal} staff={this.state.staff} deleteStaff={this.deleteStaffMember} editStaff={this.toggleEditStaff} />
               <UserModal open={this.state.userModal} toggle={this.toggleUserModal} user={this.state.user} deleteUser={this.deleteApplicant}  />
               {this.state.createModal && <CreateStaff open={this.state.createModal} toggle={this.toggleCreateModal} create={handleSubmit(this.createStaffMember)} reset={this.props.destroy} />}
-              {this.state.editStaffModal && <EditStaff open={this.state.editStaffModal} toggle={this.toggleEditStaff} staff={this.state.staff} init={this.props.initialize} reset={this.props.destroy} edit={handleSubmit(this.editStaffMember)}/>}
               {this.state.userPrompt && <DeleteUserModal open={this.state.userPrompt} toggle={this.offModals} deleteUser={this.state.userType ? () => this.deleteApplicant(this.state.user) : () => this.deleteStaffMember(this.state.user)}/>}
             </Container>
         )
@@ -555,6 +535,7 @@ class SettingsT extends React.Component{
         this.state = {
             view: 1,
             createModal: false,
+            editStaffModal: false,
             homeUpdate: false,
             supportUpdate: false,
             aboutUpdate: false
@@ -567,9 +548,11 @@ class SettingsT extends React.Component{
         this.addToSite = this.addToSite.bind(this);
         this.toggleCategoryModal = this.toggleCategoryModal.bind(this);
         this.toggleCreateModal = this.toggleCreateModal.bind(this);
+        this.toggleEditStaff = this.toggleEditStaff.bind(this);
         this.createCategory = this.createCategory.bind(this);
         this.deleteCategory = this.deleteCategory.bind(this);
         this.createStaffMember = this.createStaffMember.bind(this);
+        this.editStaffMember = this.editStaffMember.bind(this);
     }
 
     loadContent(){
@@ -579,6 +562,24 @@ class SettingsT extends React.Component{
 
     componentDidMount(){
         this.loadContent();
+    }
+
+    toggleEditStaff(){
+        this.setState({
+            staffModal: false,
+            editStaffModal: !this.state.editStaffModal
+        });
+    }
+
+    editStaffMember(values, dispatch){
+        dispatch(updateStaff(values)).then(data => {
+            if(data.success){
+                this.props.dispatch(getCurrentUser());
+                this.toggleEditStaff();
+            }
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
     updateHome(values, dispatch){
@@ -675,7 +676,7 @@ class SettingsT extends React.Component{
     }
 
     render(){
-        const { handleSubmit, homeCms, aboutCms, supportCms, team, staff, categories } = this.props;
+        const { handleSubmit, homeCms, aboutCms, supportCms, team, staff, categories, user } = this.props;
         const { homeUpdate, aboutUpdate, supportUpdate } = this.state;
 
         return (
@@ -689,11 +690,14 @@ class SettingsT extends React.Component{
                 </Col>
               </Row>
               <Row>
+                <Col md={{size: 3, offset: 3}} className="text-center">
+                  <button className="btn btn-secondary" onClick={this.toggleEditStaff}>Edit Profile</button>
+                </Col>
                 <Col md={3} className="text-center">
                   <button className="btn btn-secondary" onClick={this.toggleCategoryModal}>Add Category</button>
                 </Col>
-                <Col md={{size: 3, offset: 6}} className="text-center">
-                  <button className="btn btn-secondary" onClick={this.toggleCreateModal}>Add Staff Memeber</button>
+                <Col md={3} className="text-center">
+                  <button className="btn btn-secondary" onClick={this.toggleCreateModal}>Add Staff Member</button>
                 </Col>
               </Row>
               <Row>
@@ -701,16 +705,16 @@ class SettingsT extends React.Component{
               </Row>
               <Row>
                 <Col md={3} className="text-center">
-                  <button className={this.state.view == 1 ? "btn btn-secondary btn-lg" : "btn btn-outline-secondary btn-lg"} onClick={() => this.setState({ view: 1 })}> Home</button>
+                  <button className={this.state.view == 1 ? "btn btn-secondary btn-block btn-lg" : "btn btn-outline-secondary btn-block btn-lg"} onClick={() => this.setState({ view: 1 })}> Home</button>
                 </Col>
                 <Col md={3} className="text-center">
-                  <button className={this.state.view == 2 ?  "btn btn-secondary btn-lg" : "btn btn-outline-secondary btn-lg" } onClick={() => this.setState({ view: 2 })}> About Us</button>
+                  <button className={this.state.view == 2 ?  "btn btn-secondary btn-block btn-lg" : "btn btn-outline-secondary btn-block btn-lg" } onClick={() => this.setState({ view: 2 })}> About Us</button>
                 </Col>
                 <Col md={3} className="text-center">
-                  <button className={this.state.view == 3 ?  "btn btn-secondary btn-lg" : "btn btn-outline-secondary btn-lg" } onClick={() => this.setState({ view: 3 })}> Support Us</button>
+                  <button className={this.state.view == 3 ?  "btn btn-secondary btn-block btn-lg" : "btn btn-outline-secondary btn-block btn-lg" } onClick={() => this.setState({ view: 3 })}> Support Us</button>
                 </Col>
                 <Col md={3} className="text-center">
-                  <button className={this.state.view == 4 ?  "btn btn-secondary btn-lg" : "btn btn-outline-secondary btn-lg" } onClick={() => this.setState({ view: 4 })}> Team</button>
+                  <button className={this.state.view == 4 ?  "btn btn-secondary btn-block btn-lg" : "btn btn-outline-secondary btn-block btn-lg" } onClick={() => this.setState({ view: 4 })}> Team</button>
                 </Col>
               </Row>
               <Row>
@@ -771,39 +775,75 @@ class SettingsT extends React.Component{
                         }
 
                         <form onSubmit={this.props.handleSubmit(this.updateHome)}>
-                        <Row>
-                          <Col md={{size: 4, offset: 4}}>
-                            <label><h5>Banner Text</h5></label>
-                            <Field className="form-control" component="input" type="text" name="home.bannerText" />
-                          </Col>
-                        </Row>
-                        <Row>
-                          <br />
-                        </Row>
-                        <Row>
-                          <Col md={{size: 4, offset: 4}}>
-                            <label><h5>Banner Image</h5></label>
-                            <Field component={DropzoneInput} name="home.bannerImage" />
-                          </Col>
-                        </Row>
-                        <Row>
-                          <br />
-                        </Row>
-                        <Row>
-                          <Col md={{size: 4, offset: 4}}>
-                            <label><h5>Title Text</h5></label>
-                            <Field className="form-control" component="input" type="text" name="home.titleText" />
-                          </Col>
-                        </Row>
-                        <Row>
-                          <br />
-                        </Row>
-                        <Row>
-                          <Col md={{size: 4, offset: 4}}>
-                            <label><h5>Body Text</h5></label>
-                            <Field className="form-control" component="textarea" name="home.body" />
-                          </Col>
-                        </Row>
+                          <Row>
+                            <Col md={6}>
+                              <Row>
+                                <Col md={12}>
+                                  <label><h5>Banner Text</h5></label>
+                                  <Field className="form-control" component="input" type="text" name="home.bannerText" />
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col md={12}>
+                                  <label><h5>Banner Image</h5></label>
+                                  <Field component={DropzoneInput} name="home.bannerImage" />
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col md={12}>
+                                  <label><h5>Logo Image</h5></label>
+                                  <Field component={DropzoneInput} name="home.logoImage" />
+                                </Col>
+                              </Row>
+                              <Row>
+                                <br />
+                              </Row>
+                              <Row>
+                                <Col md={12}>
+                                  <label><h5>Title Text</h5></label>
+                                  <Field className="form-control" component="input" type="text" name="home.titleText" />
+                                </Col>
+                              </Row>
+                              <Row>
+                                <br />
+                              </Row>
+                              <Row>
+                                <Col md={12}>
+                                  <label><h5>Body Text</h5></label>
+                                  <Field className="form-control" component="textarea" name="home.body" />
+                                </Col>
+                              </Row>
+                              <Row>
+                                <br />
+                              </Row>
+                            </Col>
+                            <Col md={6}>
+                              <Row>
+                                <Col md={12}>
+                                  <label><h5>Facebook Link</h5></label>
+                                  <Field className="form-control" component="input" type="text" name="home.facebook" />
+                                </Col>
+                              </Row>
+                              <Row>
+                                <br />
+                              </Row>
+                              <Row>
+                                <Col md={12}>
+                                  <label><h5>Twitter Link</h5></label>
+                                  <Field className="form-control" component="input" type="text" name="home.twitter" />
+                                </Col>
+                              </Row>
+                              <Row>
+                                <br />
+                              </Row>
+                              <Row>
+                                <Col md={12}>
+                                  <label><h5>LinkedIn Text</h5></label>
+                                  <Field className="form-control" component="input" type="text" name="home.linkedin" />
+                                </Col>
+                              </Row>
+                            </Col>
+                          </Row>
                           <Row>
                             <br />
                           </Row>
@@ -811,6 +851,9 @@ class SettingsT extends React.Component{
                             <Col md={{size: 4, offset: 4}} className="text-center">
                               <button className="btn btn-block btn-primary btn-swerve">Update</button>
                             </Col>
+                          </Row>
+                          <Row>
+                            <br />
                           </Row>
                         </form>
                       </Container>
@@ -994,8 +1037,9 @@ class SettingsT extends React.Component{
                       </Container>
               }
 
-              {this.state.createModal && <CreateStaff open={this.state.createModal} toggle={this.toggleCreateModal} create={handleSubmit(this.createStaffMember)} />
-}            </Container>
+              {this.state.createModal && <CreateStaff open={this.state.createModal} toggle={this.toggleCreateModal} create={handleSubmit(this.createStaffMember)} /> }
+              {this.state.editStaffModal && <EditStaff open={this.state.editStaffModal} toggle={this.toggleEditStaff} user={user} init={this.props.initialize} reset={this.props.destroy} edit={handleSubmit(this.editStaffMember)}/>}
+            </Container>
         );
     }
 }
@@ -1005,10 +1049,11 @@ const SettingsForm = reduxForm({
 })(SettingsT);
 
 export const SettingsTab = connect(state => ({
-    homeCms: (state.cms && state.cms.content) ? state.cms.content[0].home : [],
-    supportCms: (state.cms && state.cms.content) ? state.cms.content[0].supportUs : [],
-    aboutCms: (state.cms && state.cms.content) ? state.cms.content[0].aboutUs : [],
+    homeCms: (state.cms && state.cms.content) ? state.cms.content.home : [],
+    supportCms: (state.cms && state.cms.content) ? state.cms.content.supportUs : [],
+    aboutCms: (state.cms && state.cms.content) ? state.cms.content.aboutUs : [],
     staff: (state.adminUsers && state.adminUsers.staff) ? state.adminUsers.staff : [],
-    team: (state.cms && state.cms.content) ? state.cms.content[0].team : [],
-    categories: (state.cms && state.cms.content) ? state.cms.content[0].categories : []
+    team: (state.cms && state.cms.content) ? state.cms.content.team : [],
+    categories: (state.cms && state.cms.content) ? state.cms.content.categories : [],
+    user: state.user
 }))(SettingsForm);

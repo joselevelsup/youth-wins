@@ -1,10 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { Field } from "redux-form";
+import { reduxForm, Field } from "redux-form";
 import DropzoneInput from "../components/dropzone";
 import SelectField from "../components/multi-select";
 import { ethnicity } from "../constants/ethnicity";
+import { education } from "../constants/educationlevels";
 import { states } from "../constants/states";
 import {
     Button,
@@ -16,7 +17,7 @@ import {
     Row,
     Col
 } from "reactstrap";
-import { AppItem } from "../components/items";
+import { AppItem, ResourceItem } from "../components/items";
 import { websiteValid } from "./helpers";
 
 export const DeleteUserModal = ({ open, toggle, deleteUser }) => (
@@ -38,23 +39,48 @@ export const DeleteUserModal = ({ open, toggle, deleteUser }) => (
     </Modal>
 )
 
-export const YouthModal = ({ open, toggle, applying, push }) => (
-    <Modal isOpen={open} toggle={toggle}>
-      <ModalHeader toggle={toggle} className="text-center info-header">
-        {
-            applying ?
-                `Thank you for applying`
-                :
-                `You are currently not logged in. Please Sign up in order to apply for this resource`
-        }
-      </ModalHeader>
-      <ModalFooter>
-        <div className="ml-auto mr-auto">
-         <Button color="primary" style={{width: 200}} block  className="btn-swerve" onClick={applying ? () => toggle() : () => push("/signup")}>Continue</Button>
-        </div>
-      </ModalFooter>
-    </Modal>
-);
+export const YouthModal = ({ open, toggle, applying, push, resourceid }) =>{
+    return (
+        <Modal isOpen={open} toggle={toggle}>
+          <ModalHeader toggle={toggle} className="text-center info-header">
+            {
+                applying ?
+                    `Thank you for applying`
+                    :
+                    `You are currently not logged in. Please Sign up in order to apply for this resource`
+            }
+          </ModalHeader>
+          <ModalFooter>
+            <div className="ml-auto mr-auto">
+              <Button color="primary" style={{width: 200}} block  className="btn-swerve" onClick={applying ? () => toggle() : () => push(`/signup/?r=${resourceid}`)}>Continue</Button>
+            </div>
+          </ModalFooter>
+        </Modal>
+    );
+}
+
+export class DeclineModal extends React.Component{
+    render(){
+        const { open, toggle, suggestedResources, openResourceModal, applyResource } = this.props;
+
+        return (
+            <Modal size="lg" isOpen={open} toggle={toggle}>
+              <ModalHeader toggle={toggle} className="text-center info-header">
+                The Resource you tried to apply for, you are not qualified for. Please look at these suggested resources. 
+              </ModalHeader>
+              <ModalBody>
+                <Row>
+                  {
+                      suggestedResources.map(r => (
+                          <ResourceItem resource={r} full={false} openResource={openResourceModal} />
+                      ))
+                  }
+                </Row>
+              </ModalBody>
+            </Modal>
+        )
+    }
+}
 
 export class ResourceModal extends React.Component{
     constructor(props){
@@ -158,7 +184,7 @@ export class ResourceModal extends React.Component{
                     apply &&
                         <ModalFooter>
                           <Col md={{size: 3, offset: 9}}>
-                            <Button className="primary" onClick={() => apply(resource._id)}>Apply</Button>
+                            <Button block className="primary" onClick={() => apply(resource._id)}>Apply</Button>
                           </Col>
                         </ModalFooter>
                 }
@@ -628,7 +654,7 @@ export class CreateStaff extends React.Component {
 
 export class EditStaff extends React.Component{
     componentDidMount(){
-        this.props.init(this.props.staff);
+        this.props.init(this.props.user);
     }
 
     componentWillUnmount(){
@@ -712,7 +738,7 @@ export class EditStaff extends React.Component{
                   </div>
                   <div className="row">
                     <div className="offset-4 col-4">
-					            <Button color="warning" className="btn-swerve" block type="submit">Create</Button>
+					            <Button color="warning" className="btn-swerve" block type="submit">Update</Button>
                     </div>
                   </div>
                 </form>
@@ -721,3 +747,156 @@ export class EditStaff extends React.Component{
         )
     }
 }
+
+
+class UserEditModal extends React.Component{
+    componentDidMount(){
+        this.props.initialize(this.props.user);
+    }
+
+    componentWillUnmount(){
+        this.props.destroy();
+    }
+
+    render(){
+        const { open, toggle, categories, edit, handleSubmit } = this.props;
+        return (
+            <Modal isOpen={open} toggle={toggle} size="lg">
+              <ModalBody>
+                <form onSubmit={handleSubmit(edit)}>
+                <div className="container-fluid">
+                  <div className="row">
+                    <div className="col-6">
+                      <label>Email</label>
+                      <Field name="email" component="input" className="form-control" type="email" />
+                    </div>
+                    <div className="col-6">
+                      <label>First Name</label>
+                      <Field name="firstName" component="input" className="form-control" type="text" />
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-6">
+                      <label>Last Name</label>
+                      <Field name="lastName" component="input" className="form-control" type="text" />
+                    </div>
+                    <div className="col-6">
+                      <label>Phone Number </label>
+                      <Field name="phone" component="input" className="form-control" type="text" />
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-6">
+                      <label>Street Address</label>
+                      <Field name="streetAddress" component="input" className="form-control" type="text" />
+                    </div>
+                    <div className="col-6">
+                      <label>City</label>
+                      <Field name="city" component="input" className="form-control" type="text" />
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-6">
+                      <label>State</label>
+                      <Field name="state" component="input" className="form-control" type="text" />
+                    </div>
+                    <div className="col-6">
+                      <label>Zip Code</label>
+                      <Field name="zipCode" component="input" className="form-control" type="number" />
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-6">
+                      <label>Income</label>
+                      <Field name="income" component="input" className="form-control" type="number" />
+                    </div>
+                    <div className="col-6">
+                      <label>Age</label>
+                      <Field name="age" component="input" className="form-control" type="number" />
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-6">
+                      <label>Gender</label>
+                      <Field name="gender" component="input" className="form-control" type="text" />
+                    </div>
+                    <div className="col-6">
+                      <label>Ethnicity</label>
+                      <Field className="form-control" component="select" name="ethnicity"  id="exampleSelect">
+							          <option>- Select Ethnicity -</option>
+                        {
+                            ethnicity.map(e => (
+                                <option value={e}>{e}</option>
+                            ))
+                        }
+						          </Field>
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-6">
+                      <label>Are you in the Military?</label>
+                      <br />
+                      <label className="pr-2">
+							          <Field component="input" type="radio" value="true" name="inMilitary" />{' '}
+								        Yes
+							        </label>
+							        <label>
+							          <Field component="input" type="radio" value="false" name="inMilitary" />{' '}
+								        No
+							        </label>
+                    </div>
+                    <div className="col-6">
+                      <label>Education Level</label>
+                      <Field className="form-control" name="educationLevel" component="select" >
+                        <option>Select Education Level</option>
+                        {
+                            education.map(e => (
+                                <option value={e}>{e}</option>
+                            ))
+                        }
+                      </Field>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-12">
+                      <label>Categories you are interested in</label>
+                      <Field component={SelectField} name="categoriesOfInterest" options={categories.map(c => ({ label: c, value: c}))} /> 
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-6">
+                      <label>New Password</label>
+                      <Field name="password" className="form-control" component="input" type="password" />
+                    </div>
+                    <div className="col-6">
+                      <label>Confirm New Password</label>
+                      <Field name="newpassword" className="form-control" component="input" type="password" />
+                    </div>
+                  </div>
+                  <div className="row">
+                    <br />
+                  </div>
+                  <div className="row">
+                    <div className="offset-4 col-4">
+                      <button className="btn btn-block btn-swerve btn-primary" type="submit">Update</button>
+                    </div>
+                  </div>
+                </div>
+                </form>
+              </ModalBody>
+            </Modal>
+        );
+    }
+}
+
+export const UserEditFormModal = connect(state => ({
+    categories: state.content && state.content.content.categories
+}))(reduxForm({
+    form: "editUser"
+})(UserEditModal));

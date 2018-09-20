@@ -8,7 +8,8 @@ import {
     toggleResponse,
     sendForgotPass,
     changePassword,
-    deleteUserApplication
+    deleteUserApplication,
+    updateSelf
 } from "../controllers/user.controller";
 
 const userRouter = Router();
@@ -28,5 +29,7 @@ userRouter.post("/forgot", sendForgotPass);
 userRouter.post("/forgot/pass", changePassword);
 
 userRouter.delete("/apps", deleteUserApplication);
+
+userRouter.put("/update", updateSelf);
 
 export default userRouter;
