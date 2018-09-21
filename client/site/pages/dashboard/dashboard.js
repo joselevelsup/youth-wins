@@ -57,7 +57,6 @@ class Dashboard extends React.Component{
     loadUserInfo(){
         this.props.dispatch(fetchResources());
         this.props.dispatch(getUserInfo());
-        this.props.dispatch(getUserSuggested());
     }
 
     componentDidMount(){

@@ -20,8 +20,8 @@ import {
 import { AppItem, ResourceItem } from "../components/items";
 import { websiteValid } from "./helpers";
 import BecomeResource from "./BecomeResource";
-
 import { getContent } from "../actions/admin";
+import * as _ from "lodash";
 
 export const DeleteUserModal = ({ open, toggle, deleteUser }) => (
     <Modal isOpen={open} toggle={toggle}>
@@ -64,26 +64,33 @@ export const YouthModal = ({ open, toggle, applying, push, resourceid }) =>{
 
 export class DeclineModal extends React.Component{
     render(){
-        const { open, toggle, suggestedResources, openResourceModal, applyResource } = this.props;
-
-        return (
-            <Modal size="lg" isOpen={open} toggle={toggle}>
-              <ModalHeader toggle={toggle} className="text-center info-header">
-                The Resource you tried to apply for, you are not qualified for. Please look at these suggested resources. 
-              </ModalHeader>
-              <ModalBody>
-                <Row>
-                  {
-                      suggestedResources.map(r => (
-                          <ResourceItem resource={r} full={false} openResource={openResourceModal} />
-                      ))
-                  }
-                </Row>
-              </ModalBody>
-            </Modal>
-        )
+        const { open, toggle, openResourceModal, applyResource, resources, user } = this.props;
+        if(user && !_.has(user, "loggedIn")){
+            return (
+                <Modal size="lg" isOpen={open} toggle={toggle}>
+                  <ModalHeader toggle={toggle} className="text-center info-header">
+                    The Resource you tried to apply for, you are not qualified for. Please look at these suggested resources. 
+                  </ModalHeader>
+                  <ModalBody>
+                    <Row>
+                      {
+                          (resources && resources.length >= 1) && resources.filter(r => !!_.intersection(r.categories, user.categoriesOfInterest).length).map(r => (
+                              <ResourceItem resource={r} full={false} openResource={openResourceModal} />
+                          ))
+                      }
+                    </Row>
+                  </ModalBody>
+                </Modal>
+            )
+        } else {
+            return null;
+        }
     }
 }
+
+// export const DeclineModal = connect(state => ({
+//     resources: state.resources
+// }))(DeclineMod);
 
 export class ResourceModal extends React.Component{
     constructor(props){

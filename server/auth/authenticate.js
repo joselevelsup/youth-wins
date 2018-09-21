@@ -4,7 +4,7 @@ import encryptSsn from "../helpers/encrypt";
 import { User } from "../models/user";
 import { getImage } from '../helpers/aws'
 
-export function login(req, res){
+export function login(req, res, next){
     passport.authenticate("local-login", function(err, user, info) {
         if(err){
             res.status(500).json({
@@ -19,9 +19,9 @@ export function login(req, res){
                     });
                 } else {
                     if(!req.user.profile){
-                        res.status(200).json(req.user);
+                        return res.status(200).json(req.user);
                     } else {
-                        res.status(200).json(getImage(req.user));
+                        return res.status(200).json(getImage(req.user));
                     }
                 }
             });

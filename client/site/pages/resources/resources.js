@@ -47,25 +47,93 @@ class Resources extends React.Component {
     }
 
     componentDidMount(){
-        this.props.dispatch(fetchResources());
+        this.props.dispatch(fetchResources()).then(data => {
+            let params = new URLSearchParams(this.props.location.search).get("r");
+
+            if(params){
+                this.openResourceFromSearch(params);
+            }
+        });
+
         this.props.dispatch(getContent());
 
-        let params = new URLSearchParams(this.props.location.search).get("r");
+    }
 
-        if(params){
-            this.openResourceFromSearch(params);
-        }
+    showQualifiedResources(){
+        const { resources, user } = this.props;
+        const qualifiedRes = resources.filter(r => {
+            if(r.minIncome || r.maxIncome){
+                if(r.minIncome && r.maxIncome){
+                    if((user.income >= r.minIncome && user.income <= r.maxIncome)){
+                        return r;
+                    }
+                }
+
+                if(r.minIncome && !r.maxIncome){
+                    if(user.income > r.minIncome){
+                        return r;
+                    }
+                }
+
+                if(r.maxIncome && !r.minIncome){
+                    if(user.income < r.maxIncome){
+                        return r;
+                    }
+                }
+            } else {
+                return r;
+            }
+        }).filter(r => {
+            if(r.maxAge || r.minAge){
+                if(r.maxAge && r.minAge){
+                    if(user.age <= r.maxAge && user.age >= r.minAge){
+                        return r;
+                    }
+                }
+
+                if(r.maxAge && !r.minAge){
+                    if(user.age <= r.maxAge){
+                        return r;
+                    }
+                }
+
+                if(r.minAge && !r.maxAge){
+                    if(user.age >= r.minAge){
+                        return r;
+                    }
+                }
+            } else {
+                return r;
+            }
+        }).filter(r => {
+            if(r.inMilitary){
+                if(user.inMilitary == true && r.inMilitary == true){
+                    return r;
+                }
+
+                if(user.inMilitary == false && r.inMilitary == false){
+                    return r;
+                }
+            } else {
+                return r;
+            }
+        }).filter(r => {
+            if(r.ethnicityServed && r.ethnicityServed.length >= 1){
+                if(r.ethnicityServed.includes(user.ethnicity)){
+                    return r;
+                }
+            } else {
+                return r;
+            }
+        });
+
+        return qualifiedRes;
     }
 
 
     openResourceFromSearch(param){
         const { resources } = this.props;
-
-        console.log(this.showQualifiedResources());
-
         let resource = this.showQualifiedResources().filter(r => r._id === param)[0];
-
-        console.log(resource);
 
         if(resource == null){
             this.toggleDeclineModal();
@@ -188,82 +256,10 @@ class Resources extends React.Component {
         }
     }
 
-    showQualifiedResources(){
-        const { resources, user } = this.props;
-
-        const qualifiedRes = resources.filter(r => {
-            if(r.minIncome || r.maxIncome){
-                if(r.minIncome && r.maxIncome){
-                    if((user.income >= r.minIncome && user.income <= r.maxIncome)){
-                        return r;
-                    }
-                }
-
-                if(r.minIncome && !r.maxIncome){
-                    if(user.income > r.minIncome){
-                        return r;
-                    }
-                }
-
-                if(r.maxIncome && !r.minIncome){
-                    if(user.income < r.maxIncome){
-                        return r;
-                    }
-                }
-            } else {
-                return r;
-            }
-        }).filter(r => {
-            if(r.maxAge || r.minAge){
-                if(r.maxAge && r.minAge){
-                    if(user.age <= r.maxAge && user.age >= r.minAge){
-                        return r;
-                    }
-                }
-
-                if(r.maxAge && !r.minAge){
-                    if(user.age <= r.maxAge){
-                        return r;
-                    }
-                }
-
-                if(r.minAge && !r.maxAge){
-                    if(user.age >= r.minAge){
-                        return r;
-                    }
-                }
-            } else {
-                return r;
-            }
-        }).filter(r => {
-            if(r.inMilitary){
-                if(user.inMilitary == true && r.inMilitary == true){
-                    return r;
-                }
-
-                if(user.inMilitary == false && r.inMilitary == false){
-                    return r;
-                }
-            } else {
-                return r;
-            }
-        }).filter(r => {
-            if(r.ethnicityServed && r.ethnicityServed.length >= 1){
-                if(r.ethnicityServed.includes(user.ethnicity)){
-                    return r;
-                }
-            } else {
-                return r;
-            }
-        });
-
-        return qualifiedRes;
-    }
 
     render(){
         const { resources, user, categories } = this.props;
         const { res, filtered } = this.state;
-
         let userResources = user.loggedIn == false ? resources : this.showQualifiedResources();
         return (
             <Container>
@@ -318,7 +314,7 @@ class Resources extends React.Component {
                       ))
                   }
                 </Row>
-              {this.state.declineModal && <DeclineModal open={this.state.declineModal} toggle={this.toggleDeclineModal} suggestedResources={this.showQualifiedResources().filter(r => r.categories.some(c => user.categories.some(uc => c === uc)))} openResourceModal={this.openInfoModal} applyResource={this.applyResource}/>}
+              {this.state.declineModal && <DeclineModal open={this.state.declineModal} toggle={this.toggleDeclineModal} openResourceModal={this.openInfoModal} resources={this.showQualifiedResources()}  user={user} applyResource={this.applyResource}/>}
                 <ResourceModal open={this.state.infoModal} toggle={this.toggleInfoModal} apply={this.applyResource} resource={this.state.resource} />
               <YouthModal open={this.state.modal} resourceid={this.state.rid !== null ? this.state.rid : null}  push={this.props.history.push} applying={(user && user.loggedIn == false) ? false : true} toggle={this.toggleModal} />
             </Container>

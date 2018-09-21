@@ -17,18 +17,18 @@ class Support extends Component {
                   support &&
                       <React.Fragment>
 				                <header>
-									<div>
+									        <div>
 					                	<img className="support-img" src={support.bannerImage}/>
-									</div>
+									        </div>
 				                </header><br />
 				                <section className="support-text">
-					                <h1>{support.section1.titleText}</h1>
+					                <h1>{support.section1Title}</h1>
 					                <p className="support-text-items">
-                            {support.section1.body}
+                            {support.section1Body}
 					                </p><br />
-					                <h1>{support.section2.titleText}</h1>
+					                <h1>{support.section2Title}</h1>
 					                <p className="support-text-items">
-                            {support.section2.body}
+                            {support.section2Body}
 					                </p><br />
 				                </section>
                       </React.Fragment>
