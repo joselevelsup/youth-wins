@@ -523,7 +523,7 @@ export const CreateResource = connect(state => ({
     categories: (state.cms && state.cms.content) ? state.cms.content.categories : []
 }))(CreateRes);
 
-export class EditResource extends React.Component{
+class EditRes extends React.Component{
     
     componentDidMount(){
         this.props.init(this.props.resource);
@@ -534,9 +534,13 @@ export class EditResource extends React.Component{
     }
 
     render(){
-        const { open, toggle, resource, updateRes } = this.props;
+        const { open, toggle, resource, categories, updateRes } = this.props;
+
+        const e = [ ...ethnicity.map(e => ({ label: e, value: e})), { label: "All", value: "all"}];
+        const state = [ ...states.map(s => ({ label: s.name, value: s.abbreviation })), { label: "All", value: "all"}];
+        const cat = [ ...categories.map(c => ({ label: c, value: c})), { label: "All", value: "all"}];
         return (
-            <Modal isOpen={open} toggle={toggle} size="md">
+            <Modal isOpen={open} toggle={toggle} size="lg">
               <div className="modal-header">
                 <Container fluid={true}>
                   <Row>
@@ -579,12 +583,27 @@ export class EditResource extends React.Component{
                   <Row>
                     <Col md={6}>
                       <label>Ethnicity Served</label>
-                      <Field component={SelectField} name="ethnicityServed" options={ethnicity.map(e => ({ value: e, label: e}))} />
+                      <Field component={SelectField} name="ethnicityServed" options={e} />
                     </Col>
                     <Col md={6}>
                       <label>State Served</label>
-                      <Field component={SelectField} name="stateServed" options={states.map(s => ({ value: s.abbreviation, label: s.name}))} />
+                      <Field component={SelectField} name="stateServed" options={state} />
                     </Col>
+                  </Row>
+                  <Row>
+                    <Col md={6}>
+                      <label>Categories</label>
+                      <Field component={SelectField} name="categories" options={cat} />
+                    </Col>
+                    <Col md={6}>
+                      <label>Age</label>
+
+						          <div className="min-max-container">
+							          <Field className="form-control min-max" placeholder="min"  name="minAge" component="input" type="number"/>
+							          <Field className="form-control min-max" placeholder="max"  name="maxAge" component="input" type="number"/>
+							        </div>
+                    </Col>
+
                   </Row>
 				  <Row>
 					  <Col md={6}>
@@ -655,6 +674,9 @@ export class EditResource extends React.Component{
     }
 }
 
+export const EditResource = connect(state => ({
+    categories: (state.cms && state.cms.content) ? state.cms.content.categories : []
+}))(EditRes);
 export class CreateStaff extends React.Component {
 
     componentWillUnmount(){

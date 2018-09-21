@@ -74,7 +74,7 @@ export function createResource(req, res){
 		    minIncome: data.minIncome,
 		    maxIncome: data.maxIncome,
         minAge: data.minAge,
-        maxAge: data.maxAge,
+        maxAge: data.maxAge, 
 		    inMilitary: data.inMilitary === "true" ? true : false,
         website: data.website,
         categories: data.categories &&  typeof data.categories != "object" ? data.categories.includes(" ---- ") ?  data.categories.split(" ---- ") : data.categories : data.categories,
@@ -124,7 +124,7 @@ export function updateResource(req, res){
 				        minIncome: data.minIncome,
 				        maxIncome: data.maxIncome,
                 maxAge: data.maxAge,
-                minAge: data.minAge
+                minAge: data.minAge,
 				        inMilitary: data.inMilitary === "true" ? true : false,
                 categories: data.categories &&  typeof data.categories != "object" ? data.categories.includes(" ---- ") ?  data.categories.split(" ---- ") : data.categories : data.categories,
                 ethnicityServed: data.ethnicityServed &&  typeof data.ethnicityServed != "object" ? data.ethnicityServed.includes(" ---- ") ?  data.ethnicityServed.split(" ---- ") : data.ethnicityServed : data.ethnicityServed,
