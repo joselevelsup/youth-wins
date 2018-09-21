@@ -85,8 +85,8 @@ export const failedResource = err => ({
     payload: err
 });
 
-export const createResource = ({organizationName, email, website, contactEmail, description, logo, ethnicityServed, categories, stateServed, phone, inMilitary, minIncome, maxIncome, minAge, maxAge }) => {
 
+export const createResource = ({organizationName, email, website, contactEmail, description, logo, ethnicityServed, categories, stateServed, phone, inMilitary, minIncome, maxIncome, minAge, maxAge }) => {
     const data = new FormData();
 
     logo && data.append("file", logo[0]);

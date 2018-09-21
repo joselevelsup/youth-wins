@@ -40,9 +40,9 @@ class Home extends Component {
               	
                 <React.Fragment>
                 <figure>
-            <div>
-              <div className="support-img-container"/>
-              <img className="support-img home-image" src={home.bannerImage}/>
+            <div className="support-image-container">
+              <div className="white-overlay"/>
+              <img className="support-img" src='https://www.quirkybyte.com/wp-content/uploads/2017/08/FRIENDSHIP.jpg'/>
             </div>
             <div className="home-login">
               <img className="home-logo" src={home.logoImage}/>
