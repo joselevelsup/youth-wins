@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
 import { withRouter } from 'react-router-dom'
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap'
+import { Button, Form, FormGroup, Label, Input, FormText, Alert } from 'reactstrap'
 // import { signUp } from './../../../store/reducers/user'
 import { signUp } from '../../actions/auth'
 import SelectField from "../../components/multi-select";
@@ -28,26 +28,43 @@ const validate = values => {
 
 class StepFour extends Component {
 	constructor(){
-		super()
-		this.signup = this.signup.bind(this)
+		  super();
+
+      this.state = {
+          errAlert: false,
+          errMsg: null
+      };
+
+		  this.signup = this.signup.bind(this);
+
 	}
 
 	  signup(values){
 		    const submission = Object.assign({}, values)
-		    this.props.dispatch(signUp(submission))
-        let params = new URLSearchParams(this.props.location.search).get("r");
-        if(params){
-            this.props.history.push(`/resources/?r=${params}`);
-        } else {
-		        this.props.history.push('/dashboard');
-        }
+		    this.props.dispatch(signUp(submission)).then(data => {
+            let params = new URLSearchParams(this.props.location.search).get("r");
+            if(params){
+                this.props.history.push(`/resources/?r=${params}`);
+            } else {
+		            this.props.history.push('/dashboard');
+            }
+        }).catch(err => {
+            this.setState({
+                errAlert: true,
+                errMsg: err.response.data.message
+            });
+        });
 	  }
 
 
 	render(){
 		  const { handleSubmit, categories } = this.props
 		return (
-			<div>	
+			  <div>
+          {
+              this.state.errAlert &&
+                  <Alert color="danger">{this.state.errMsg}</Alert>
+          }
 				<h1>Signup - Step 4</h1>
 				<Form onSubmit={handleSubmit(this.signup)}>
 					<FormGroup>

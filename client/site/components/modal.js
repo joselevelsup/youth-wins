@@ -850,6 +850,7 @@ class UserEditModal extends React.Component{
 
     render(){
         const { open, toggle, categories, edit, handleSubmit } = this.props;
+        const cat = [ ...categories.map(c => ({ label: c, value: c})), { label: "All", value: "all"}];
         return (
             <Modal isOpen={open} toggle={toggle} size="lg">
               <ModalBody>
@@ -956,7 +957,7 @@ class UserEditModal extends React.Component{
                   <div className="row">
                     <div className="col-12">
                       <label>Categories you are interested in</label>
-                      <Field component={SelectField} name="categoriesOfInterest" options={categories.map(c => ({ label: c, value: c}))} /> 
+                      <Field component={SelectField} name="categoriesOfInterest" options={cat} /> 
                     </div>
                   </div>
                   <div className="row">

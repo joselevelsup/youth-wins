@@ -64,16 +64,16 @@ export function createResource(req, res){
 	let data = JSON.parse(req.body.data);
     new Resource({
         organizationName: data.organizationName,
-		email: data.email,
-		phone: data.phone,
+		    email: data.email,
+		    phone: data.phone,
         contactEmail: data.contactEmail,
         description: data.description,
-		website: data.website,
-		minIncome: data.minIncome,
-		maxIncome: data.maxIncome,
+		    website: data.website,
+		    minIncome: data.minIncome,
+		    maxIncome: data.maxIncome,
 		    inMilitary: data.inMilitary === "true" ? true : false,
         categories: data.categories &&  typeof data.categories != "object" ? data.categories.includes(" ---- ") ?  data.categories.split(" ---- ") : data.categories : data.categories,
-            ethnicityServed: data.ethnicityServed &&  typeof data.ethnicityServed != "object" ? data.ethnicityServed.includes(" ---- ") ?  data.ethnicityServed.split(" ---- ") : data.ethnicityServed : data.ethnicityServed,
+        ethnicityServed: data.ethnicityServed &&  typeof data.ethnicityServed != "object" ? data.ethnicityServed.includes(" ---- ") ?  data.ethnicityServed.split(" ---- ") : data.ethnicityServed : data.ethnicityServed,
         stateServed: data.stateServed &&  typeof data.stateServed != "object" ? data.stateServed.includes(" ---- ") ?  data.stateServed.split(" ---- ") : data.stateServed : data.stateServed
     }).save().then((d) => {
         if(req.files == null){

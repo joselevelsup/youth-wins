@@ -76,8 +76,8 @@ export function signup(req, res){
                 categoriesOfInterest: categories.includes(" ---- ") ? categories.split(" ---- ") : categories
             }).save();
         } else {
-            res.status(200).json({
-                message: "user already exists"
+            res.status(500).json({
+                message: "User already exists"
             });
         }
     }).then((user) => {
@@ -91,7 +91,7 @@ export function signup(req, res){
     }).catch((err) => {
         console.log(err);
         res.status(500).json({
-            message: "Unable to register user"
+            message: "Unable to Register new User"
         });
     });
 }
