@@ -13,7 +13,7 @@ export const ResourceItem = ({ resource, deleteResource, openResource, apply, ad
                     {
                         resource.logo ?
 
-                        <img className="align-self-center rounded-circle logo" onClick={() => openResource(resource)} width="128" height="128" src={resource.logo} />
+                        <img className="align-self-center img-fluid rounded-circle logo" onClick={() => openResource(resource)} width="128" height="128" src={resource.logo} />
                         :
                         <div className="align-self-center rounded-circle logo " onClick={() => openResource(resource)}></div>
                     }

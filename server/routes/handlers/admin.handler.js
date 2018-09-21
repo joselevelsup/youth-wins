@@ -15,7 +15,8 @@ import {
     updateUser,
     deleteUser,
     getAllApplications,
-    deleteApplication
+    deleteApplication,
+    updateSelf
 } from "../controllers/admin.controller";
 
 
@@ -31,7 +32,6 @@ import {
 const adminRouter = Router();
 
 adminRouter.get("/cms", getAllContent);
-adminRouter.get("/cms/e", getAllContent);
 adminRouter.put("/cms/home", updateHomeContent);
 adminRouter.put("/cms/support", updateSupportContent);
 adminRouter.put("/cms/about", updateAboutContent);
@@ -59,5 +59,7 @@ adminRouter.delete("/users/s", deleteStaff);
 
 adminRouter.get("/apps", getAllApplications);
 adminRouter.delete("/apps", deleteApplication);
+
+adminRouter.put("/profile", updateSelf);
 
 export default adminRouter;

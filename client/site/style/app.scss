@@ -94,13 +94,22 @@
         width: 128px;
         height: 128px;
     }
+    image-thumb{
+        position: relative;
+        display: flex;
+        border-radius: 10px 10px 0 0;
+        justify-content: center;
+        background-color: #000; 
+    }
+
     img.logo{
         border: 5px solid $b-color;
         cursor: pointer;
         z-index: 100;
         margin-right: -30px;
+        height: 128px;
+        width: 128px;
     }
-
     .media-body{
         border: solid 2px $b-color;
         border-left: none;

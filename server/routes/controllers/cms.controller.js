@@ -1,8 +1,8 @@
 import { Admin, CMS } from "../../models";
-import { uploadImage, replaceImage } from "../../helpers/aws";
+import { getCmsImages, uploadImage, replaceImage } from "../../helpers/aws";
 
 export function getAllContent(req, res){
-    CMS.find().then(data => {
+    CMS.findOne().then(data => {
         res.status(200).json({
             "success": true,
             "content": data
@@ -21,44 +21,54 @@ export function updateHomeContent(req, res){
         $set: {
             "home.bannerText": data.bannerText,
             "home.titleText": data.titleText,
-            "home.body": data.body
+            "home.body": data.body,
+            "home.facebook": data.facebook,
+            "home.twitter": data.twitter,
+            "home.linkedin": data.linkedin
         }
     }, { new: true}).then(({ home }) => {
+        let homeData = Object.assign({type: "home"}, home);
+
         if(!req.files){
             res.status(200).json({
                 "success": true,
                 "message": "Successfully updated home content"
             });
         } else {
-            if(home.bannerImage){
-                replaceImage(req.files.file, Object.assign({type: "home"}, home), "home").then(d => {
-                        return CMS.findOneAndUpdate({}, {
-                            $set: {
-                                "home.bannerImage": d
-                            }
-                        });
-                }).then(() => {
-                    res.status(200).json({
-                        "success": true,
-                        "message": "Successfully updated home content"
+            if(req.files.banner){
+                replaceImage(req.files.banner, homeData , "homeBanner").then(banner => {
+                    return CMS.findOneAndUpdate({}, {
+                        $set: {
+                            "home.bannerImage": banner
+                        }
                     });
+                }).then(() => {
+                    if(req.files.logo){
+                        replaceImage(req.files.logo, homeData, "homeLogo").then(logo => {
+                            return CMS.findOneAndUpdate({}, {
+                                $set: {
+                                    "home.logoImage": logo
+                                }
+                            });
+                        }).then(() => {
+                            res.status(200).json({
+                                "success": true,
+                                "message": "Successfully updated home content"
+                            });
+                        });
+                    } else {
+                        res.status(200).json({
+                            "success": true,
+                            "message": "Successfully updated home content"
+                        });
+                    }
                 }).catch(err => {
                     console.log(err);
                 });
             } else {
-                uploadImage(req.files.file, "home", "home").then(d => {
-                    return CMS.findOneAndUpdate({}, {
-                        $set: {
-                            "home.bannerImage": d
-                        }
-                    });
-                }).then(() => {
-                    res.status(200).json({
-                        "success": true,
-                        "message": "Successfully updated home content"
-                    });
-                }).catch(err => {
-                    console.log(err);
+                res.status(200).json({
+                    "success": true,
+                    "message": "Successfully updated home content"
                 });
             }
         }

@@ -8,7 +8,9 @@ import {
 	  SUG_RESOURCES_S,
 	  SUG_RESOURCES_F,
     USERS_APPS_D_S,
-    USERS_APPS_D_F
+    USERS_APPS_D_F,
+    UPDATE_PROFILE_S,
+    UPDATE_PROFILE_F
 } from "../constants/constants";
 
 export const userInfo = data => ({
@@ -95,3 +97,49 @@ export const deleteApp = (appId) => ({
         error: failedToDeleteApp
     }
 });
+
+export const updatedProfile = data => ({
+    type: UPDATE_PROFILE_S,
+    payload: data
+});
+
+export const failedToUpdateProfile = data => ({
+    type: UPDATE_PROFILE_F,
+    payload: data
+});
+
+export const editUser = ({ email, password,  firstName, lastName, phone, streetAddress, city, state, zipCode, income, age, gender, ethnicity, inMilitary, educationLevel, categoriesOfInterest, profile }) => {
+    const data = new FormData();
+
+    profile && data.append("file", profile[0]);
+
+    data.append("data", JSON.stringify({
+        email,
+        password,
+        firstName,
+        lastName,
+        phone,
+        streetAddress,
+        city,
+        state,
+        zipCode,
+        income,
+        age,
+        gender,
+        ethnicity,
+        inMilitary,
+        educationLevel,
+        categoriesOfInterest
+    }));
+
+    return {
+        type: API,
+        payload: {
+            url: API_USERS+"/update",
+            method: "PUT",
+            data: data,
+            success: updatedProfile,
+            error: failedToUpdateProfile
+        }
+    };
+}
