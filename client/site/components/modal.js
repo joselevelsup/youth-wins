@@ -390,7 +390,7 @@ class CreateRes extends React.Component {
                 </Container>
               </div>
               <ModalBody>
-			  <form onSubmit={create}>
+			          <form onSubmit={create}>
                   <Row>
                     <Col md={6}>
 					            <div className="form-group">
@@ -429,57 +429,68 @@ class CreateRes extends React.Component {
                       <Field component={SelectField} name="stateServed" options={state} />
                     </Col>
                   </Row>
-				  <Row>
-					  <Col md={6}>
-					  	<div className="form-group">
-					  	  <label>Income</label>
-						  <div className="min-max-container">
-							<Field className="form-control min-max" placeholder="min"  name="minIncome" component="input" type="text"/>
-							<Field className="form-control min-max" placeholder="max"  name="maxIncome" component="input" type="text"/>
-							</div>
-						</div>
-					  </Col>
-					  <Col md={6}>
-					  	<label>Contact Phone Number</label>
-						<Field component="input" className="form-control" name="phone" />
-					  </Col>
-				  </Row>
+				          <Row>
+					          <Col md={6}>
+					  	        <div className="form-group">
+					  	          <label>Income</label>
+						            <div className="min-max-container">
+							            <Field className="form-control min-max" placeholder="min"  name="minIncome" component="input" type="text"/>
+							            <Field className="form-control min-max" placeholder="max"  name="maxIncome" component="input" type="text"/>
+							          </div>
+						          </div>
+					          </Col>
+					          <Col md={6}>
+					  	        <div className="form-group">
+					  	          <label>Age</label>
+						            <div className="min-max-container">
+							            <Field className="form-control min-max" placeholder="min"  name="minAge" component="input" type="number"/>
+							            <Field className="form-control min-max" placeholder="max"  name="maxAge" component="input" type="number"/>
+							          </div>
+						          </div>
+					          </Col>
+				          </Row>
                   <Row>
+					          <Col md={6}>
+					  	        <label>Contact Phone Number</label>
+						          <Field component="input" className="form-control" name="phone" />
+					          </Col>
                     <Col md={6}>
-						<div className="form-group">
-              <label>Categories</label>
-              <Field name="categories" component={SelectField} options={cat}/>
-						</div>
+						          <div className="form-group">
+                        <label>Categories</label>
+                        <Field name="categories" component={SelectField} options={cat}/>
+						          </div>
                     </Col>
-					<Col md={6}>
-						<div className="form-group">
-							<label>Veterans only?</label>
-							<div className="inline-radio">
-								<div>
-									<label check>
-										<Field component="input" type="radio" value="true" name="inMilitary" />{' '}
-										Yes
-									</label>
-								</div>
-								
-								<br/>
-								<div>
-									<label check>
-										<Field component="input" type="radio" value="false" name="inMilitary" />{' '}
-										No
-									</label>
-								</div>
-							</div>
-						</div>
-					</Col>
                   </Row>
                   <Row>
+					          <Col md={6}>
+						          <div className="form-group">
+							          <label>Veterans only?</label>
+							          <div className="inline-radio">
+								          <div>
+									          <label check>
+										          <Field component="input" type="radio" value="true" name="inMilitary" />{' '}
+										          Yes
+									          </label>
+								          </div>
+								          
+								          <br/>
+								          <div>
+									          <label check>
+										          <Field component="input" type="radio" value="false" name="inMilitary" />{' '}
+										          No
+									          </label>
+								          </div>
+							          </div>
+						          </div>
+					          </Col>
                     <Col md={6}>
                       <div className="form-group">
 						            <label>Description</label>
 						            <Field name="description" className="form-control" component="textarea" />
 					            </div>
                     </Col>
+                  </Row>
+                  <Row>
                     <Col md={6}>
                       <label>Logo</label>
                       <Row>
@@ -489,7 +500,7 @@ class CreateRes extends React.Component {
                                   <img src={createValues.logo && createValues.logo[0].preview} className="img-fluid"/>
                                 </Col>
                         }
-                        <Col md={2} className="align-self-center">
+                        <Col md={6} className="align-self-center">
                           <Field className="picture-upload align-middle" component={DropzoneInput} name="logo"/>
                         </Col>
                       </Row>

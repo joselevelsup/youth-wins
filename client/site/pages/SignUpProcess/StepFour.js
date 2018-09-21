@@ -40,7 +40,7 @@ class StepFour extends Component {
 	}
 
 	  signup(values){
-		    const submission = Object.assign({}, values)
+		    const submission = Object.assign({}, values);
 		    this.props.dispatch(signUp(submission)).then(data => {
             let params = new URLSearchParams(this.props.location.search).get("r");
             if(params){

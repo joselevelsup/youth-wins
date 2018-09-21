@@ -63,7 +63,6 @@ export function deleteResource(req, res){
 
 export function createResource(req, res){
     let data = JSON.parse(req.body.data);
-    console.log(data);
 
     new Resource({
         organizationName: data.organizationName,
@@ -72,13 +71,15 @@ export function createResource(req, res){
         email: data.email,
         contactEmail: data.contactEmail,
         description: data.description,
-		minIncome: data.minIncome,
-		maxIncome: data.maxIncome,
-		inMilitary: data.inMilitary === "true" ? true : false,
+		    minIncome: data.minIncome,
+		    maxIncome: data.maxIncome,
+        minAge: data.minAge,
+        maxAge: data.maxAge,
+		    inMilitary: data.inMilitary === "true" ? true : false,
         website: data.website,
-        categories: typeof data.categories != "object" ? data.categories.split(" ---- ") : data.categories,
-        ethnicityServed: typeof data.ethnicityServed != "object" ? data.ethnicityServed.split(" ---- ") : data.ethnicityServed,
-        stateServed: typeof data.stateServed != "object" ? data.stateServed.split(" ---- ") : data.stateServed
+        categories: data.categories &&  typeof data.categories != "object" ? data.categories.includes(" ---- ") ?  data.categories.split(" ---- ") : data.categories : data.categories,
+        ethnicityServed: data.ethnicityServed &&  typeof data.ethnicityServed != "object" ? data.ethnicityServed.includes(" ---- ") ?  data.ethnicityServed.split(" ---- ") : data.ethnicityServed : data.ethnicityServed,
+        stateServed: data.stateServed &&  typeof data.stateServed != "object" ? data.stateServed.includes(" ---- ") ?  data.stateServed.split(" ---- ") : data.stateServed : data.stateServed
     }).save().then((data) => {
         if(req.files == null){
             res.status(200).json({
@@ -119,12 +120,15 @@ export function updateResource(req, res){
                 email: data.email,
                 contactEmail: data.contactEmail,
                 description: data.description,
-				website: data.website,
-				minIncome: data.minIncome,
-				maxIncome: data.maxIncome,
-				inMilitary: data.inMilitary === "true" ? true : false,
-                ethnicityServed: typeof data.ethnicityServed != "object" ? data.ethnicityServed.split(" ---- ") : data.ethnicityServed,
-                stateServed: typeof data.stateServed != "object" ? data.stateServed.split(" ---- ") : data.stateServed,
+				        website: data.website,
+				        minIncome: data.minIncome,
+				        maxIncome: data.maxIncome,
+                maxAge: data.maxAge,
+                minAge: data.minAge
+				        inMilitary: data.inMilitary === "true" ? true : false,
+                categories: data.categories &&  typeof data.categories != "object" ? data.categories.includes(" ---- ") ?  data.categories.split(" ---- ") : data.categories : data.categories,
+                ethnicityServed: data.ethnicityServed &&  typeof data.ethnicityServed != "object" ? data.ethnicityServed.includes(" ---- ") ?  data.ethnicityServed.split(" ---- ") : data.ethnicityServed : data.ethnicityServed,
+                stateServed: data.stateServed &&  typeof data.stateServed != "object" ? data.stateServed.includes(" ---- ") ?  data.stateServed.split(" ---- ") : data.stateServed : data.stateServed
             }
         }, { new: true }).then((data) => {
             if(req.files == null){

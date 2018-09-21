@@ -81,9 +81,16 @@ class BecomeRes extends Component {
 							<FormGroup className="support-form-items">
 						        <Label>Income</Label>
 								<div className="min-max-container">
-									<Field className="form-control min-max" placeholder="min"  name="minIncome" component="input" type="text"/>
-							 		<Field className="form-control min-max" placeholder="max"  name="maxIncome" component="input" type="text"/>
+									<Field className="form-control min-max" placeholder="min"  name="minIncome" component="input" type="number"/>
+							 		<Field className="form-control min-max" placeholder="max"  name="maxIncome" component="input" type="number"/>
 								</div>
+					    </FormGroup>
+							    <FormGroup className="support-form-items">
+						        <Label>Age</Label>
+								    <div className="min-max-container">
+									    <Field className="form-control min-max" placeholder="min"  name="minAge" component="input" type="number"/>
+							 		    <Field className="form-control min-max" placeholder="max"  name="maxAge" component="input" type="number"/>
+								    </div>
 					        </FormGroup>
 					        <FormGroup className="support-form-items">
 						        <Label>Ethnicities Served</Label>
