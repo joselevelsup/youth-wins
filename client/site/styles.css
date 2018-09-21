@@ -7,6 +7,14 @@
 	z-index: -2;
 }
 
+@media (orientation : portrait) {
+	.support-img {
+		width: auto;
+		z-index: -2;
+		height: 100vh;
+	}
+}
+
 .white-overlay {
 	width: 100vw;
 	height: 100%;
