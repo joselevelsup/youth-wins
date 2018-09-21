@@ -1,14 +1,25 @@
-.support-img {
-	width: 100vw;
-	z-index: -5;
+.container-fluid {
+	padding: 0 !important;
 }
 
-.support-img-container {
-	position: absolute;
+.support-img {
+	width: 100vw;
+	z-index: -2;
+}
+
+.white-overlay {
 	width: 100vw;
 	height: 100%;
 	background-color: rgba(255, 255, 255, 0.4);
+	position: absolute;
 	z-index: 2;
+}
+
+.support-image-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 55vh;
 }
 
 .support-text {
@@ -16,6 +27,7 @@
 	justify-content: center;
 	align-items: center;
 	flex-flow: column;
+	background-color: #FFF;
 }
 
 .support-text-items {
@@ -53,12 +65,6 @@
 	align-items: center;
 	justify-content: center;
 	color: #FFF;
-}
-
-.foot-container {
-	display: flex;
-	width: 100vw;
-	background-color: #235dbe;
 }
 
 .teamCarousel {
@@ -148,10 +154,6 @@ h1 {
 	height: 25%;
 }
 
-.home-image {
-	z-index: -2;
-}
-
 .login-card {
 	background-color: #FFF;
 	border-radius: 2em;
@@ -162,6 +164,9 @@ h1 {
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
+	width: 100vw;
+	height: 40vh;
+	background-color: #235dbe;
 }
 
 .home-text {

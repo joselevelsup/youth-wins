@@ -16,7 +16,7 @@ class About extends Component {
           {
               about &&
                   <React.Fragment>
-				            <header>
+				            <header className="support-image-container">
 					            <img className="support-img" src={about.bannerImage}/>
 				            </header><br />
 				            <section className="support-text">
