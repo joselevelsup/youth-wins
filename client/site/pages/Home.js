@@ -8,6 +8,7 @@ import { Field, reduxForm } from 'redux-form'
 import { Button, FormGroup, Label } from 'reactstrap'
 import { connect } from 'react-redux'
 import { getContent } from "../actions/auth";
+import { websiteValid } from "../components/helpers";
 
 class Home extends Component {
 	constructor(){
@@ -41,10 +42,10 @@ class Home extends Component {
                 <figure>
             <div>
               <div className="support-img-container"/>
-              <img className="support-img home-image" src='https://www.quirkybyte.com/wp-content/uploads/2017/08/FRIENDSHIP.jpg'/>
+              <img className="support-img home-image" src={home.bannerImage}/>
             </div>
             <div className="home-login">
-              <img className="home-logo" src="https://cdn1.cloudcanvas.website/media/sites/26/2017/09/28175958/stitcher-logo-transparent.png"/>
+              <img className="home-logo" src={home.logoImage}/>
               <form>
                 <FormGroup>
                   <Label>Email</Label>
@@ -70,9 +71,9 @@ class Home extends Component {
 						          <p>{home.body}</p>
 					          </article>
 					          <div className="social-icons">
-						          <a href={home.facebook}><FontAwesomeIcon icon={faFacebookF} size='2x'/></a>
-						          <a href={home.twitter}><FontAwesomeIcon icon={faTwitter} size='2x'/></a>
-						          <a href={home.linkedin}><FontAwesomeIcon icon={faLinkedinIn} size='2x'/></a>
+						          <a target="_blank" href={websiteValid(home.facebook) ? home.facebook : `http://${home.facebook}`}><FontAwesomeIcon icon={faFacebookF} size='2x'/></a>
+						          <a target="_blank" href={websiteValid(home.twitter) ? home.twitter : `http://${home.twitter}`}><FontAwesomeIcon icon={faTwitter} size='2x'/></a>
+						          <a target="_blank" href={websiteValid(home.linkedin) ? home.linkedin : `http://${home.linkedin}`}><FontAwesomeIcon icon={faLinkedinIn} size='2x'/></a>
 					          </div>
 					          <br/>
 				          </section>

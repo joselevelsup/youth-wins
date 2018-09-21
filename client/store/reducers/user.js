@@ -56,7 +56,8 @@ export const userReducer = (state = initialState, action) => {
       action.payload.password = null;
       return {...action.payload, loggedIn: true};
   case "LOG_IN_F":
-      return action.payload;
+      console.log(action.payload);
+      return initialState;
   case SIGN_UP:
 	 	action.payload.password = null;
 		return action.payload

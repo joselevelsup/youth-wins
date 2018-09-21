@@ -24,7 +24,7 @@ class Root extends Component {
 		    return (
             <React.Fragment>
               <MainNavBar push={this.props.history.push} />
-              <Container fluid={true}>
+              <Container className="c-no-pad" fluid={true}>
 			          <Switch>
 				          <Route exact path="/" component={Home}/>
 				          <Route exact path="/login" component={Login}/>

@@ -51,6 +51,9 @@ import {
     DeleteUserModal
 } from "../../components/modal";
 import { StaffItem, UserItem, ResourceItem, AppItem, TeamItem } from "../../components/items";
+import { HomeCms } from "./homecms";
+import { AboutCms } from "./aboutcms";
+import { SupportCms } from "./supportcms";
 import DropzoneInput from "../../components/dropzone";
 import { shorten } from "../../util/helpers";
 import "./tabs.scss";
@@ -587,9 +590,7 @@ class SettingsT extends React.Component{
     }
 
     updateHome(values, dispatch){
-        const { home } = values;
-    
-        dispatch(updateHomeContent(home)).then(data => {
+        dispatch(updateHomeContent(values)).then(data => {
             if(data.success){
                 this.setState({
                     homeUpdate: true
@@ -601,9 +602,8 @@ class SettingsT extends React.Component{
     }
 
     updateSupport(values, dispatch){
-        const { support } = values;
 
-        dispatch(updateSupportContent(support)).then(data => {
+        dispatch(updateSupportContent(values)).then(data => {
             if(data.success){
                 this.setState({
                     supportUpdate: true
@@ -615,9 +615,8 @@ class SettingsT extends React.Component{
     }
 
     updateAbout(values, dispatch){
-        const { about } = values;
 
-        dispatch(updateAboutContent(about)).then(data => {
+        dispatch(updateAboutContent(values)).then(data => {
             if(data.success){
                 this.setState({
                     aboutUpdate: true
@@ -778,91 +777,8 @@ class SettingsT extends React.Component{
                                   Home Page Data Successfully Updated
                                 </Alert>
                         }
-
-                        <form onSubmit={this.props.handleSubmit(this.updateHome)}>
-                          <Row>
-                            <Col md={6}>
-                              <Row>
-                                <Col md={12}>
-                                  <label><h5>Banner Text</h5></label>
-                                  <Field className="form-control" component="input" type="text" name="home.bannerText" />
-                                </Col>
-                              </Row>
-                              <Row>
-                                <Col md={12}>
-                                  <label><h5>Banner Image</h5></label>
-                                  <Field component={DropzoneInput} name="home.bannerImage" />
-                                </Col>
-                              </Row>
-                              <Row>
-                                <Col md={12}>
-                                  <label><h5>Logo Image</h5></label>
-                                  <Field component={DropzoneInput} name="home.logoImage" />
-                                </Col>
-                              </Row>
-                              <Row>
-                                <br />
-                              </Row>
-                              <Row>
-                                <Col md={12}>
-                                  <label><h5>Title Text</h5></label>
-                                  <Field className="form-control" component="input" type="text" name="home.titleText" />
-                                </Col>
-                              </Row>
-                              <Row>
-                                <br />
-                              </Row>
-                              <Row>
-                                <Col md={12}>
-                                  <label><h5>Body Text</h5></label>
-                                  <Field className="form-control" component="textarea" name="home.body" />
-                                </Col>
-                              </Row>
-                              <Row>
-                                <br />
-                              </Row>
-                            </Col>
-                            <Col md={6}>
-                              <Row>
-                                <Col md={12}>
-                                  <label><h5>Facebook Link</h5></label>
-                                  <Field className="form-control" component="input" type="text" name="home.facebook" />
-                                </Col>
-                              </Row>
-                              <Row>
-                                <br />
-                              </Row>
-                              <Row>
-                                <Col md={12}>
-                                  <label><h5>Twitter Link</h5></label>
-                                  <Field className="form-control" component="input" type="text" name="home.twitter" />
-                                </Col>
-                              </Row>
-                              <Row>
-                                <br />
-                              </Row>
-                              <Row>
-                                <Col md={12}>
-                                  <label><h5>LinkedIn Text</h5></label>
-                                  <Field className="form-control" component="input" type="text" name="home.linkedin" />
-                                </Col>
-                              </Row>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <br />
-                          </Row>
-                          <Row>
-                            <Col md={{size: 4, offset: 4}} className="text-center">
-                              <button className="btn btn-block btn-primary btn-swerve">Update</button>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <br />
-                          </Row>
-                        </form>
+                        <HomeCms home={this.props.homeCms} update={this.updateHome} />
                       </Container>
-
               }
 
               {
@@ -874,76 +790,7 @@ class SettingsT extends React.Component{
                                   About Page Data Successfully Updated
                                 </Alert>
                         }
-                        <form onSubmit={this.props.handleSubmit(this.updateAbout)}>
-                        <Row>
-                          <Col md={{size: 4, offset: 1}}>
-                            <label><h5>Banner Text</h5></label>
-                            <Field className="form-control" component="input" type="text" name="about.bannerText" />
-                          </Col>
-                          <Col md={{size: 4, offset: 2}}>
-                            <label><h5>Banner Image</h5></label>
-                            <Field component={DropzoneInput} name="about.bannerImage" />
-                          </Col>
-                        </Row>
-                        <Row>
-                          <br />
-                        </Row>
-                          <Row>
-                            <Col md={6}>
-                              <Row>
-                                <Col md={12} className="text-center">
-                                  <h5>Section 1</h5>
-                                </Col>
-                              </Row>
-                              <Row>
-                                <Col md={{size: 8, offset: 2}}>
-                                  <label><h5>Title Text</h5></label>
-                                  <Field className="form-control" component="input" type="text" name="about.section1Title" />
-                                </Col>
-                              </Row>
-                              <Row>
-                                <br />
-                              </Row>
-                              <Row>
-                                <Col md={{size: 8, offset: 2}}>
-                                  <label><h5>Body Text</h5></label>
-                                  <Field className="form-control" component="textarea" name="about.section1Body" />
-                                </Col>
-                              </Row>
-                            </Col>
-
-                            <Col md={6}>
-                              <Row>
-                                <Col md={12} className="text-center">
-                                  <h5>Section 2</h5>
-                                </Col>
-                              </Row>
-                              <Row>
-                                <Col md={{size: 8, offset: 2}}>
-                                  <label><h5>Title Text</h5></label>
-                                  <Field className="form-control" component="input" type="text" name="about.section2Title" />
-                                </Col>
-                              </Row>
-                              <Row>
-                                <br />
-                              </Row>
-                              <Row>
-                                <Col md={{size: 8, offset: 2}}>
-                                  <label><h5>Body Text</h5></label>
-                                  <Field className="form-control" component="textarea" name="about.section2Body" />
-                                </Col>
-                              </Row>
-                            </Col>
-                          </Row>
-                        <Row>
-                          <br />
-                        </Row>
-                          <Row>
-                            <Col md={{size: 4, offset: 4}} className="text-center">
-                              <button className="btn btn-block btn-primary btn-swerve">Update</button>
-                            </Col>
-                          </Row>
-                        </form>
+                        <AboutCms about={this.props.aboutCms} update={this.updateAbout}/>
                       </Container>
               }
 
@@ -956,76 +803,7 @@ class SettingsT extends React.Component{
                                   Support Page Data Successfully Updated
                                 </Alert>
                         }
-                        <form onSubmit={this.props.handleSubmit(this.updateSupport)}>
-                        <Row>
-                          <Col md={{size: 4, offset: 1}}>
-                            <label><h5>Banner Text</h5></label>
-                            <Field className="form-control" component="input" type="text" name="support.bannerText" />
-                          </Col>
-                          <Col md={{size: 4, offset: 2}}>
-                            <label><h5>Banner Image</h5></label>
-                            <Field component={DropzoneInput} name="support.bannerImage" />
-                          </Col>
-                        </Row>
-                        <Row>
-                          <br />
-                        </Row>
-                          <Row>
-                            <Col md={6}>
-                              <Row>
-                                <Col md={12} className="text-center">
-                                  <h5>Section 1</h5>
-                                </Col>
-                              </Row>
-                              <Row>
-                                <Col md={{size: 8, offset: 2}}>
-                                  <label><h5>Title Text</h5></label>
-                                  <Field className="form-control" component="input" type="text" name="support.section1Title" />
-                                </Col>
-                              </Row>
-                              <Row>
-                                <br />
-                              </Row>
-                              <Row>
-                                <Col md={{size: 8, offset: 2}}>
-                                  <label><h5>Body Text</h5></label>
-                                  <Field className="form-control" component="textarea" name="support.section1Body" />
-                                </Col>
-                              </Row>
-                            </Col>
-
-                            <Col md={6}>
-                              <Row>
-                                <Col md={12} className="text-center">
-                                  <h5>Section 2</h5>
-                                </Col>
-                              </Row>
-                              <Row>
-                                <Col md={{size: 8, offset: 2}}>
-                                  <label><h5>Title Text</h5></label>
-                                  <Field className="form-control" component="input" type="text" name="support.section2Title" />
-                                </Col>
-                              </Row>
-                              <Row>
-                                <br />
-                              </Row>
-                              <Row>
-                                <Col md={{size: 8, offset: 2}}>
-                                  <label><h5>Body Text</h5></label>
-                                  <Field className="form-control" component="textarea" name="support.section2Body" />
-                                </Col>
-                              </Row>
-                            </Col>
-                          </Row>
-                        <Row>
-                          <br />
-                        </Row>
-                          <Row>
-                            <Col md={{size: 4, offset: 4}} className="text-center">
-                              <button className="btn btn-block btn-primary btn-swerve">Update</button>
-                            </Col>
-                          </Row>
-                        </form>
+                        <SupportCms support={this.props.supportCms} update={this.updateSupport} />
                       </Container>
               }
 

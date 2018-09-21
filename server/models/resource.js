@@ -9,7 +9,9 @@ const resourceModel = new mongoose.Schema({
 	website: String,
 	phone: String,
 	minIncome: Number,
-	maxIncome: Number,
+	  maxIncome: Number,
+    minAge: Number,
+    maxAge: Number,
 	inMilitary: Boolean,
     pending: {
         type: Boolean,

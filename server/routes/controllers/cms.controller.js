@@ -82,10 +82,10 @@ export function updateSupportContent(req, res){
     CMS.findOneAndUpdate({}, {
         $set: {
             "supportUs.bannerText": data.bannerText,
-            "supportUs.section1.titleText": data.section1Title,
-            "supportUs.section1.body": data.section1Body,
-            "supportUs.section2.titleText": data.section2Title,
-            "supportUs.section2.body": data.section2Body
+            "supportUs.section1Title": data.section1Title,
+            "supportUs.section1Body": data.section1Body,
+            "supportUs.section2Title": data.section2Title,
+            "supportUs.section2Body": data.section2Body
         }
     }, { new: true}).then(({ supportUs }) => {
         if(!req.files){
@@ -135,11 +135,11 @@ export function updateAboutContent(req, res){
     const data = JSON.parse(req.body.data);
     CMS.findOneAndUpdate({}, {
         $set: {
-            "aboutUs.bannerText": data.bannerText,
-            "aboutUs.section1.titleText": data.section1Title,
-            "aboutUs.section1.body": data.section1Body,
-            "aboutUs.section2.titleText": data.section2Title,
-            "aboutUs.section2.body": data.section2Body
+            "aboutUs.bannerText": data.bannerText !== null && data.bannerText,
+            "aboutUs.section1Title": data.section1Title !== null && data.section1Title,
+            "aboutUs.section1Body": data.section1Body !== null && data.section1Body,
+            "aboutUs.section2Title": data.section2Title !== null && data.section2Title,
+            "aboutUs.section2Body": data.section2Body !== null && data.section2Body
         }
     }, { new: true}).then(({ aboutUs }) => {
         if(!req.files){
