@@ -375,6 +375,9 @@ class CreateRes extends React.Component {
 
     render(){
         const { open, toggle, create, createValues, categories } = this.props;
+        const e = [ ...ethnicity.map(e => ({ label: e, value: e})), { label: "All", value: "all"}];
+        const state = [ ...states.map(s => ({ label: s.name, value: s.abbreviation })), { label: "All", value: "all"}];
+        const cat = [ ...categories.map(c => ({ label: c, value: c})), { label: "All", value: "all"}];
         return (
             <Modal isOpen={open} toggle={toggle} size="lg">
               <div className="modal-header">
@@ -419,22 +422,22 @@ class CreateRes extends React.Component {
                   <Row>
                     <Col md={6}>
                       <label>Ethnicity Served</label>
-                      <Field component={SelectField} name="ethnicityServed" options={ethnicity.map(e => ({ value: e, label: e}))} />
+                      <Field component={SelectField} name="ethnicityServed" options={e} />
                     </Col>
                     <Col md={6}>
                       <label>State Served</label>
-                      <Field component={SelectField} name="stateServed" options={states.map(s => ({ value: s.abbreviation, label: s.name}))} />
+                      <Field component={SelectField} name="stateServed" options={state} />
                     </Col>
                   </Row>
 				  <Row>
 					  <Col md={6}>
 					  	<div className="form-group">
-					  	  <label>Income</label>							
+					  	  <label>Income</label>
 						  <div className="min-max-container">
 							<Field className="form-control min-max" placeholder="min"  name="minIncome" component="input" type="text"/>
 							<Field className="form-control min-max" placeholder="max"  name="maxIncome" component="input" type="text"/>
 							</div>
-						</div>					
+						</div>
 					  </Col>
 					  <Col md={6}>
 					  	<label>Contact Phone Number</label>
@@ -444,8 +447,8 @@ class CreateRes extends React.Component {
                   <Row>
                     <Col md={6}>
 						<div className="form-group">
-                      		<label>Categories</label>
-                      		<Field name="categories" component={SelectField} options={categories.map(c => ({ label: c, value: c}))}/>
+              <label>Categories</label>
+              <Field name="categories" component={SelectField} options={cat}/>
 						</div>
                     </Col>
 					<Col md={6}>

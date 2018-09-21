@@ -128,7 +128,14 @@ class Dashboard extends React.Component{
 
     render(){
 		    const { resources, applications, user } = this.props;
-        let suggestions = resources.filter(r => !!_.intersection(r.categories, user.categoriesOfInterest).length);
+        let suggestions = resources.filter(r => {
+            if(r.categories == "all"){
+                return r;
+            }
+            if(!!_.intersection(r.categories, user.categoriesOfInterest).length){
+                return r;
+            }
+        });
 
         return(
             <div className="container dashboard">

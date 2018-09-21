@@ -569,8 +569,6 @@ class SettingsT extends React.Component{
 
     componentDidMount(){
         this.loadContent();
-        this.props.initialize(this.props.homeCms);
-        this.props.initialize(this.props.aboutCms);
     }
 
     toggleEditStaff(){

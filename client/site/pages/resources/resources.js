@@ -122,6 +122,9 @@ class Resources extends React.Component {
                 if(r.ethnicityServed.includes(user.ethnicity)){
                     return r;
                 }
+                if(r.ethnicityServed == "all"){
+                    return r;
+                }
             } else {
                 return r;
             }
