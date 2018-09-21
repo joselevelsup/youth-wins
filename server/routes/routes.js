@@ -5,7 +5,7 @@ import adminRouter from "./handlers/admin.handler";
 import { login, signup, logOut } from "../auth/authenticate";
 
 
-export default (app) => {
+export default (app, passport) => {
 
     app.post("/signup", signup);
 

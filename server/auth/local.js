@@ -17,29 +17,31 @@ module.exports = (passport) => {
 
     passport.use('local-login', new LocalStrategy({ usernameField: "email", passwordField: "password", passReqToCallback: true },
                                                   function (request, username, password, done) {
-                                                      User.findOne({$or: [{ "username": username }, {"email": username }] }).select("+password").exec(function (err, user) {
-                                                          if (err) {
-                                                              console.log(err);
-                                                              return done(err);
+                                                      User.findOne({$or: [{ "username": username }, {"email": username }] }).select("+password").exec(function (errUser, user) {
+                                                          if (errUser) {
+                                                              return done(errUser);
                                                           }
                                                           if(!user){
-                                                              Admin.findOne({ "email": username }).select("+password").exec(function(err, admin){
-                                                                  if(err){
-                                                                      console.log(err);
+                                                              Admin.findOne({ "email": username }).select("+password").exec(function(errAdmin, adminUser){
+                                                                  if(errAdmin){
                                                                       return done(err);
                                                                   }
 
-                                                                  if(!admin){
-                                                                      return done(null, false);
+                                                                  if(!adminUser){
+                                                                      return done(null, false, { message: "no user"});
                                                                   }
 
-                                                                  if(admin && bcrypt.compareSync(password, admin.password)){
-                                                                      return done(null, admin);
+                                                                  if(adminUser && bcrypt.compareSync(password, adminUser.password)){
+                                                                      return done(null, adminUser);
+                                                                  } else {
+                                                                      return done(null, false, { message: "admin does not exist"});
                                                                   }
-                                                              })
+                                                              });
                                                           }
                                                           if (user && bcrypt.compareSync(password, user.password)) {
                                                               return done(null, user);
+                                                          } else {
+                                                              return done(null, false, { message: "user does not exist"});
                                                           }
                                                       });
                                                   }));

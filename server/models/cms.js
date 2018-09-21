@@ -29,27 +29,16 @@ const cmsModel = new mongoose.Schema({
     },
     aboutUs: {
         bannerText: {
-            type: String
+            type: String,
+            required: true,
         },
         bannerImage: {
             type: String
         },
-        section1: {
-            titleText: {
-                type: String
-            },
-            body: {
-                type: String
-            }
-        },
-        section2: {
-            titleText: {
-                type: String
-            },
-            body: {
-                type: String
-            }
-        }
+        section1Title: String,
+        section1Body: String,
+        section2Title: String,
+        section2Body: String
     },
     supportUs: {
         bannerText: {
@@ -58,22 +47,10 @@ const cmsModel = new mongoose.Schema({
         bannerImage: {
             type: String
         },
-        section1: {
-            titleText: {
-                type: String
-            },
-            body: {
-                type: String
-            }
-        },
-        section2: {
-            titleText: {
-                type: String
-            },
-            body: {
-                type: String
-            }
-        }
+        section1Title: String,
+        section1Body: String,
+        section2Title: String,
+        section2Body: String
     },
     team: [mongoose.Schema.Types.ObjectId],
     categories: [mongoose.Schema.Types.String]

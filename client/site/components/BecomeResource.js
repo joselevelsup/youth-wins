@@ -53,6 +53,9 @@ class BecomeRes extends Component {
 
 	  render(){
         const { handleSubmit, categories } = this.props;
+        const e = [ ...ethnicity.map(e => ({ label: e, value: e})), { label: "All", value: "all"}];
+        const state = [ ...states.map(s => ({ label: s.name, value: s.abbreviation })), { label: "All", value: "all"}];
+        const cat = [ ...categories.map(c => ({ label: c, value: c})), { label: "All", value: "all"}];
 		    return (
             <React.Fragment>
               {
@@ -78,21 +81,28 @@ class BecomeRes extends Component {
 							<FormGroup className="support-form-items">
 						        <Label>Income</Label>
 								<div className="min-max-container">
-									<Field className="form-control min-max" placeholder="min"  name="minIncome" component="input" type="text"/>
-							 		<Field className="form-control min-max" placeholder="max"  name="maxIncome" component="input" type="text"/>
+									<Field className="form-control min-max" placeholder="min"  name="minIncome" component="input" type="number"/>
+							 		<Field className="form-control min-max" placeholder="max"  name="maxIncome" component="input" type="number"/>
 								</div>
+					    </FormGroup>
+							    <FormGroup className="support-form-items">
+						        <Label>Age</Label>
+								    <div className="min-max-container">
+									    <Field className="form-control min-max" placeholder="min"  name="minAge" component="input" type="number"/>
+							 		    <Field className="form-control min-max" placeholder="max"  name="maxAge" component="input" type="number"/>
+								    </div>
 					        </FormGroup>
 					        <FormGroup className="support-form-items">
 						        <Label>Ethnicities Served</Label>
-                    <Field component={SelectField} name="ethnicityServed" options={ethnicity.map(e => ({ value: e, label: e}))} />
+                    <Field component={SelectField} name="ethnicityServed" options={e} />
 					        </FormGroup>
 					        <FormGroup className="support-form-items">
 						        <Label>State served</Label>
-                    <Field component={SelectField} name="stateServed" options={states.map(s => ({ value: s.abbreviation, label: s.name}))} />
+                    <Field component={SelectField} name="stateServed" options={state} />
 					        </FormGroup>
 					        <FormGroup className="support-form-items">
 						        <Label>Categories</Label>
-					          <Field  name="categories" component={SelectField} options={categories.map(c => ({ value: c, label: c}))}/>
+					          <Field  name="categories" component={SelectField} options={cat}/>
 					        </FormGroup>
 					        <FormGroup className="support-form-items">
 						        <Label>Description</Label>

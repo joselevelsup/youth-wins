@@ -4,7 +4,7 @@ import encryptSsn from "../helpers/encrypt";
 import { User } from "../models/user";
 import { getImage } from '../helpers/aws'
 
-export function login(req, res){
+export function login(req, res, next){
     passport.authenticate("local-login", function(err, user, info) {
         if(err){
             res.status(500).json({
@@ -19,9 +19,9 @@ export function login(req, res){
                     });
                 } else {
                     if(!req.user.profile){
-                        res.status(200).json(req.user);
+                        return res.status(200).json(req.user);
                     } else {
-                        res.status(200).json(getImage(req.user));
+                        return res.status(200).json(getImage(req.user));
                     }
                 }
             });
@@ -76,8 +76,8 @@ export function signup(req, res){
                 categoriesOfInterest: categories.includes(" ---- ") ? categories.split(" ---- ") : categories
             }).save();
         } else {
-            res.status(200).json({
-                message: "user already exists"
+            res.status(500).json({
+                message: "User already exists"
             });
         }
     }).then((user) => {
@@ -91,7 +91,7 @@ export function signup(req, res){
     }).catch((err) => {
         console.log(err);
         res.status(500).json({
-            message: "Unable to register user"
+            message: "Unable to Register new User"
         });
     });
 }

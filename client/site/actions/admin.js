@@ -85,8 +85,8 @@ export const failedResource = err => ({
     payload: err
 });
 
-export const createResource = ({organizationName, email, website, contactEmail, description, logo, ethnicityServed, categories, stateServed, phone, inMilitary, minIncome, maxIncome }) => {
 
+export const createResource = ({organizationName, email, website, contactEmail, description, logo, ethnicityServed, categories, stateServed, phone, inMilitary, minIncome, maxIncome, minAge, maxAge }) => {
     const data = new FormData();
 
     logo && data.append("file", logo[0]);
@@ -102,7 +102,9 @@ export const createResource = ({organizationName, email, website, contactEmail, 
 		phone, 
 		inMilitary, 
 		minIncome, 
-		maxIncome
+		    maxIncome,
+        minAge,
+        maxAge
     }));
 
     return {
@@ -127,7 +129,7 @@ export const failedUpdateResource = err => ({
     payload: err
 });
 
-export const updateResource = (id, {organizationName, email, website, contactEmail, description, logo, ethnicityServed, stateServed, categories }) => {
+export const updateResource = (id, {organizationName, email, website, contactEmail, description, logo, ethnicityServed, stateServed, categories, minIncome, maxIncome, minAge, maxAge }) => {
     const file = new FormData();
     logo && file.append('file', logo[0]);
     file.append("data", JSON.stringify({
@@ -139,7 +141,11 @@ export const updateResource = (id, {organizationName, email, website, contactEma
         description,
         ethnicityServed,
         stateServed,
-        categories
+        categories,
+        minIncome,
+        maxIncome,
+        minAge,
+        maxAge
     }));
     return{
         type: API,

@@ -62,23 +62,25 @@ export const failedCreateResource = err => ({
 	payload: err
 })
 
-export const createResource = ({ organizationName, contactEmail, website, ethnicityServed,  description, logo, categories, stateServed, phone, inMilitary, minIncome, maxIncome }) => {
-	const file = new FormData()
-	logo && file.append('file', logo[0])
-	file.append('data', JSON.stringify({
-		organizationName, 
-		contactEmail, 
-		website, 
-		ethnicityServed,  
-		description, 
-		logo, 
-		categories, 
-		stateServed,
-		phone,
-		inMilitary,
-		minIncome, 
-		maxIncome
-	}))
+export const createResource = ({ organizationName, contactEmail, website, ethnicityServed,  description, logo, categories, stateServed, phone, inMilitary, minIncome, maxIncome, minAge, maxAge }) => {
+	  const file = new FormData()
+	  logo && file.append('file', logo[0])
+	  file.append('data', JSON.stringify({
+		    organizationName, 
+		    contactEmail, 
+		    website, 
+		    ethnicityServed: ethnicityServed && ethnicityServed,
+		    description,
+		    logo,
+		    categories:  categories && categories,
+		    stateServed: stateServed && stateServed,
+		    phone,
+		    inMilitary,
+		    minIncome, 
+		    maxIncome,
+        maxAge,
+        minAge
+	  }))
 
 	return {
 		type: API,

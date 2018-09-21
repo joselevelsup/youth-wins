@@ -20,8 +20,8 @@ import {
 import { AppItem, ResourceItem } from "../components/items";
 import { websiteValid } from "./helpers";
 import BecomeResource from "./BecomeResource";
-
 import { getContent } from "../actions/admin";
+import * as _ from "lodash";
 
 export const DeleteUserModal = ({ open, toggle, deleteUser }) => (
     <Modal isOpen={open} toggle={toggle}>
@@ -64,26 +64,33 @@ export const YouthModal = ({ open, toggle, applying, push, resourceid }) =>{
 
 export class DeclineModal extends React.Component{
     render(){
-        const { open, toggle, suggestedResources, openResourceModal, applyResource } = this.props;
-
-        return (
-            <Modal size="lg" isOpen={open} toggle={toggle}>
-              <ModalHeader toggle={toggle} className="text-center info-header">
-                The Resource you tried to apply for, you are not qualified for. Please look at these suggested resources. 
-              </ModalHeader>
-              <ModalBody>
-                <Row>
-                  {
-                      suggestedResources.map(r => (
-                          <ResourceItem resource={r} full={false} openResource={openResourceModal} />
-                      ))
-                  }
-                </Row>
-              </ModalBody>
-            </Modal>
-        )
+        const { open, toggle, openResourceModal, applyResource, resources, user } = this.props;
+        if(user && !_.has(user, "loggedIn")){
+            return (
+                <Modal size="lg" isOpen={open} toggle={toggle}>
+                  <ModalHeader toggle={toggle} className="text-center info-header">
+                    The Resource you tried to apply for, you are not qualified for. Please look at these suggested resources. 
+                  </ModalHeader>
+                  <ModalBody>
+                    <Row>
+                      {
+                          (resources && resources.length >= 1) && resources.filter(r => !!_.intersection(r.categories, user.categoriesOfInterest).length).map(r => (
+                              <ResourceItem resource={r} full={false} openResource={openResourceModal} />
+                          ))
+                      }
+                    </Row>
+                  </ModalBody>
+                </Modal>
+            )
+        } else {
+            return null;
+        }
     }
 }
+
+// export const DeclineModal = connect(state => ({
+//     resources: state.resources
+// }))(DeclineMod);
 
 export class ResourceModal extends React.Component{
     constructor(props){
@@ -368,6 +375,9 @@ class CreateRes extends React.Component {
 
     render(){
         const { open, toggle, create, createValues, categories } = this.props;
+        const e = [ ...ethnicity.map(e => ({ label: e, value: e})), { label: "All", value: "all"}];
+        const state = [ ...states.map(s => ({ label: s.name, value: s.abbreviation })), { label: "All", value: "all"}];
+        const cat = [ ...categories.map(c => ({ label: c, value: c})), { label: "All", value: "all"}];
         return (
             <Modal isOpen={open} toggle={toggle} size="lg">
               <div className="modal-header">
@@ -380,7 +390,7 @@ class CreateRes extends React.Component {
                 </Container>
               </div>
               <ModalBody>
-			  <form onSubmit={create}>
+			          <form onSubmit={create}>
                   <Row>
                     <Col md={6}>
 					            <div className="form-group">
@@ -412,64 +422,75 @@ class CreateRes extends React.Component {
                   <Row>
                     <Col md={6}>
                       <label>Ethnicity Served</label>
-                      <Field component={SelectField} name="ethnicityServed" options={ethnicity.map(e => ({ value: e, label: e}))} />
+                      <Field component={SelectField} name="ethnicityServed" options={e} />
                     </Col>
                     <Col md={6}>
                       <label>State Served</label>
-                      <Field component={SelectField} name="stateServed" options={states.map(s => ({ value: s.abbreviation, label: s.name}))} />
+                      <Field component={SelectField} name="stateServed" options={state} />
                     </Col>
                   </Row>
-				  <Row>
-					  <Col md={6}>
-					  	<div className="form-group">
-					  	  <label>Income</label>							
-						  <div className="min-max-container">
-							<Field className="form-control min-max" placeholder="min"  name="minIncome" component="input" type="text"/>
-							<Field className="form-control min-max" placeholder="max"  name="maxIncome" component="input" type="text"/>
-							</div>
-						</div>					
-					  </Col>
-					  <Col md={6}>
-					  	<label>Contact Phone Number</label>
-						<Field component="input" className="form-control" name="phone" />
-					  </Col>
-				  </Row>
+				          <Row>
+					          <Col md={6}>
+					  	        <div className="form-group">
+					  	          <label>Income</label>
+						            <div className="min-max-container">
+							            <Field className="form-control min-max" placeholder="min"  name="minIncome" component="input" type="text"/>
+							            <Field className="form-control min-max" placeholder="max"  name="maxIncome" component="input" type="text"/>
+							          </div>
+						          </div>
+					          </Col>
+					          <Col md={6}>
+					  	        <div className="form-group">
+					  	          <label>Age</label>
+						            <div className="min-max-container">
+							            <Field className="form-control min-max" placeholder="min"  name="minAge" component="input" type="number"/>
+							            <Field className="form-control min-max" placeholder="max"  name="maxAge" component="input" type="number"/>
+							          </div>
+						          </div>
+					          </Col>
+				          </Row>
                   <Row>
+					          <Col md={6}>
+					  	        <label>Contact Phone Number</label>
+						          <Field component="input" className="form-control" name="phone" />
+					          </Col>
                     <Col md={6}>
-						<div className="form-group">
-                      		<label>Categories</label>
-                      		<Field name="categories" component={SelectField} options={categories.map(c => ({ label: c, value: c}))}/>
-						</div>
+						          <div className="form-group">
+                        <label>Categories</label>
+                        <Field name="categories" component={SelectField} options={cat}/>
+						          </div>
                     </Col>
-					<Col md={6}>
-						<div className="form-group">
-							<label>Veterans only?</label>
-							<div className="inline-radio">
-								<div>
-									<label check>
-										<Field component="input" type="radio" value="true" name="inMilitary" />{' '}
-										Yes
-									</label>
-								</div>
-								
-								<br/>
-								<div>
-									<label check>
-										<Field component="input" type="radio" value="false" name="inMilitary" />{' '}
-										No
-									</label>
-								</div>
-							</div>
-						</div>
-					</Col>
                   </Row>
                   <Row>
+					          <Col md={6}>
+						          <div className="form-group">
+							          <label>Veterans only?</label>
+							          <div className="inline-radio">
+								          <div>
+									          <label check>
+										          <Field component="input" type="radio" value="true" name="inMilitary" />{' '}
+										          Yes
+									          </label>
+								          </div>
+								          
+								          <br/>
+								          <div>
+									          <label check>
+										          <Field component="input" type="radio" value="false" name="inMilitary" />{' '}
+										          No
+									          </label>
+								          </div>
+							          </div>
+						          </div>
+					          </Col>
                     <Col md={6}>
                       <div className="form-group">
 						            <label>Description</label>
 						            <Field name="description" className="form-control" component="textarea" />
 					            </div>
                     </Col>
+                  </Row>
+                  <Row>
                     <Col md={6}>
                       <label>Logo</label>
                       <Row>
@@ -479,7 +500,7 @@ class CreateRes extends React.Component {
                                   <img src={createValues.logo && createValues.logo[0].preview} className="img-fluid"/>
                                 </Col>
                         }
-                        <Col md={2} className="align-self-center">
+                        <Col md={6} className="align-self-center">
                           <Field className="picture-upload align-middle" component={DropzoneInput} name="logo"/>
                         </Col>
                       </Row>
@@ -502,7 +523,7 @@ export const CreateResource = connect(state => ({
     categories: (state.cms && state.cms.content) ? state.cms.content.categories : []
 }))(CreateRes);
 
-export class EditResource extends React.Component{
+class EditRes extends React.Component{
     
     componentDidMount(){
         this.props.init(this.props.resource);
@@ -513,9 +534,13 @@ export class EditResource extends React.Component{
     }
 
     render(){
-        const { open, toggle, resource, updateRes } = this.props;
+        const { open, toggle, resource, categories, updateRes } = this.props;
+
+        const e = [ ...ethnicity.map(e => ({ label: e, value: e})), { label: "All", value: "all"}];
+        const state = [ ...states.map(s => ({ label: s.name, value: s.abbreviation })), { label: "All", value: "all"}];
+        const cat = [ ...categories.map(c => ({ label: c, value: c})), { label: "All", value: "all"}];
         return (
-            <Modal isOpen={open} toggle={toggle} size="md">
+            <Modal isOpen={open} toggle={toggle} size="lg">
               <div className="modal-header">
                 <Container fluid={true}>
                   <Row>
@@ -558,12 +583,27 @@ export class EditResource extends React.Component{
                   <Row>
                     <Col md={6}>
                       <label>Ethnicity Served</label>
-                      <Field component={SelectField} name="ethnicityServed" options={ethnicity.map(e => ({ value: e, label: e}))} />
+                      <Field component={SelectField} name="ethnicityServed" options={e} />
                     </Col>
                     <Col md={6}>
                       <label>State Served</label>
-                      <Field component={SelectField} name="stateServed" options={states.map(s => ({ value: s.abbreviation, label: s.name}))} />
+                      <Field component={SelectField} name="stateServed" options={state} />
                     </Col>
+                  </Row>
+                  <Row>
+                    <Col md={6}>
+                      <label>Categories</label>
+                      <Field component={SelectField} name="categories" options={cat} />
+                    </Col>
+                    <Col md={6}>
+                      <label>Age</label>
+
+						          <div className="min-max-container">
+							          <Field className="form-control min-max" placeholder="min"  name="minAge" component="input" type="number"/>
+							          <Field className="form-control min-max" placeholder="max"  name="maxAge" component="input" type="number"/>
+							        </div>
+                    </Col>
+
                   </Row>
 				  <Row>
 					  <Col md={6}>
@@ -634,6 +674,9 @@ export class EditResource extends React.Component{
     }
 }
 
+export const EditResource = connect(state => ({
+    categories: (state.cms && state.cms.content) ? state.cms.content.categories : []
+}))(EditRes);
 export class CreateStaff extends React.Component {
 
     componentWillUnmount(){
@@ -840,6 +883,7 @@ class UserEditModal extends React.Component{
 
     render(){
         const { open, toggle, categories, edit, handleSubmit } = this.props;
+        const cat = [ ...categories.map(c => ({ label: c, value: c})), { label: "All", value: "all"}];
         return (
             <Modal isOpen={open} toggle={toggle} size="lg">
               <ModalBody>
@@ -946,7 +990,7 @@ class UserEditModal extends React.Component{
                   <div className="row">
                     <div className="col-12">
                       <label>Categories you are interested in</label>
-                      <Field component={SelectField} name="categoriesOfInterest" options={categories.map(c => ({ label: c, value: c}))} /> 
+                      <Field component={SelectField} name="categoriesOfInterest" options={cat} /> 
                     </div>
                   </div>
                   <div className="row">
