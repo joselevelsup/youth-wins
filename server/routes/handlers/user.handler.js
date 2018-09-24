@@ -9,7 +9,8 @@ import {
     sendForgotPass,
     changePassword,
     deleteUserApplication,
-    updateSelf
+    updateSelf,
+    checkEmails
 } from "../controllers/user.controller";
 
 const userRouter = Router();
@@ -31,5 +32,7 @@ userRouter.post("/forgot/pass", changePassword);
 userRouter.delete("/apps", deleteUserApplication);
 
 userRouter.put("/update", updateSelf);
+
+userRouter.post("/email", checkEmails);
 
 export default userRouter;

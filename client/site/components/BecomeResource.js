@@ -53,9 +53,9 @@ class BecomeRes extends Component {
 
 	  render(){
         const { handleSubmit, categories } = this.props;
-        const e = [ ...ethnicity.map(e => ({ label: e, value: e})), { label: "All", value: "all"}];
-        const state = [ ...states.map(s => ({ label: s.name, value: s.abbreviation })), { label: "All", value: "all"}];
-        const cat = [ ...categories.map(c => ({ label: c, value: c})), { label: "All", value: "all"}];
+        const e = [{ label: "All", value: "all"}, ...ethnicity.map(e => ({ label: e, value: e})), ];
+        const state = [{ label: "All", value: "all"}, ...states.map(s => ({ label: s.name, value: s.abbreviation }))];
+        const cat = [{ label: "All", value: "all"}, ...categories.map(c => ({ label: c, value: c})) ];
 		    return (
             <React.Fragment>
               {

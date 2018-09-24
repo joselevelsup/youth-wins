@@ -14,3 +14,9 @@ export function websiteValid(str){
     var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
     return regexp.test(str);
 }
+
+
+export function emailValid(str){
+    var regexp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    return regexp.test(str);
+}

@@ -375,9 +375,9 @@ class CreateRes extends React.Component {
 
     render(){
         const { open, toggle, create, createValues, categories } = this.props;
-        const e = [ ...ethnicity.map(e => ({ label: e, value: e})), { label: "All", value: "all"}];
-        const state = [ ...states.map(s => ({ label: s.name, value: s.abbreviation })), { label: "All", value: "all"}];
-        const cat = [ ...categories.map(c => ({ label: c, value: c})), { label: "All", value: "all"}];
+        const e = [{ label: "All", value: "all"}, ...ethnicity.map(e => ({ label: e, value: e})), ];
+        const state = [{ label: "All", value: "all"}, ...states.map(s => ({ label: s.name, value: s.abbreviation }))];
+        const cat = [{ label: "All", value: "all"}, ...categories.map(c => ({ label: c, value: c})) ];
         return (
             <Modal isOpen={open} toggle={toggle} size="lg">
               <div className="modal-header">
@@ -535,10 +535,10 @@ class EditRes extends React.Component{
 
     render(){
         const { open, toggle, resource, categories, updateRes } = this.props;
+        const e = [{ label: "All", value: "all"}, ...ethnicity.map(e => ({ label: e, value: e})), ];
+        const state = [{ label: "All", value: "all"}, ...states.map(s => ({ label: s.name, value: s.abbreviation }))];
+        const cat = [{ label: "All", value: "all"}, ...categories.map(c => ({ label: c, value: c})) ];
 
-        const e = [ ...ethnicity.map(e => ({ label: e, value: e})), { label: "All", value: "all"}];
-        const state = [ ...states.map(s => ({ label: s.name, value: s.abbreviation })), { label: "All", value: "all"}];
-        const cat = [ ...categories.map(c => ({ label: c, value: c})), { label: "All", value: "all"}];
         return (
             <Modal isOpen={open} toggle={toggle} size="lg">
               <div className="modal-header">

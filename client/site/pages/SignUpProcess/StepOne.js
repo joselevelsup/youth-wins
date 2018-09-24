@@ -1,28 +1,15 @@
 import React, { Component } from 'react'
 import { Field, reduxForm, formValues } from 'redux-form'
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap'
+import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { validate, asyncValidate } from "./validation";
 
-const validate = values => {
-    const errors = {};
-
-    if(!values.firstName){
-        errors.firstName = "required";
-    }
-
-    if(!values.lastName){
-        errors.lastName = "required";
-    }
-
-    if(!values.email){
-        errors.email = "required";
-    }
-
-    if(!values.password){
-        errors.password = "required";
-    }
-
-    return errors;
-}
+const renderUserEmail = ({ input, label, type, placeholder, meta: { asyncValidating, touched, error }}) => (
+    <React.Fragment>
+      <Label>{label}</Label>
+      <input className="form-control" type={type} placeholder={placeholder} {...input}/>
+      {touched && error && <div className="errorField"><span>{error}</span></div>}
+    </React.Fragment>
+);
 
 class StepOne extends Component {
 	constructor(){
@@ -46,7 +33,7 @@ class StepOne extends Component {
 		else this.setState({different: true})
 	}
 
-	render(){
+	  render(){
 		return (
 			<div>
 				<h1>Signup - Step 1</h1>
@@ -60,8 +47,7 @@ class StepOne extends Component {
 						<Field className="form-control" component="input" name="lastName" placeholder="Doe" />
 					</FormGroup>
 					<FormGroup>
-						<Label>Email</Label>
-						<Field className="form-control" component="input" type="email" name="email" placeholder="jodydoe@mail.com" />
+						<Field component={renderUserEmail} label="Email" type="email" name="email" placeholder="jodydoe@mail.com" />
 					</FormGroup>
 					<FormGroup>
 						<Label>Password</Label>
@@ -83,7 +69,9 @@ class StepOne extends Component {
 const StepOneForm = reduxForm({
     form: 'signup',
     validate,
+    asyncValidate,
     destroyOnUnmount: false,
-    forceUnregisteredOnUnmount: true
+    forceUnregisteredOnUnmount: true,
+    asyncBlurFields: ["email"]
 })(formValues('password')(StepOne))
 export default StepOneForm

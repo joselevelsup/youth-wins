@@ -8,6 +8,7 @@ export const API_USERS = "/user";
 export const API_ADMIN = "/admin";
 export const API_RESOURCE = "/resources";
 export const API_CONTENT = "/user/content";
+export const API_CHECK_EMAIL = "/user/email";
 
 // Constants for Actions
 export const API = "API";

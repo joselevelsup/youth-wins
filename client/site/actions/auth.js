@@ -10,7 +10,8 @@ import {
     LOGOUT_S,
     LOGOUT_F,
 	SIGNUP,
-	SIGN_UP
+	  SIGN_UP,
+    API_CHECK_EMAIL
 } from "../constants/constants";
 
 export const loginSuccess = data => ({
@@ -103,3 +104,26 @@ export const getContent = () => ({
         success: contentLoaded
     }
 })
+
+export const userDoesntExist = data => ({
+    type: "USER_DOES_NOT_EXIST",
+    payload: data
+});
+
+export const userExists = err => ({
+    type: "USER_EXISTS",
+    payload: err
+});
+
+export const checkUserEmail = (email) => ({
+    type: API,
+    payload: {
+        url: API_CHECK_EMAIL,
+        method: "POST",
+        data: {
+            email
+        },
+        success: userDoesntExist,
+        error: userExists
+    }
+});
