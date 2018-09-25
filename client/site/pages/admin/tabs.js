@@ -26,6 +26,7 @@ import {
     getAllUsers,
     deleteStaff,
     updateStaff,
+    updateStaffMember,
     createStaff,
     deleteUser,
     getAllApplications,
@@ -249,6 +250,7 @@ class UsersT extends React.Component{
             userModal: false,
             staff: null,
             user: null,
+            editStaffModal: false,
             userPrompt: false,
             userType: false
         };
@@ -263,6 +265,8 @@ class UsersT extends React.Component{
         this.toggleUserModal = this.toggleUserModal.bind(this);
         this.toggleStaffModal = this.toggleStaffModal.bind(this);
         this.toggleCreateModal = this.toggleCreateModal.bind(this);
+        this.toggleEditStaff = this.toggleEditStaff.bind(this);
+        this.editStaffMember = this.editStaffMember.bind(this);
         this.getUsers = this.getUsers.bind(this);
 
         this.offModals = this.offModals.bind(this);
@@ -271,6 +275,10 @@ class UsersT extends React.Component{
 
     getUsers(){
         this.props.dispatch(getAllUsers());
+    }
+
+    compoenntDidMount(){
+        this.getUsers();
     }
 
     openStaffMember(staff){
@@ -305,6 +313,13 @@ class UsersT extends React.Component{
         });
     }
 
+    toggleEditStaff(staff){
+        this.setState({
+            staff: staff,
+            editStaffModal: !this.state.editStaffModal
+        });
+    }
+
 
     deleteUserPrompt(id, type){
         this.setState({
@@ -319,7 +334,8 @@ class UsersT extends React.Component{
             staffModal: false,
             createModal: false,
             userModal: false,
-            userPrompt: false
+            userPrompt: false,
+            editStaffModal: false
         });
     }
 
@@ -351,6 +367,16 @@ class UsersT extends React.Component{
         });
     }
 
+
+    editStaffMember(values, dispatch){
+        const self = this;
+        dispatch(updateStaffMember(values)).then(data => {
+            self.getUsers();
+            self.offModals();
+        }).catch(err => {
+            console.log(err);
+        });
+    }
 
     // editApplicant(values, dispatch){
     //     dispatch(updateApplicant(values)).then(data => {
@@ -415,10 +441,11 @@ class UsersT extends React.Component{
                         ))
                     }
                 </Row>
-              <StaffModal open={this.state.staffModal} toggle={this.toggleStaffModal} staff={this.state.staff} deleteStaff={this.deleteStaffMember} editStaff={this.toggleEditStaff} />
+              <StaffModal open={this.state.staffModal} toggle={this.toggleStaffModal} staff={this.state.staff} deleteStaff={this.deleteStaffMember} editStaff={() => this.toggleEditStaff(this.state.staff)} />
               <UserModal open={this.state.userModal} toggle={this.toggleUserModal} user={this.state.user} deleteUser={this.deleteApplicant}  />
               {this.state.createModal && <CreateStaff open={this.state.createModal} toggle={this.toggleCreateModal} create={handleSubmit(this.createStaffMember)} reset={this.props.destroy} />}
               {this.state.userPrompt && <DeleteUserModal open={this.state.userPrompt} toggle={this.offModals} deleteUser={this.state.userType ? () => this.deleteApplicant(this.state.user) : () => this.deleteStaffMember(this.state.user)}/>}
+              {this.state.editStaffModal && <EditStaff edit={this.editStaffMember} open={this.state.editStaffModal} toggle={this.toggleEditStaff} user={this.state.staff}/>}
             </Container>
         )
     }
@@ -583,6 +610,7 @@ class SettingsT extends React.Component{
             if(data.success){
                 this.props.dispatch(getCurrentUser());
                 this.toggleEditStaff();
+                this.loadContent();
             }
         }).catch(err => {
             console.log(err);
@@ -821,7 +849,7 @@ class SettingsT extends React.Component{
               }
 
               {this.state.createModal && <CreateStaff open={this.state.createModal} toggle={this.toggleCreateModal} create={handleSubmit(this.createStaffMember)} reset={this.props.reset} /> }
-              {this.state.editStaffModal && <EditStaff open={this.state.editStaffModal} toggle={this.toggleEditStaff} user={user} init={this.props.initialize} reset={this.props.destroy} edit={handleSubmit(this.editStaffMember)}/>}
+              {this.state.editStaffModal && <EditStaff open={this.state.editStaffModal} toggle={this.toggleEditStaff} user={user} edit={this.editStaffMember}/>}
             </Container>
         );
     }

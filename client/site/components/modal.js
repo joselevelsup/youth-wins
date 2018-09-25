@@ -42,6 +42,25 @@ export const DeleteUserModal = ({ open, toggle, deleteUser }) => (
     </Modal>
 )
 
+export const DeleteAppModal = ({ open, toggle, deleteApp }) => (
+    <Modal isOpen={open} toggle={toggle}>
+      <ModalHeader toggle={toggle}>
+        Delete Application?
+      </ModalHeader>
+      <ModalBody>
+        <p>You will be deleting this Application.</p>
+      </ModalBody>
+      <ModalFooter>
+        <Col md={6}>
+          <Button block color="secondary" onClick={toggle}>{`Don't delete Application`}</Button>
+        </Col>
+        <Col md={6}>
+          <Button block color="warning" onClick={deleteApp}>{`Delete Application`}</Button>
+        </Col>
+      </ModalFooter>
+    </Modal>
+)
+
 export const YouthModal = ({ open, toggle, applying, push, resourceid }) =>{
     return (
         <Modal isOpen={open} toggle={toggle}>
@@ -775,13 +794,13 @@ export class CreateStaff extends React.Component {
 }
 
 
-export class EditStaff extends React.Component{
+class EditStaffModal extends React.Component{
     componentDidMount(){
-        this.props.init(this.props.user);
+        this.props.initialize(this.props.user);
     }
 
     componentWillUnmount(){
-        this.props.reset();
+        this.props.destroy();
     }
 
     render(){
@@ -800,7 +819,7 @@ export class EditStaff extends React.Component{
                 </Container>
               </div>
               <ModalBody>
-                <form onSubmit={edit}>
+                <form onSubmit={this.props.handleSubmit(edit)}>
                   <div className="row">
                     <div className="col-4">
                       <Field name="profile" component={DropzoneInput} className="picture-upload" />
@@ -870,6 +889,10 @@ export class EditStaff extends React.Component{
         )
     }
 }
+
+export const EditStaff = reduxForm({
+    form: "editStaff"
+})(EditStaffModal);
 
 
 class UserEditModal extends React.Component{
