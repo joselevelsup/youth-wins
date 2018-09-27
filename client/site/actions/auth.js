@@ -40,7 +40,7 @@ export const logIn = ({ email, password }) => ({
 
 export const logoutSuccess = data => ({
     type: LOGOUT_S,
-    payload: null
+    payload: undefined
 });
 
 export const logoutError = err => ({

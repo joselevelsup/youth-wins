@@ -41,6 +41,7 @@
 .support-text-items {
 	text-align: center;
 	width: 70%;
+  line-height: 2.5;
 }
 
 .support-form {
@@ -173,14 +174,20 @@ h1 {
 	justify-content: center;
 	flex-direction: column;
 	width: 100vw;
-	height: 40vh;
+	height: 50vh;
 	background-color: #235dbe;
 }
 
-.home-text {
-	color: #FFF;
-	width: 60%;
-	text-align: center;
+.home-column{
+    padding-top: 2%;
+    padding-bottom: 5%;
+    width: 60%;
+    text-align: center;
+}
+
+.home-column > .home-text {
+	  color: #FFF;
+    line-height: 2.5;
 }
 
 .social-icons {

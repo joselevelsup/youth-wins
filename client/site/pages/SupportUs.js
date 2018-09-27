@@ -23,7 +23,7 @@ class Support extends Component {
 					                	<img className="support-img" src={support.bannerImage}/>
 									        </div>
 				                </header><br />
-				                <section className="support-text">
+				                <section className="pt-4 support-text">
 					                <h1>{support.section1Title}</h1>
 					                <p className="support-text-items">
                             {support.section1Body}

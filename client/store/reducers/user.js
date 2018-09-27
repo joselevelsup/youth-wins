@@ -63,7 +63,6 @@ export const userReducer = (state = initialState, action) => {
 		return action.payload
   case LOGOUT_S:
       return initialState;
-
   case USER_S:
       action.payload.password = (action.payload && action.payload.password) && null;
       return action.payload;

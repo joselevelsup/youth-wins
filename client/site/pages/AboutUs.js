@@ -20,13 +20,13 @@ class About extends Component {
 					            <img className="support-img" src={about.bannerImage}/>
 				            </header><br />
 				            <section className="support-text">
-					            <h1>{about.section1.titleText}</h1>
+					            <h1>{about.section1Title}</h1>
 					            <p className="support-text-items">
-                        {about.section1.body}
+                        {about.section1Body}
 					            </p><br />
-					            <h1>{about.section2.titleText}</h1>
+					            <h1>{about.section2Title}</h1>
 					            <p className="support-text-items">
-                        {about.section2.body}
+                        {about.section2Body}
 					            </p><br />
 				            </section>
 				            <TeamCarousel team={team} />
