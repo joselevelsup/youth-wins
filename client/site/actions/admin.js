@@ -306,6 +306,34 @@ export const updateStaff = ({ firstName, lastName, password, cpassword, position
     };
 };
 
+
+export const updateStaffMember = ({ _id, firstName, lastName, password, cpassword, position, email, profile, description }) => {
+    const data = new FormData();
+    profile && data.append("file", profile[0]);
+    data.append("data", JSON.stringify({
+        id: _id,
+        firstName,
+        lastName,
+        password,
+        cpassword,
+        position,
+        email,
+        profile,
+        description
+    }));
+
+    return {
+        type: API,
+        payload: {
+            url: API_ADMIN+"/users/s",
+            method: "PUT",
+            data: data,
+            success: updatedStaff,
+            error: failedUpdateStaff
+        }
+    };
+};
+
 export const deletedStaff = data => ({
     type: ADMIN_DELETE_STAFF_S,
     payload: data

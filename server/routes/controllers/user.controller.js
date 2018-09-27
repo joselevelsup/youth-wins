@@ -126,6 +126,18 @@ export function updateSelf(req, res){
     });
 }
 
+export function checkEmails(req, res){
+    User.find({ "email": req.body.email }).then(data => {
+        if(data.length >= 1){
+            res.status(500).end();
+        } else {
+            res.status(200).end();
+        }
+    }).catch(err => {
+        res.status(500).end();
+    });
+}
+
 export function userSuggestedResources(req, res){
 	  Resource.find({"approved": true}).then(resources => {
         let r = getImage(resources);

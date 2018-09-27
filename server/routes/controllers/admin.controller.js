@@ -311,30 +311,51 @@ export function updateStaff(req, res){
         }
 
 
-        Admin.findOneAndUpdate({ "_id": staff.id }, update).then((data) => {
+        Admin.findOneAndUpdate({ "_id": staff.id }, update, { new: true }).then((data) => {
             if(!req.files){
                 res.status(200).json({
                     "success": true,
                     "message": "Updated staff"
                 });
             } else {
-                replaceImage(req.files.file, data, "admin").then(d => {
-                    return Admin.findOneAndUpdate({ "_id": staff.id }, {
-                        $set: {
-                            profile: d
-                        }
+                if(!data.profile || data.profile == null){
+                    uploadImage(req.files.file, data._id, "admin").then(d => {
+                        Admin.findOneAndUpdate({ "_id": staff.id }, {
+                            $set: {
+                                "profile": d
+                            }
+                        }).then(() => {
+                            res.status(200).json({
+                                "success": true,
+                                "message": "Updated staff"
+                            });
+                        }).catch(err => {
+                            res.status(500).json({
+                                "success": false,
+                                "message": "unable to update staff"
+                            });
+                        });
                     });
-                }).then(() => {
-                    res.status(200).json({
-                        "success": true,
-                        "message": "Updated staff"
+                } else {
+                    replaceImage(req.files.file, data, "admin").then(d => {
+                        return Admin.findOneAndUpdate({ "_id": staff.id }, {
+                            $set: {
+                                profile: d
+                            }
+                        });
+                    }).then(() => {
+                        res.status(200).json({
+                            "success": true,
+                            "message": "Updated staff"
+                        });
+                    }).catch(err => {
+                        console.log(err);
+                        res.status(500).json({
+                            "success": false,
+                            "message": "unable to update staff"
+                        });
                     });
-                }).catch(err => {
-                    res.status(500).json({
-                        "success": false,
-                        "message": "unable to update staff"
-                    });
-                });
+                }
             }
         }).catch((err) => {
             res.status(500).json({

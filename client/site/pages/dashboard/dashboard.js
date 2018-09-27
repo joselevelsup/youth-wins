@@ -11,7 +11,7 @@ import {
 } from "../../actions/dashboard";
 import { getCurrentUser } from "../../actions/auth";
 import { fetchResources, applyResource } from "../../actions/resource";
-import { YouthModal, ResourceModal, UserEditFormModal } from "../../components/modal";
+import { YouthModal, ResourceModal, UserEditFormModal, DeleteAppModal } from "../../components/modal";
 import { AppItem, ResourceItem } from "../../components/items";
 import "./dashboard.scss";
 
@@ -41,6 +41,7 @@ class Dashboard extends React.Component{
         this.deleteApplication = this.deleteApplication.bind(this);
 
         this.editUserInfo = this.editUserInfo.bind(this);
+        this.deleteAppModal = this.deleteAppModal.bind(this);
     }
 
 
@@ -105,6 +106,7 @@ class Dashboard extends React.Component{
     deleteApplication(appId){
         const self = this;
         this.props.dispatch(deleteApp(appId)).then(data => {
+            self.deleteAppModal(null);
             self.loadUserInfo();
         }).catch(err => {
             console.log(err);
@@ -123,6 +125,13 @@ class Dashboard extends React.Component{
             }
         }).catch(err => {
             console.log(err);
+        });
+    }
+
+    deleteAppModal(appId){
+        this.setState({
+            appId: appId,
+            promptModal: !this.state.promptModal
         });
     }
 
@@ -198,7 +207,7 @@ class Dashboard extends React.Component{
                   {
                       (applications && applications.length >= 1) ?
                           applications && applications.map(d => (
-                              <AppItem size={4} created={d.dateCreated} user={d.user} appId={d._id} openResource={this.openResource} resource={d.resource} deleteApp={this.deleteApplication} status={d.status} />
+                              <AppItem size={4} created={d.dateCreated} user={d.user} appId={d._id} openResource={this.openResource} resource={d.resource} deleteApp={() => this.deleteAppModal(d._id)} status={d.status} />
                           ))
                           :
                           <div className="col-12 text-center">
@@ -209,6 +218,7 @@ class Dashboard extends React.Component{
               {this.state.appModal && <YouthModal open={this.state.appModal} applying={true} toggle={this.toggleAppModal}/>}
               {this.state.resource && <ResourceModal open={this.state.resourceModal} toggle={this.toggleResource} resource={this.state.resource} user={this.state.user} created={this.state.created} status={this.state.status} toggleResponse={this.toggleResponse} /> }
               {this.state.userModal && <UserEditFormModal open={this.state.userModal} toggle={this.toggleUserModal} edit={this.editUserInfo} user={user} />}
+              {this.state.promptModal && <DeleteAppModal open={this.state.promptModal} toggle={this.deleteAppModal} deleteApp={() => this.deleteApplication(this.state.appId)}/>}
               </div>
         );
     }

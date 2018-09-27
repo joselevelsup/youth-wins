@@ -42,6 +42,25 @@ export const DeleteUserModal = ({ open, toggle, deleteUser }) => (
     </Modal>
 )
 
+export const DeleteAppModal = ({ open, toggle, deleteApp }) => (
+    <Modal isOpen={open} toggle={toggle}>
+      <ModalHeader toggle={toggle}>
+        Delete Application?
+      </ModalHeader>
+      <ModalBody>
+        <p>You will be deleting this Application.</p>
+      </ModalBody>
+      <ModalFooter>
+        <Col md={6}>
+          <Button block color="secondary" onClick={toggle}>{`Don't delete Application`}</Button>
+        </Col>
+        <Col md={6}>
+          <Button block color="warning" onClick={deleteApp}>{`Delete Application`}</Button>
+        </Col>
+      </ModalFooter>
+    </Modal>
+)
+
 export const YouthModal = ({ open, toggle, applying, push, resourceid }) =>{
     return (
         <Modal isOpen={open} toggle={toggle}>
@@ -375,9 +394,9 @@ class CreateRes extends React.Component {
 
     render(){
         const { open, toggle, create, createValues, categories } = this.props;
-        const e = [ ...ethnicity.map(e => ({ label: e, value: e})), { label: "All", value: "all"}];
-        const state = [ ...states.map(s => ({ label: s.name, value: s.abbreviation })), { label: "All", value: "all"}];
-        const cat = [ ...categories.map(c => ({ label: c, value: c})), { label: "All", value: "all"}];
+        const e = [{ label: "All", value: "all"}, ...ethnicity.map(e => ({ label: e, value: e})), ];
+        const state = [{ label: "All", value: "all"}, ...states.map(s => ({ label: s.name, value: s.abbreviation }))];
+        const cat = [{ label: "All", value: "all"}, ...categories.map(c => ({ label: c, value: c})) ];
         return (
             <Modal isOpen={open} toggle={toggle} size="lg">
               <div className="modal-header">
@@ -535,10 +554,10 @@ class EditRes extends React.Component{
 
     render(){
         const { open, toggle, resource, categories, updateRes } = this.props;
+        const e = [{ label: "All", value: "all"}, ...ethnicity.map(e => ({ label: e, value: e})), ];
+        const state = [{ label: "All", value: "all"}, ...states.map(s => ({ label: s.name, value: s.abbreviation }))];
+        const cat = [{ label: "All", value: "all"}, ...categories.map(c => ({ label: c, value: c})) ];
 
-        const e = [ ...ethnicity.map(e => ({ label: e, value: e})), { label: "All", value: "all"}];
-        const state = [ ...states.map(s => ({ label: s.name, value: s.abbreviation })), { label: "All", value: "all"}];
-        const cat = [ ...categories.map(c => ({ label: c, value: c})), { label: "All", value: "all"}];
         return (
             <Modal isOpen={open} toggle={toggle} size="lg">
               <div className="modal-header">
@@ -775,13 +794,13 @@ export class CreateStaff extends React.Component {
 }
 
 
-export class EditStaff extends React.Component{
+class EditStaffModal extends React.Component{
     componentDidMount(){
-        this.props.init(this.props.user);
+        this.props.initialize(this.props.user);
     }
 
     componentWillUnmount(){
-        this.props.reset();
+        this.props.destroy();
     }
 
     render(){
@@ -800,7 +819,7 @@ export class EditStaff extends React.Component{
                 </Container>
               </div>
               <ModalBody>
-                <form onSubmit={edit}>
+                <form onSubmit={this.props.handleSubmit(edit)}>
                   <div className="row">
                     <div className="col-4">
                       <Field name="profile" component={DropzoneInput} className="picture-upload" />
@@ -870,6 +889,10 @@ export class EditStaff extends React.Component{
         )
     }
 }
+
+export const EditStaff = reduxForm({
+    form: "editStaff"
+})(EditStaffModal);
 
 
 class UserEditModal extends React.Component{
