@@ -50,6 +50,52 @@ export function replaceImage(file, d, type){
     });
 }
 
+function uploadCmsImage(file, type){
+    console.log("preparing upload");
+    let ext = file.mimetype == "image/jpeg" ? ".jpg" : ".png";
+    let src = type.split("/");
+    var params = {
+        Bucket: bucket,
+        Key: src[0] +"/"+src[1] + ext,
+        Body: file.data,
+        ContentType: file.mimetype,
+        ACL: "public-read"
+    };
+
+    return new Promise((resolve, reject) => {
+        s3.upload(params, function(err, d){
+            if(err){
+                reject(err);
+            } else {
+                resolve(d.Key);
+            }
+        });
+    });
+}
+
+export function replaceCmsImage(file, data, type){
+    let params = {
+        Bucket: bucket,
+        Key: data
+    };
+
+    return new Promise((resolve, reject) => {
+        s3.deleteObject(params, function(err, data){
+            if(err){
+                console.log(err);
+                reject(err);
+            } else {
+                console.log("deleted");
+                uploadCmsImage(file, type).then(data => {
+                    resolve(data);
+                }).catch(err => {
+                    reject(err);
+                });
+            }
+        });
+    });
+}
+
 export function getImage(arr){
     var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
     if(arr.length >= 1){
@@ -89,7 +135,7 @@ export function getCmsImages(cms){
     cms.home.logoImage = `https://${bucket}.s3.amazonaws.com/${cms.home.logoImage}`;
     cms.home.bannerImage = `https://${bucket}.s3.amazonaws.com/${cms.home.bannerImage}`;
     cms.supportUs.bannerImage = `https://${bucket}.s3.amazonaws.com/${cms.supportUs.bannerImage}`;
-    cms.aboutUs.bannerImage = `https://${bucket}.s3.amazonaws.com/${cms.supportUs.bannerImage}`;
+    cms.aboutUs.bannerImage = `https://${bucket}.s3.amazonaws.com/${cms.aboutUs.bannerImage}`;
 
     return cms;
 }

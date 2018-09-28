@@ -1,5 +1,5 @@
 import { Admin, CMS } from "../../models";
-import { getCmsImages, uploadImage, replaceImage } from "../../helpers/aws";
+import { getCmsImages, uploadImage, replaceImage, replaceCmsImage } from "../../helpers/aws";
 
 export function getAllContent(req, res){
     CMS.findOne().then(data => {
@@ -36,7 +36,7 @@ export function updateHomeContent(req, res){
             });
         } else {
             if(req.files.banner){
-                replaceImage(req.files.banner, homeData , "homeBanner").then(banner => {
+                replaceCmsImage(req.files.banner, homeData.bannerImage, "home/homeBanner").then(banner => {
                     return CMS.findOneAndUpdate({}, {
                         $set: {
                             "home.bannerImage": banner
@@ -44,7 +44,7 @@ export function updateHomeContent(req, res){
                     });
                 }).then(() => {
                     if(req.files.logo){
-                        replaceImage(req.files.logo, homeData, "homeLogo").then(logo => {
+                        replaceCmsImage(req.files.logo, homeData.logoImage, "home/homeLogo").then(logo => {
                             return CMS.findOneAndUpdate({}, {
                                 $set: {
                                     "home.logoImage": logo
@@ -94,8 +94,9 @@ export function updateSupportContent(req, res){
                 "message": "Successfully updated support content"
             });
         } else {
+            let supportUs = Object.assign({type: "supportus"}, supportUs);
             if(supportUs.bannerImage){
-                replaceImage(req.files.file, Object.assign({type: "supportus"}, supportUs), "supportus").then(d => {
+                replaceCmsImage(req.files.file, supportUs.bannerImage, "supportus/supportus").then(d => {
                         return CMS.findOneAndUpdate({}, {
                             $set: {
                                 "supportUs.bannerImage": d
@@ -149,7 +150,8 @@ export function updateAboutContent(req, res){
             });
         } else {
             if(aboutUs.bannerImage){
-                replaceImage(req.files.file, Object.assign({type: "aboutus"}, aboutUs), "aboutus").then(d => {
+                let about = Object.assign({type: "aboutus"}, aboutUs);
+                replaceCmsImage(req.files.file, about.bannerImage, "aboutus/aboutus").then(d => {
                         return CMS.findOneAndUpdate({}, {
                             $set: {
                                 "aboutUs.bannerImage": d

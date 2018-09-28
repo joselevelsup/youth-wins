@@ -41,7 +41,7 @@ class Home extends Component {
                     <figure>
                       <div className="support-image-container">
                         <div className="white-overlay"/>
-                        <img className="support-img" src='https://www.quirkybyte.com/wp-content/uploads/2017/08/FRIENDSHIP.jpg'/>
+                        <img className="support-img" src={home.bannerImage}/>
                       </div>
                       <div className="home-login">
                         <img className="home-logo" src={home.logoImage}/>
