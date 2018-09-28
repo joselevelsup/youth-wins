@@ -66,10 +66,25 @@ export function updateHomeContent(req, res){
                     console.log(err);
                 });
             } else {
-                res.status(200).json({
-                    "success": true,
-                    "message": "Successfully updated home content"
-                });
+                if(req.files.logo){
+                    replaceCmsImage(req.files.logo, homeData.logoImage, "home/homeLogo").then(logo => {
+                        return CMS.findOneAndUpdate({}, {
+                            $set: {
+                                "home.logoImage": logo
+                            }
+                        });
+                    }).then(() => {
+                        res.status(200).json({
+                            "success": true,
+                            "message": "Successfully updated home content"
+                        });
+                    });
+                } else {
+                    res.status(200).json({
+                        "success": true,
+                        "message": "Successfully updated home content"
+                    });
+                }
             }
         }
     }).catch(err => {
