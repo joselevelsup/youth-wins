@@ -288,7 +288,7 @@ class UsersT extends React.Component{
         });
     }
 
-    openApplicant(user){
+  openApplicant(user){
         this.setState({
             user: user,
             userModal: true
@@ -442,7 +442,7 @@ class UsersT extends React.Component{
                     }
                 </Row>
               <StaffModal open={this.state.staffModal} toggle={this.toggleStaffModal} staff={this.state.staff} deleteStaff={this.deleteStaffMember} editStaff={() => this.toggleEditStaff(this.state.staff)} />
-              <UserModal open={this.state.userModal} toggle={this.toggleUserModal} user={this.state.user} deleteUser={this.deleteApplicant}  />
+              {this.state.userModal && <UserModal open={this.state.userModal} toggle={this.toggleUserModal} user={this.state.user} deleteUser={this.deleteApplicant}  />}
               {this.state.createModal && <CreateStaff open={this.state.createModal} toggle={this.toggleCreateModal} create={handleSubmit(this.createStaffMember)} reset={this.props.destroy} />}
               {this.state.userPrompt && <DeleteUserModal open={this.state.userPrompt} toggle={this.offModals} deleteUser={this.state.userType ? () => this.deleteApplicant(this.state.user) : () => this.deleteStaffMember(this.state.user)}/>}
               {this.state.editStaffModal && <EditStaff edit={this.editStaffMember} open={this.state.editStaffModal} toggle={this.toggleEditStaff} user={this.state.staff}/>}

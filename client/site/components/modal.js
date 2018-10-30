@@ -319,8 +319,9 @@ class UserM extends React.Component {
     }
 
     render(){
-        const { open, toggle, user, apps } = this.props;
-        const userApps = (apps.applications && user !== null) ? apps.applications.filter(a => a.user === user._id) : apps;
+      const { open, toggle, user, apps } = this.props;
+      console.log(user);
+      console.log();
         return (
             <React.Fragment>
               <Modal size="lg" isOpen={open} toggle={toggle} size="lg">
@@ -358,8 +359,8 @@ class UserM extends React.Component {
                             </Row>
                             <Row>
                               {
-                                  userApps.length > 1 ?
-                                      userApps.map(ua => (
+                                  (apps.applications && user !== null) ?
+                                      apps.applications.filter(a => a.user && a.user._id === user._id).map(ua => (
                                           <AppItem size={6} openResource={this.openResource} deleteApp={this.deleteApp} resource={ua.resource} status={ua.status} />
                                       ))
                                       :
@@ -381,7 +382,7 @@ class UserM extends React.Component {
 }
 
 export const UserModal = connect(state => ({
-    apps: state.adminApps
+  apps: state.adminApps
 }))(UserM);
 
 class CreateRes extends React.Component {

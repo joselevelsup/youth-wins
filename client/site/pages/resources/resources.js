@@ -291,7 +291,7 @@ class Resources extends React.Component {
                     <Field component={Select} className="form-control filter" name="categories">
                       <option value={null}>Select Category</option>
                       {
-                          categories.map(s => (
+                          categories && categories.map(s => (
                               <option value={s}>{s}</option>
                           ))
                       }
@@ -329,7 +329,7 @@ function mapStateToProps(state){
     return {
         resources: state.resources,
         user: state.user,
-        categories: state.content && state.content.content.categories
+      categories: (state.content && state.content.content.categories) ? state.content.content.categories : []
     };
 }
 
