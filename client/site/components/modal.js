@@ -320,8 +320,6 @@ class UserM extends React.Component {
 
     render(){
       const { open, toggle, user, apps } = this.props;
-      console.log(user);
-      console.log();
         return (
             <React.Fragment>
               <Modal size="lg" isOpen={open} toggle={toggle} size="lg">
@@ -361,7 +359,7 @@ class UserM extends React.Component {
                               {
                                   (apps.applications && user !== null) ?
                                       apps.applications.filter(a => a.user && a.user._id === user._id).map(ua => (
-                                          <AppItem size={6} openResource={this.openResource} deleteApp={this.deleteApp} resource={ua.resource} status={ua.status} />
+                                          <AppItem size={6} user={user} openResource={this.openResource} deleteApp={this.deleteApp} resource={ua.resource} status={ua.status} created={ua.dateCreated} />
                                       ))
                                       :
                                       <Col md={12}>
